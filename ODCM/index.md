@@ -2,6 +2,10 @@
 
 The ODCM Living Specification
 
+
+> This spec is not, by any stretch of the imagination, complete. All of the wording will need to be revised several times before it is finalized. The graphics and layout of the screens is shown here merely to illustrate the underlying functionality. The actual look and feel will be developed over time with the input of graphics designers and iterative user feedback.
+
+
 ## Usage Scenarios
 
 To help set the scene we'll go through some specific usage scenarios, and then look at the ODCM features that will enable them.
@@ -20,15 +24,21 @@ Barry is responsible for the company's Octopus infrastructure. Some critical pro
 
 Barry also manages sets of variables that define various organization level values the teams may need when deploying their projects.
 
+
+#### Implementation Details
+> <img style="float: left; padding-right: 20px" src="..\images\implementation-details.png" />
+
+> SMTP relay *will* be required to achieve these kinds of alerts. How will this impact the spaces, if there's an email relay ODCM will configure on each space.
+
 ## Features
 The following diagram shows what we think a typical ODCM installation might look like. ODCM is shown in a Highly Available style configuration (like Octopus Deploy itself, it will support single node and HA configuration depending on your requirements). A HA configuration will be important for Barry, to ensure he can always get reliable feedback on the rest of the Octopus servers.
 
 ![ODCM Architecture](odcm-architecture.png "width=500")
 
 #### Implementation Details
-<img style="float: left; padding-right: 20px" src="..\images\implementation-details.png" />
+> <img style="float: left; padding-right: 20px" src="..\images\implementation-details.png" />
 
-The ODCM will have its own data storage (database and file storage), and will be independently scalable and highly available from the Spaces themselves.
+> The ODCM will have its own data storage (database and file storage), and will be independently scalable and highly available from the Spaces themselves.
 
 ### Giving teams their own Space
 When we started talking about ODCM and its functionality internally something became apparent pretty quickly that some of the terminology can be overloaded and/or confusing. This was within our team, and we're living this stuff every day, so how do we avoid confusing everyone else?
@@ -48,9 +58,10 @@ ODCM will be where Barry spends his time managing Octopus. It will provide featu
 - report across Spaces
 
 #### Implementation Details
-<img style="float: left; padding-right: 20px" src="..\images\implementation-details.png" />
+> <img style="float: left; padding-right: 20px" src="..\images\implementation-details.png" />
 
-The spaces will have some kind of "Agent" running along side them to allow ODCM to update/manage/query them.
+> The spaces will have some kind of "Agent" running along side them to allow ODCM to update/manage/query them.
+
 
 ### Identity management
 One of the keys to working across multiple Spaces is dealing with user identity and access control. We can solve these problems by having ODCM take responsibility for them.
@@ -67,17 +78,13 @@ Once Bob has access to multiple Spaces, his user experience in Octopus will chan
 
 ![ODCM Space Switching](odcm-space-switch.png "width=500")
 
-ODCM will support all of the external providers currently supported by Octopus Deploy. We are considering support for federated authentication across organizations at some point in the future, but this isn't targetted for our initial release.
+ODCM will support all of the external providers currently supported by Octopus Deploy. We are considering support for federated authentication across organizations at some point in the future, but this isn't targeted for our initial release.
 
 #### Implementation Details
-<img style="float: left; padding-right: 20px" src="..\images\implementation-details.png" />
+> <img style="float: left; padding-right: 20px" src="..\images\implementation-details.png" />
 
-We may not want to leak space access related data within a given space, and consider always fetching from the ODCM (and consider the performance issues of the load on ODCM).
+> We may not want to leak space access related data within a given space, and consider always fetching from the ODCM (and consider the performance issues of the load on ODCM).
 
-#### Notes
-
-<img style="float: left; display:inline-block; padding-right: 20px" src="..\images\notes.png" />
-Consider nested Groups or continue discussion of Organisations? More to be discussed about Active Directory changes and detecting / refreshing.
 
 ### Access control
 We picture access control operating across Spaces at two levels:
@@ -90,6 +97,11 @@ If you're Barry Infrastructure, you will be able to control which groups of user
 If you're Lisa Shipping you'll be able to use Teams to manage which groups of users have which permissions in your Space, just like you would in Octopus today. For example, you could specify a Team which permits Developers to deploy things to the Dev environment. If Bob Specialist is a member of the Developer group in ODCM then when he is given access to the Space he'll be able to deploy to Dev immediately.
 
 ![ODCM Groups](odcm-groups.png "width=500")
+
+#### Notes
+> <img style="float: left; display:inline-block; padding-right: 20px" src="..\images\notes.png" />
+
+> Consider nested Groups or continue discussion of Organizations? More to be discussed about Active Directory changes and detecting / refreshing.
 
 ### Sharing
 When you only have a single Space, sharing of information is a non-issue. Once you have lots of smaller Spaces, there is an increased likelihood you'll want/need to share information between them.
@@ -112,7 +124,7 @@ The current Octopus Deploy MSI installer creates a problem here because it only 
 
 You can work around this today but it takes some effort. We want to make it easy. Our current idea is that we'll include an agent on the machines hosting Spaces and automate the deployment of Octopus  itself.
 
-Each Space will be an isolated copy of Octopus, and maintaining that isolation will be important. This is easier on some levels than on others. For example, isolation of versions based on binaries is fairly straightforward. Isolation across shared resources like CPU, RAM and disk is more problemmatic. We're investigating options at the moment and we'll share more once that's done.
+Each Space will be an isolated copy of Octopus, and maintaining that isolation will be important. This is easier on some levels than on others. For example, isolation of versions based on binaries is fairly straightforward. Isolation across shared resources like CPU, RAM and disk is more problematic. We're investigating options at the moment and we'll share more once that's done.
 
 ### Octopus Deploy monitoring and reporting
 ODCM will monitor the Spaces under its control, much like Octopus monitors Tentacles. It will collect information from each of the Spaces and aggregate it. Administrators like Barry Infrastructure can then view the information via ODCM's dashboard and reporting features.
@@ -126,6 +138,6 @@ We don't expect that all of the dashboard functionality and reports will make it
 If there are other metrics you think would be valuable, please let us know.
 
 #### Implementation Details
-<img style="float: left; padding-right: 20px" src="..\images\implementation-details.png" />
+> <img style="float: left; padding-right: 20px" src="..\images\implementation-details.png" />
 
-The spaces will have some kind of "Agent" running along side them to allow them to push data to ODCM for the purposes of it have aggregate reporting data, ODCM may also be able to query them.
+> The spaces will have some kind of "Agent" running along side them to allow them to push data to ODCM for the purposes of it have aggregate reporting data, ODCM may also be able to query them.
