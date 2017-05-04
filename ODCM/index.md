@@ -25,6 +25,11 @@ The following diagram shows what we think a typical ODCM installation might look
 
 ![ODCM Architecture](odcm-architecture.png "width=500")
 
+#### Implementation Details
+<img style="float: left; padding-right: 20px" src="..\images\implementation-details.png" />
+
+The ODCM will have its own data storage (database and file storage), and will be independently scalable and highly available from the Spaces themselves.
+
 ### Giving teams their own Space
 When we started talking about ODCM and its functionality internally something became apparent pretty quickly that some of the terminology can be overloaded and/or confusing. This was within our team, and we're living this stuff every day, so how do we avoid confusing everyone else?
 
@@ -41,6 +46,11 @@ ODCM will be where Barry spends his time managing Octopus. It will provide featu
 - create a new blank Space
 - monitor Spaces, via a dashboard and alerts
 - report across Spaces
+
+#### Implementation Details
+<img style="float: left; padding-right: 20px" src="..\images\implementation-details.png" />
+
+The spaces will have some kind of "Agent" running along side them to allow ODCM to update/manage/query them.
 
 ### Identity management
 One of the keys to working across multiple Spaces is dealing with user identity and access control. We can solve these problems by having ODCM take responsibility for them.
@@ -62,7 +72,7 @@ ODCM will support all of the external providers currently supported by Octopus D
 #### Implementation Details
 <img style="float: left; padding-right: 20px" src="..\images\implementation-details.png" />
 
-We may not want to leak space access related data within a given space, and consider always fetching from the ODCM (and consider the performance issues of the load on ODCM). 
+We may not want to leak space access related data within a given space, and consider always fetching from the ODCM (and consider the performance issues of the load on ODCM).
 
 #### Notes
 
@@ -114,3 +124,8 @@ We don't expect that all of the dashboard functionality and reports will make it
 - a report showing deployment counts (number of successful and failed deployments) per Space over a give timeframe
 
 If there are other metrics you think would be valuable, please let us know.
+
+#### Implementation Details
+<img style="float: left; padding-right: 20px" src="..\images\implementation-details.png" />
+
+The spaces will have some kind of "Agent" running along side them to allow them to push data to ODCM for the purposes of it have aggregate reporting data, ODCM may also be able to query them.
