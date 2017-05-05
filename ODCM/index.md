@@ -98,9 +98,19 @@ If you're Lisa Shipping you'll be able to use Teams to manage which groups of us
 
 ![ODCM Groups](odcm-groups.png "width=500")
 
+#### Implementation Details
+> <img style="float: left; padding-right: 20px" src="..\images\implementation-details.png" />
+
+> - ODCM will *push* user and group changes to the Spaces, this will support fast granting/revoking of access of users
+> - Username-Password authentication will shift into ODCM, password resets and verification will take place there, and will take a dependency on an SMTP relay being configured for use in ODCM.
+> - The user database record will need to support multiple identity providers, currently it doesn't
+> - When combined with Active Directory for auth each Space *will need* to run as a suitable AD user to participate  
+> - Performance improvements that exist in OD around large Active Directory configurations will shift to ODCM and be handled there.
+
 #### Notes
 > <img style="float: left; display:inline-block; padding-right: 20px" src="..\images\notes.png" />
 
+> Migration of key Octopus Deploy data will be major factor of the initial ODCM setup for existing customers.
 > Consider nested Groups or continue discussion of Organizations? More to be discussed about Active Directory changes and detecting / refreshing.
 
 ### Sharing
@@ -131,7 +141,7 @@ The current Octopus Deploy MSI installer creates a problem here because it only 
 
 You can work around this today but it takes some effort. We want to make it easy. Our current idea is that we'll include an agent on the machines hosting Spaces and automate the deployment of Octopus  itself.
 
-Each Space will be an isolated copy of Octopus, and maintaining that isolation will be important. This is easier on some levels than on others. For example, isolation of versions based on binaries is fairly straightforward. Isolation across shared resources like CPU, RAM and disk is more problemmatic. We're investigating options at the moment and we'll share more once that's done.
+Each Space will be an isolated copy of Octopus, and maintaining that isolation will be important. This is easier on some levels than on others. For example, isolation of versions based on binaries is fairly straightforward. Isolation across shared resources like CPU, RAM and disk is more problematic. We're investigating options at the moment and we'll share more once that's done.
 
 ### Octopus Deploy monitoring and reporting
 ODCM will monitor the Spaces under its control, much like Octopus monitors Tentacles. It will collect information from each of the Spaces and aggregate it. Administrators, like Barry Infrastructure, can then view the information via ODCM's dashboard and reporting features.
@@ -142,7 +152,7 @@ We don't expect that all of the dashboard functionality and reports will make it
 - a report showing project count and target count per Space
 - a report showing deployment counts (number of successful and failed deployments) per Space over a give timeframe
 
-If there are other metrics you think would be valuable, please let us know.
+If there are other metrics you think would be valuable, [please let us know via this issue](https://github.com/OctopusDeploy/Specs/issues/2).
 
 #### Implementation Details
 > <img style="float: left; padding-right: 20px" src="..\images\implementation-details.png" />
