@@ -4,5 +4,7 @@ It will follow the styling / layout conventions [defined in the docs repository]
 
 ## Objectives
  - A collection of *functional* and *tecnical* specifications that will be kept up to date as we build non-trivial features.
+ - Describe user stories / scenarios for a variety of types of stakeholders
  - Receive, manage and discuss feedback from feature stakeholders
+ 
  
