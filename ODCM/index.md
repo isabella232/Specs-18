@@ -108,12 +108,19 @@ When you only have a single Space, sharing of information is a non-issue. Once y
 
 Our vision for Spaces is that they should be collections of related things, so the need for sharing should be minimal. We thought about which things are likely to need sharing, and think they'll be things like:
 
+- Users (as discussed above)
 - Step Templates
 - Server Extensions
 - Variables
 - Tentacles
 
-With the exception of Tentacles, we think all of these will be shared from ODCM. We expect it will have the ability to host a version of the Community Step Template library, something similar for hosting Server Extensions and provide variable sets that the Spaces can access. ODCM won't have knowledge of Environments, Targets, Tenants or many of the other scoping concepts in Octopus Deploy itself, so there  may only be support for Unscoped variables.
+Barry Infrastructure will be the one who is primarily concerned with managing these things, so it seems a natural fit that they be managed and shared centrally through ODCM. We expect it will:
+
+- have the ability to host a version of the Community Step Template library,
+- have something similar for hosting Server Extensions and
+- provide variable sets that the Spaces can access.
+
+ODCM won't have knowledge of Environments, Targets, Tenants or many of the other scoping concepts in Octopus Deploy itself, so there may only be support for Unscoped variables.
 
 A Tentacle can already be used by more than one Octopus server, so this still applies and it can be used by more than one Space.
 
@@ -124,10 +131,10 @@ The current Octopus Deploy MSI installer creates a problem here because it only 
 
 You can work around this today but it takes some effort. We want to make it easy. Our current idea is that we'll include an agent on the machines hosting Spaces and automate the deployment of Octopus  itself.
 
-Each Space will be an isolated copy of Octopus, and maintaining that isolation will be important. This is easier on some levels than on others. For example, isolation of versions based on binaries is fairly straightforward. Isolation across shared resources like CPU, RAM and disk is more problematic. We're investigating options at the moment and we'll share more once that's done.
+Each Space will be an isolated copy of Octopus, and maintaining that isolation will be important. This is easier on some levels than on others. For example, isolation of versions based on binaries is fairly straightforward. Isolation across shared resources like CPU, RAM and disk is more problemmatic. We're investigating options at the moment and we'll share more once that's done.
 
 ### Octopus Deploy monitoring and reporting
-ODCM will monitor the Spaces under its control, much like Octopus monitors Tentacles. It will collect information from each of the Spaces and aggregate it. Administrators like Barry Infrastructure can then view the information via ODCM's dashboard and reporting features.
+ODCM will monitor the Spaces under its control, much like Octopus monitors Tentacles. It will collect information from each of the Spaces and aggregate it. Administrators, like Barry Infrastructure, can then view the information via ODCM's dashboard and reporting features.
 
 We don't expect that all of the dashboard functionality and reports will make it into the initial release. We will focus on a minimal set and build on this over subsequent releases. The initial release may contain something like:
 
