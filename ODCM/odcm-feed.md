@@ -28,14 +28,24 @@ Terms / ideas
 
  - A mechanism by which data is accessible, a known location to fetch/push data.
 
+## Scenario 1 : Space Access
 
-## Scenario 1 : Shared Variables
+Lisa Shipping arrives at Space A, for the sign-on process is redirected to logic running at the ODCM level, and gets a list of Spaces she can access. To avoid persistent load on ODCM, her local Space A can now store the list of Spaces she has access to.
+
+As she gets granted access to more Space B, both Space A and Space B can be notified of her updated list, the same for the revoking of access to Spaces.
+
+ 
+## Scenario 2 : Shared Variables
 
 Barry Infrastructure has prepared some common infrastructure for the development teams to use, he would like to set up 1 set of variables that define connection strings and other related data once and make them available to any new space.
 
-Barry can set these up once in an existing space, and "publish" them with unrestricted access to all other spaces. The ODCM will have a name for this variable set
+Barry can set these up once in an existing space, and "publish" them with unrestricted access to all other spaces. The ODCM will have a name for this variable set so it's clear what the purpose of the set is.
 
-## Scenario 2 : Air Gap
+
+### Implementation
+ - A read-only in a subscribers Space
+
+## Scenario 3 : Air Gap
 
 [Discussion Here](https://github.com/OctopusDeploy/Specs/issues/3)
 
@@ -54,11 +64,13 @@ The Space that's being protected by an air gap:
    - A manual fetch mechanism this can be for the most restricted of set ups.
    - Polling if the service fetching is a requirement
    - Pushed to it (simplest)
+   
+   
 
 ### Deployment Receipts
  - Optionally the Air Gapped Spaced can send back a "receipt" a signed audit log entry of what was deployed, when and by whom.
 
-## Scenario 3 : Standard Environments
+## Scenario 4 : Standard Environments
 
 Barry Infrastructure wants to manage 1 all inclusive set of Environments (`a master list`), when Barry provisions a new Space he wants to be able to select from this list which Environments will populate the new Space.
 
