@@ -1,37 +1,41 @@
 # ODCM Data Feed
 
-Facilitie sharing of data between spaces.
+Facilitate sharing of data between spaces.
 
 ## Objective
 
-ODCM needs to facilitate sharing of 
+ODCM needs to facilitate sharing of
  - Users
  - Step Templates
  - Server Extensions
  - Variables
  - Releases
  - Tentacles (Environments / Targets)
- 
+
 ## Concepts
- ### Trust
- 
- - Space B will only trust Space A, this is defined at the ODCM level and certificates are used to facilitate 
- 
- ### Broker - This is ODCM
- 
- - ODCM will be the broker/co-ordinator
- 
- ### Feeds
- 
- - 
- 
+
+Terms / ideas
+
+### Trust
+
+ - Space B will only trust Space A, this is defined at the ODCM level and certificates are used to facilitate
+
+### Broker
+
+ - ODCM will be the broker/coordinator
+
+### Feeds
+
+ - A mechanism by which data is accessible, a known location to fetch/push data.
+
 
 ## Scenario 1 : Shared Variables
 
 
+
 ## Scenario 2 : Air Gap
 
-Barry Infrastructure has a new requirement for an application that does credit card processing that is to *truly issolate production*. 
+Barry Infrastructure has a new requirement for an application that does credit card processing that is to *truly isolate production*.
 
 He makes 2 spaces, `Dev-and-QA` and `Production`. `Dev-and-QA` can be an unrestricted set of machines and processes where the developers and QA people can spin up anything they need to get their jobs done.
 
@@ -44,12 +48,12 @@ The Space that's being protected by an air gap:
    - Polling if the service fetching is a requirement
    - Pushed to it (simplest)
 
-## Scenario 3 : Stanard Environments
+## Scenario 3 : Standard Environments
 
 Barry Infrastructure wants to manage 1 all inclusive set of Environments (`a master list`), when Barry provisions a new Space he wants to be able to select from this list
 
-   
-## Implementation 
+
+## Implementation
 
 ### Surface these items through as a Feed
  - Will be asynchronous; a `Space A` can "publish" via ODCM, and be offline when `Space B` fetches.
