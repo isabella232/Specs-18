@@ -11,9 +11,8 @@ This feature will allow promoting a Release between Spaces.
 
 ## Implementation
 
-### Variables
 
-### Viewing the Deployment Process for a Release
+### Viewing the Deployment Process for a Release<a name="view-release-deployment-process"></a>
 
 In Octopus today, when you view a project's deployment process you are viewing the latest version.  There is no way to view the process that was snapshotted with a particular release.  
 
@@ -22,3 +21,23 @@ For example, imagine a project has two Remote Environments: _Staging_ and _Produ
 If you were to view the deployment process for the project in the Remote Space, would it show the process as it was at `1.0.1` or `2.0`? 
 
 We are proposing to implement viewing (read-only) the deployment process as it was at the time of the release. This will be useful even in non-remote-promotion scenarios, but will be critical for remote promotions. 
+
+### Viewing variables for a release
+
+As per [Viewing the Deployment for a Release](#view-release-deployment-process), we will allow viewing the variable values that were snapshotted with the release. 
+And similarly, this will benefit everyone, not just those using Remote Promotions.
+
+### Project variables are read-only on the remote space
+
+Project variables will be snapshotted with the release (just as today), and will not be editable on the remote space.
+
+To enable contributing environment-specific variables on the remote side, we will implement environment variable templates (see below).
+ 
+
+### Environment Variable Templates
+
+### No channels on the remote space
+
+The role of channels is all pre release creation.  We are proposing that project channels not exist on the remote side. The variable-scoping will have already been performed in the source space, and any deployment steps not scoped to the release's channel will have been removed. 
+
+The lifecycle on the remote side will be chosen at the time the release bundle is imported, removing the need for the channel to participate in that process.
