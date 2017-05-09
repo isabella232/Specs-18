@@ -31,7 +31,9 @@ Terms / ideas
 
 ## Scenario 1 : Shared Variables
 
+Barry Infrastructure has prepared some common infrastructure for the development teams to use, he would like to set up 1 set of variables that define connection strings and other related data once and make them available to any new space.
 
+Barry can set these up once in an existing space, and "publish" them with unrestricted access to all other spaces. The ODCM will have a name for this variable set
 
 ## Scenario 2 : Air Gap
 
@@ -50,11 +52,16 @@ The Space that's being protected by an air gap:
 
 ## Scenario 3 : Standard Environments
 
-Barry Infrastructure wants to manage 1 all inclusive set of Environments (`a master list`), when Barry provisions a new Space he wants to be able to select from this list
+Barry Infrastructure wants to manage 1 all inclusive set of Environments (`a master list`), when Barry provisions a new Space he wants to be able to select from this list which Environments will populate the new Space.
+
+The objective here is that Barry can very quickly get a usable space up for a development team.
 
 
-## Implementation
+# Implementation
 
-### Surface these items through as a Feed
+## Feed
+
+Surface *all* these items through as a Feed
+
  - Will be asynchronous; a `Space A` can "publish" via ODCM, and be offline when `Space B` fetches.
  - Optimize for performance; these feeds can be cached to alleviate direct load on the ODCM instance(s).
