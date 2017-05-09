@@ -41,8 +41,10 @@ To enable contributing environment-specific variables on the remote side, we wil
 
 ![Set Template Value Explicitly](interface-designs/variable-templates/set-template-value-explicit.png "width=500")
 
-### No channels on the remote space
+### Release channel is read-only on the remote space 
 
-The role of channels is all pre release creation.  We are proposing that project channels not exist on the remote side. The variable-scoping will have already been performed in the source space, and any deployment steps not scoped to the release's channel will have been removed. 
+Viewing a project's channels suffers from the same issues as viewing the deployment process.  It is temporal. On the remote space we are interested only in the channel that the release was created for. This will be unable to be modified on the remote space.  
+
+Variable scoping and deployment step scoping will occur when the bundle is created. 
 
 The lifecycle on the remote side will be chosen at the time the release bundle is imported, removing the need for the channel to participate in that process.
