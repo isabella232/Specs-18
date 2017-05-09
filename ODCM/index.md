@@ -47,7 +47,7 @@ ODCM is shown in a Highly Available configuration (it will support single node a
 > The ODCM will have its own data storage (database and file storage), and will be independently scalable and highly available from the Spaces themselves.
 
 ### Giving teams their own Space
-When we started talking about ODCM and its functionality internally something became apparent pretty quickly that some of the terminology can be overloaded and/or confusing. This was within our team, and we're living this stuff every day, so how do we avoid confusing everyone else?
+When we started talking about ODCM and its functionality internally something became apparent pretty quickly, some of the terminology can be overloaded and confusing. This was within our team, and we're living this stuff every day, so let's go through some definitions to try to avoid confusion.
 
 Instance
 :   a running [instance of Octopus Server or Tentacle EXE](https://octopus.com/docs/administration/managing-multiple-instances)
