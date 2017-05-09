@@ -36,6 +36,11 @@ To enable contributing environment-specific variables on the remote side, we wil
 
 ### Environment Variable Templates
 
+
+![Variable Template Editor](interface-designs/variable-templates/variable-template-editor.png "width=500")
+
+![Set Template Value Explicitly](interface-designs/variable-templates/set-template-value-explicit.png "width=500")
+
 ### No channels on the remote space
 
 The role of channels is all pre release creation.  We are proposing that project channels not exist on the remote side. The variable-scoping will have already been performed in the source space, and any deployment steps not scoped to the release's channel will have been removed. 
