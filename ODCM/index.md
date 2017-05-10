@@ -70,7 +70,7 @@ Now, back to our friend Barry Infrastructure. He will deal directly with Spaces 
 
 ODCM will provide Barry with features like:
 
-- enlist an existing "Octopus servers" as a Space,
+- enlist an existing Octopus as a Space,
 - separate things out of an existing Space into a new one,
 - create a new blank Space
 - monitor Spaces, via a dashboard and alerts
@@ -85,11 +85,11 @@ ODCM will provide Barry with features like:
 ### Identity management
 One of the keys to working across multiple Spaces is dealing with user identity and access control. We can solve these problems by having ODCM take responsibility for them.
 
-When a Space is enlisted with ODCM its authentication will be configured to point to ODCM, which will centralize identity management and allow SSO across Spaces. ODCM will support all of the authentication providers currently supported by Octopus Deploy.
+When a Space is enlisted with ODCM its authentication will be configured to point to ODCM, which will centralize identity management and allow SSO across Spaces. ODCM will support all of the [authentication providers](https://g.octopushq.com/AuthenticationProviders) currently supported by Octopus Deploy (i.e. UsernamePassword, Active Directory, Azure AD, GoogleApps).
 
 A number of the users benefit from this centralization.
 
-- Bob Specialist can move team and doesn't need a new identity or need to find a new URL
+- Bob Specialist can move teams and doesn't need a new identity or need to find a new URL
 - Barry Infrastructure can locate Bob's existing identity to grant him access to Lisa Shipping's Space
 - Barry can create an external identity for Geoff Outsider, who can then log in with his existing credentials.
 
@@ -97,10 +97,10 @@ Let's imagine Bob now has his access to multiple Spaces, how does he switch betw
 
 ![ODCM Space Switching](odcm-space-switching-menu.png "width=500")
 
-The user experience might be something like Trello uses for managing and switching boards. You might be able to do things like:
+The user experience might be something like Trello uses for managing and switching boards, with features like:
 
 - quickly see and select a Space you've recently visited
-- "favourite" a Space so it always appears near the top
+- "favorite" a Space so it always appears near the top
 - link to a page that shows the Spaces as tiles and allows searching
 
 #### Implementation Details
@@ -140,33 +140,33 @@ Lisa Shipping, as a Space administrator, will be able to use Teams to manage whi
 Our vision for Spaces is that they should be collections of related things, so the need for sharing should be minimal. We thought about which things are likely to need sharing, and think they'll be things like:
 
 - Users (as discussed above)
-- Step Templates
-- Server Extensions
-- Variables
+- [Step templates](https://g.octopushq.com/CommunityContributedStepTemplates)
+- [Server extensions](https://g.octopushq.com/ServerExtensions)
+- [Variables](https://g.octopushq.com/LibraryVariableSets)
 - Releases
 - Tentacles
 
-#### Step Templates and Server Extensions
+#### Step templates and server extensions
 Barry Infrastructure will again be the one primarily responsible for managing these things, and again we're thinking he'll do that through ODCM. It will:
 
-- have the ability to host a version of the Community Step Template library
-- have something similar for hosting Server Extensions
+- have the ability to host a version of the community step template library
+- have something similar for hosting server extensions
 
 #### Variables
 Now, Barry is responsible for standardization and as part of that he'd like to define/manage some variables for the teams to use. We're imagining he could do that along the following lines:
 
-- He creates a Space for managing variables
-- He adds a Trust between this Space and those he wants to share with (e.g. Lisa's)
-- He creates a Variable Set in the Space and specifies the Spaces he wants to share it with
+- He creates a Space to contain the variables he wants to share
+- He adds a trust between this Space and those he wants to share with (e.g. Lisa's)
+- He creates a variable set in the Space and specifies the Spaces he wants to share it with
 
-We're considering support for two modes of synchronization in the sharing. The first mode let's the publisher specify that updates must be automatically pushed to the subscribers and the second let's the subscribers chose whether updates are automatically pushed to them or synchronised on demand. In our scenario above, Barry could then ensure that all Spaces stay up to date by specifying that automatic pushes are required. Lisa would have to accept this if she subscribes the Variable Set into her Space.
+We're considering support for two modes of synchronization in the sharing. The first mode lets the publisher specify that updates must be automatically pushed to the subscribers and the second lets the subscribers chose whether updates are automatically pushed to them or synchronized on demand. In our scenario above, Barry could then ensure that all Spaces stay up to date by specifying that automatic pushes are required. Lisa would have to accept this if she subscribes the Variable Set into her Space.
 
-The Variable Set will appear as read-only in a subscribers Space, regardless of the synchronization mode, and can be added to the projects like any other Variable Set.
+The variable set will appear as read-only in a subscribers Space, regardless of the synchronization mode, and can be added to the projects like any other variable set.
 
 We considered a few options for how this might work and landed on this model for a few reasons. One key reason is consistency, ODCM broking information from a publisher to a subscriber fits all of the sharing scenarios outlined above. It doesn't have to understand any of the information, it just helps get it to where it needs to go.
 
 #### Releases
-Sharing of Releases is the subject of an upcoming RFC, so we won't talk too much about it here.  In the context of this discussion (ODCM management) we think it will hold a lot in common with variables.
+Sharing of releases is the subject of an upcoming RFC, so we won't talk too much about it here.  In the context of this discussion (ODCM management) we think it will hold a lot in common with variables.
 
 #### Tentacles
 On a final note about sharing, Tentacles can already be used by more than one Octopus server, so this still applies and it can be used by more than one Space.
@@ -181,7 +181,7 @@ You can work around the MSI today but it takes some effort. We want to make it e
 Each Space will be an isolated copy of Octopus, and maintaining that isolation will be important. This is easier on some levels than others. For example, isolation of instance versions based on binaries is fairly straightforward. Isolation across shared resources like CPU, RAM and disk is more problematic. We're investigating options at the moment and we'll share more once that's done.
 
 ### Octopus Deploy monitoring and reporting
-A key part of Barry Infrastructure's role is monitoring Octopus servers and reporting on usage across them. We see ODCM facilitating this, given it's perfectly placed to collect and aggregate this information. We're imagining it will have a dashboard for real-time monitoring and a number of page to report statistics and usage information.
+A key part of Barry Infrastructure's role is monitoring Octopus servers and reporting on usage across them. We see ODCM facilitating this, given it's perfectly placed to collect and aggregate this information. We're imagining it will have a dashboard for real-time monitoring and a number of pages to report statistics and usage information.
 
 We don't expect that all of the dashboard functionality and reports will make it into the initial release. We will focus on a minimal set and build on this over subsequent releases. The initial release may contain something like:
 
