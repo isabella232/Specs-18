@@ -69,3 +69,9 @@ Viewing a project's channels suffers from the same issues as viewing the deploym
 Variable scoping and deployment step scoping will occur when the bundle is created. 
 
 The lifecycle on the remote side will be chosen at the time the release bundle is imported, removing the need for the channel to participate in that process.
+
+### Project Triggers
+Project triggers will be able to defined on either side (local or remote).
+
+Triggers will not be included in the release bundle.
+
