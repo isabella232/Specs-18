@@ -48,6 +48,7 @@ Variable Templates were implemented specifically for multi-tenancy, to allow a p
 
 When the release bundle is promoted to the remote space, this will allow Octopus to inform the user's in the remote space which environment and tenant specific variables must be supplied.
 
+This should also address [this issue with template variables](https://github.com/OctopusDeploy/Issues/issues/2710).
 
 ### Explicit Null Variable Template Values
 
