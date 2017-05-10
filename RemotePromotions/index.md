@@ -22,22 +22,42 @@ If you were to view the deployment process for the project in the Remote Space, 
 
 We are proposing to implement viewing (read-only) the deployment process as it was at the time of the release. This will be useful even in non-remote-promotion scenarios, but will be critical for remote promotions. 
 
-### Viewing variables for a release
-
-As per [Viewing the Deployment for a Release](#view-release-deployment-process), we will allow viewing the variable values that were snapshotted with the release. 
-And similarly, this will benefit everyone, not just those using Remote Promotions.
-
 ### Project variables are read-only on the remote space
 
 Project variables will be snapshotted with the release (just as today), and will not be editable on the remote space.
 
 To enable contributing environment-specific variables on the remote side, we will implement environment variable templates (see below).
- 
 
 ### Environment Variable Templates
 
+In Octopus today, variables can be scoped to environments.  If you forget to scope a value for an environment (e.g. if a new environment is added), there is no warning. The variable's value may silently fall back to a wider-scoped (or non-scoped) value. 
+
+We feel this is unacceptable for Remote Promotions. 
+
+The environments in the remote space may not even be known by the person responsible for maintaining a project's variables. Even if they are known, they are owned by the remote space: environments may be added or removed, and having to inform the upstream project teams each time this occurs feels like the direction for the dependency graph. 
+
+To solve this, we are proposing extending the behaviour of [variable templates](https://octopus.com/docs/deploying-applications/variables/variable-templates).
+
+Variable Templates were implemented specifically for multi-tenancy, to allow a project to declare the variables that each tenant must define. We will do the same for environments.  When you define a variable template you will be able to specify whether it is required to be defined per:
+
+- tenant 
+- environment
+- tenant and environment (i.e. a value must be supplied for every tenant-environment combination)
 
 ![Variable Template Editor](interface-designs/variable-templates/variable-template-editor.png "width=500")
+
+When the release bundle is promoted to the remote space, this will allow Octopus to inform the user's in the remote space which environment and tenant specific variables must be supplied.
+
+
+### Explicit Null Variable Template Values
+
+Customers have requested [optional variable templates](https://github.com/OctopusDeploy/Issues/issues/2709).
+
+After considering it, our current thoughts are that templates are about preventing _accidental omission_ of variables. 
+
+We are going to take the approach that it's OK to not supply a value, so long as the value is intentionally not supplied.
+
+We can do this using a [null-object pattern](https://en.wikipedia.org/wiki/Null_Object_pattern), with a corresponding UI:
 
 ![Set Template Value Explicitly](interface-designs/variable-templates/set-template-value-explicit.png "width=500")
 
