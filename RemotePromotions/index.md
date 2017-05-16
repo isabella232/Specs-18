@@ -11,6 +11,33 @@ This feature will allow promoting a Release between Spaces.
 
 ## Implementation
 
+### Release Bundle
+
+The release bundle will be a JSON document. It will contain everything needed to promote the release to a remote space. 
+
+This will include: 
+
+- Deployment Process 
+- Variables
+- Release details: Version, Notes, Package versions, Channel.
+- Package references.
+
+#### Packages
+Packages will not be included directly in the bundle. They will sit beside. The bundle will reference the version and hash of the packages included.
+
+The hash will be signed by the private-key of the local space.  This will ensure the exact same packages are used on the remote space.
+
+#### Variables
+
+Variables will be 'sliced' before being bundled. Any variables scoped to local environments (or machines) will not included in the bundle.
+
+Sensitive-variables will be encrypted with the public-key of the remote space.
+
+#### Schema Versioning
+It would be a significant limitation if releases could only be promoted between spaces on the same version of Octopus.
+
+To avoid this, the release bundle schema will be versioned.  Releases will be able to be promoted between spaces with matching schema versions.  The release bundle schema will hopefully rev far less frequently than Octopus versions.
+
 
 ### Viewing the Deployment Process for a Release<a name="view-release-deployment-process"></a>
 
