@@ -38,6 +38,9 @@ It would be a significant limitation if releases could only be promoted between 
 
 To avoid this, the release bundle schema will be versioned.  Releases will be able to be promoted between spaces with matching schema versions.  The release bundle schema will hopefully rev far less frequently than Octopus versions.
 
+### Promote & Accept Releases 
+
+![Promote Release from Dashboard](interface-designs/release-promote-accept/promote-dashboard.png "width=500")
 
 ### Viewing the Deployment Process for a Release<a name="view-release-deployment-process"></a>
 
