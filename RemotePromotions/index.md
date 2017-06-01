@@ -4,12 +4,27 @@ This is the living specification for the _Remote Release Promotions_ feature.
 
 This feature will allow promoting a Release between Spaces.
 
+!toc
+
 ## Concepts
 
-- Release Bundle: The promotion artifact. This will contain everything required to transport the release from one Octopus Space to another.   
-- Deployment Receipt: A document representing the result of a deployment. This will be used to display the results of a remote deployment in the source Space. 
+- **Remote Environment**: An environment that lives in another Space. 
+- **Release Bundle**: The promotion artifact. This will contain everything required to transport the release from one Octopus Space to another.   
+- **Deployment Receipt**: A document representing the result of a deployment. This will be used to display the results of a remote deployment in the source Space. 
+- **Connected Space**: The local and remote Spaces are able to communicate.
+- **Disconnected Space**: The local and remote Spaces are isolated, and not able to communicate.  
 
 ## Implementation
+
+### Remote Environments
+
+Environments which live in another space will be able to be added to a Lifecycle. 
+
+These remote environments will appear in the project dashboard. 
+
+They will be able to have project variables scoped to them.
+
+They will not able to have machines added to them, or permissions scoped to them. 
 
 ### Release Bundle
 
@@ -38,6 +53,16 @@ It would be a significant limitation if releases could only be promoted between 
 
 To avoid this, the release bundle schema will be versioned.  Releases will be able to be promoted between spaces with matching schema versions.  The release bundle schema will hopefully rev far less frequently than Octopus versions.
 
+### Promote a Release 
+
+When a release reaches a point in it's Lifecycle where a remote environment is available, a 'Promote' action will be available.
+
+e.g. In the image below, Release 1.1.0 is eligible to be promoted to Production.
+
+![Promote Release from Dashboard](interface-designs/release-promote-accept/promote-dashboard.png "width=500")
+
+### Accept a Release
+![Accept Release Import](interface-designs/release-promote-accept/accept-release.png "width=500")
 
 ### Viewing the Deployment Process for a Release<a name="view-release-deployment-process"></a>
 
