@@ -12,3 +12,15 @@ So we would attempt to retrieve the version from (in order of priority):
 
 1. `Implementation-Version` field of the manifest
 1. Package file-name (e.g. `MyJavaProject.1.0.0.jar`)
+
+### Storing packages on disk 
+
+The built-in package-feed stores the package files on the file-system.
+
+Currently the package files are stored in a single-directory, with the files named as `{PackageId}.{Version}.{Extension}` e.g. `Acme.Web.2.0.0-beta.1.nupkg`
+
+Since JAR (and especially WAR) package files often retain the same name for different versions, we will need to modify this approach. 
+
+We propose taking the approach (similar to modern versions of NuGet) of storing the packages files in directory hierarchy:
+`{PackageId}\{Version}\{FileName}` e.g. `Acme.Web\2.0.0-beta.1\Acme.Web.jar` 
+(the file-name can still include the version, that is fine).
