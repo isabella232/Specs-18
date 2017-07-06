@@ -8,7 +8,7 @@ tags:
  - RFC
 ---
 
-In the 4.0 release, we plan to overhaul the variable editor. This has been one of our top <a href="https://octopusdeploy.uservoice.com/forums/170787-general/suggestions/7192251-improve-variables-ui" target="_blank">User Voice</a> suggestions and thanks to all our users who provided ideas on how to improve the variable editor.
+In the 4.0 release, are re-writing the variable editor. This has been one of our top <a href="https://octopusdeploy.uservoice.com/forums/170787-general/suggestions/7192251-improve-variables-ui" target="_blank">User Voice</a> suggestions and thanks to all our users who provided ideas on how to improve the variable editor, see this [github issue](https://github.com/OctopusDeploy/Issues/issues/2606) to join the discussion.
 
 Based on the feedback received our goal for the first release of the variable editor is to make a table editing experience work as expected with the inclusion of some new features:
 
@@ -159,10 +159,3 @@ As part of 4.0 we want to take full advantage of the progress the Web has made s
 We think what we have outlined above will improve the way we add variables and provide a better platform for us to add more advanced features to the editor.
 
 We'd love to hear your feedback on the plans for the release of the variable editor. What we'd like to ask is that if you just want to provide some quick feedback then do that below in the comments. If there's something bigger that warrants a more detailed conversation please comment over on our GitHub <a href="https://github.com/OctopusDeploy/Specs/blob/master/VariableEditorRedesign/index.md" target="_blank">Variable Editor Redesign SPEC document.
-
-
-<script>
-  window.onload = function() {
-    $('.gifplayer').gifplayer();
-  };
-</script>
