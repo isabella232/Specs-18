@@ -127,3 +127,9 @@ Project triggers will be able to defined on either side (local or remote).
 
 Triggers will not be included in the release bundle.
 
+# Customer Feedback
+
+We'll collate private feedback we recieve from customers here:
+
+https://secure.helpscout.net/conversation/372553690
+https://secure.helpscout.net/conversation/395893583
