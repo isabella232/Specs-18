@@ -2,24 +2,48 @@
 
 This is the live specification for first-class Java support in Octopus Deploy.
 
-### Package Types
+### Phase 1 (Release 3.16) -- Done
 
-We plan to [add support for JAR and WAR package types](jar-packages.md).
+#### Remove the Mono dependency for SSH targets 
 
-### Step Types
+Build a .NET Core Self-Contained Calamari which will not require Mono to be pre-installed on SSH targets.
 
-We are planning to add a new _Deploy Java Archive_ step type.
+Many Java teams target Linux as the server OS, and for some installing Mono was a blocker to using Octopus.   
 
-The alternative was to modify the existing _Deploy a Package_ step to work with Java packages.  
+### Phase II (Release 3.17, September)
 
-The benefits of adding a new step type:
+#### JAR Packages
 
-- Discoverability: It is immediately obvious that it will work with Java packages. 
-- We are free to add conventions and features relevant to Java archives without concern as to how the will impact existing packages.
-- It fits with our direction of more specific steps, rather than fewer generic steps.
+We will extend the Octopus built-in package repository to support JAR, WAR, and EAR files. 
 
-The _Deploy Java Archive_ step will extract the archive, allowing conventions such as variable-substitution to be performed. It will then re-pack the archive and move it to it's destination.
+**Note:** JAR packages will need to be named in the `{{PackageId}}.{{Version}}.{{Extension}}` format, similar to zips.   
+We originally considered allowing package ID and version information to be stored in the manifest of the JAR, but we didn't feel that extracting the JAR using [SharpCompress](https://github.com/adamhathcock/sharpcompress) was a robust solution. We feel the most robust solution is to use the Java tooling (i.e. [jar tool](http://docs.oracle.com/javase/7/docs/technotes/tools/windows/jar.html), this is what we do on the target) but this would require having the JRE installed on the Octopus Server.   
+We may investigate this further in the future. 
+
+#### New Step Types
+
+We are adding the following built-in steps (names may change):
+
+- **Deploy Java Archive**
+- **Deploy to Tomcat**
+- **Start/Stop Tomcat App** 
+- **Deploy to WildFly or RedHat JBoss EAP**
+- **Enable/Disable Deployment in WildFly**
+
+The 3 new deploy steps (`Deploy Java Archive`, `Deploy to Tomcat`, `Deploy to WildFly`) will all extract and re-package the Java Archive.  This allows features such  as `Substitute Variables in Files` and `JSON Configuration` to be run.
 
 Pre/Deploy/Post scripts will be executed, similar to the _Deploy Package_ step.
 
-We intend to add more steps, to support deploying to the common Java Application Servers (e.g. Tomcat, WildFly, etc). These can be based the _Deploy Java Archive_ step, possibly simply enabling specific features, similar to how the _Deploy IIS WebSite_ and _Deploy Windows Service_ steps are based on the _Deploy Package_ step. 
+**Note:** The Java Runtime (JRE) will need to be installed on the Tentacle that runs the steps above.   
+At some point in the future, we will likely allowing pushing this automatically. This will require platform detection.
+
+[Notes on the decision to add new Deploy Java Archive step rather than modify Deploy Package to work with JAR files.](deploy-java-archive-vs-deploy-package.md)
+
+### Phase III (Octopus 3.18, October)
+
+Yet to be finalized, but possibly:
+
+- Support for Maven Package Feeds
+- `systemd` built-in step
+- Python scripts
+
