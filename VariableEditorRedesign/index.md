@@ -152,10 +152,11 @@ The advanced settings in popup editor include:
 
 ## Performance and browser support
 
-As part of 4.0 we want to take full advantage of the progress the Web has made since our last redesign in 2013. This means that Octopus 4.0 will only support Internet Explorer (IE) 11 and up. The 4.0 re-write will also improve the performance, allowing large amounts of data to be loaded and filtered quickly. Please read our GitHub issue for more information on <a href="https://github.com/OctopusDeploy/Issues/issues/3457">Octopus 4.0 browser support</a>.
+As part of 4.0 we want to take full advantage of the progress that the Web has made since our last redesign in 2013. This means that Octopus 4.0 will only support Internet Explorer (IE) 11 and up. The 4.0 re-write will also improve the performance, allowing large amounts of data to be loaded and filtered quickly. Please read our GitHub issue for more information on <a href="https://github.com/OctopusDeploy/Issues/issues/3457">Octopus 4.0 browser support</a>.
 
 ## Feedback
 
 We think what we have outlined above will improve the way we add variables and provide a better platform for us to add more advanced features to the editor.
 
 We'd love to hear your feedback on the plans for the release of the variable editor. Please have a look for [existing issues](https://github.com/OctopusDeploy/Specs/labels/Variable%20Editor) to comment on, or [raise a new one](https://github.com/OctopusDeploy/Specs/issues/new) with as much detail as you can to get the discussion going.
+
