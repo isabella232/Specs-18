@@ -25,15 +25,18 @@ A maintenance processes lives outside and at the same level as projects (eventua
 
 
 #### UX ####
+![Process Screen](Process_Screen.png)
+
 The process screen looks very similar to a project `Deployment Process` screen. All the same steps available to a project are available to a maintenance process which could be package steps, library steps or even "rolling" steps.
-![Process Screen](./Process Screen.png)
+
+![Packages Screen](Packages_Screen.png)
 
 Since there is no "Create Release" step, any package steps need to have their versions defined up-front. In the same way that the steps themselves aren't snapshotted or versioned, it makes sense that the packages used in the process are also pre-defined up front since they may be tied to the process being used. The version can be specific as they are today, or they can use some sort of "pattern" such as [node-semver](https://github.com/npm/node-semver) to get the latest (or they can select just plain old "latest")
-![Packages Screen](./Packages Screen.png)
 
 
 
-_Mockups available in [Maintenance Process.bmpr](./Maintenance Process.bmpr)_
+
+_Mockups available in [Maintenance Process.bmpr](./Maintenance_Process.bmpr)_
 
 ## Vision Fit ##
 ### Octopus as Enterprise ###
