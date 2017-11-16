@@ -40,6 +40,11 @@ Maintenance Processes are executed against specific environment(s) since they ne
 
 _Mockups available in [Maintenance Process.bmpr](./Maintenance_Process.bmpr)_
 
+### Some Open Questions ###
+* Should maintenance tasks be able to be executed _without_ an environment? Where does that run, just on a item from the worker pool? What are the scenarioes this is actually trying to support?
+* How do environment templates fit with maintenance processes?
+* Should maintenance processes be able to live within the context of a specific project? What scenario is this trying to support where a space-global process is lacking?
+
 ## Vision Fit ##
 ### Octopus as Enterprise ###
 n/a
