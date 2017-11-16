@@ -24,7 +24,16 @@ Apart from having processes and variables, maintenance processes and projects ar
 A maintenance processes lives outside and at the same level as projects (eventually at the `Space` level). Although it was considered that they could live _additionally_ within a project (so a project can have its own maintenance tasks), this adds unecessary complexity considering we would still want project-less maintenance processes that can be avoided by managing them all in one place. Since the end goal of `Spaces` should provide better oganisation of project ownership, this level should provide a good balance between ending up with a dumping ground of processes, and being actually relevant to the people who need them.
 
 
-#### Proces Screen ####
+#### UX ####
+The process screen looks very similar to a project `Deployment Process` screen. All the same steps available to a project are available to a maintenance process which could be package steps, library steps or even "rolling" steps.
+![Process Screen](./Process Screen.png)
+
+Since there is no "Create Release" step, any package steps need to have their versions defined up-front. In the same way that the steps themselves aren't snapshotted or versioned, it makes sense that the packages used in the process are also pre-defined up front since they may be tied to the process being used. The version can be specific as they are today, or they can use some sort of "pattern" such as [node-semver](https://github.com/npm/node-semver) to get the latest (or they can select just plain old "latest")
+![Packages Screen](./Packages Screen.png)
+
+
+
+_Mockups available in [Maintenance Process.bmpr](./Maintenance Process.bmpr)_
 
 ## Vision Fit ##
 ### Octopus as Enterprise ###
