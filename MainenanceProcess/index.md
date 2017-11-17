@@ -45,6 +45,9 @@ Additionally Maintenance processes can have triggers very similar to Project Tri
 
 ![Triggers](Triggers.png)
 
+Once a process is kicked off it is effectively treated like any other server task. 
+
+![History](History.png)
 
 _Mockups available in [Maintenance Process.bmpr](./Maintenance_Process.bmpr)_
 
