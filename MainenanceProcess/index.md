@@ -51,6 +51,9 @@ Once a process is kicked off it is effectively treated like any other server tas
 
 _Mockups available in [Maintenance Process.bmpr](./Maintenance_Process.bmpr)_
 
+### Further Usage ###
+The current implimentation of subscriptions feels like it could be subsumed by this concept of maintenance tasks. A subscription currently litends for a trigger, then either fires off an email or invokes a webhook. This describes a maintenance task with a single step however with the addition that users could further customise what they want to happen when these triggers fire. To replace subscriptions there will need to be the concept inside the event triggers section of maintenance tasks of some sort of "debounce" ability. 
+
 ### Some Open Questions ###
 * Should maintenance tasks be able to be executed _without_ an environment? Where does that run, just on a item from the worker pool? What are the scenarioes this is actually trying to support?
 * How do environment templates fit with maintenance processes?
