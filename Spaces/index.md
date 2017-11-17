@@ -15,22 +15,29 @@ The only things that will remain global are:
 
 - Octopus Server Configuration (License, Maintenance Mode, HTTPS Certificate, etc)
 - Infrastructure: Machines (not Environments) would be added globally 
+- Users
+- Teams and Roles (see below)
 
 This means that Spaces will contain:
 
 - Projects
 - Environments
 - Lifecycles 
+- Accounts
+- Certificates
 - Variable Sets
 - Tenants
 - Step Templates
 
+### Teams and Roles
+
+Teams and Roles will exist at _both_ the global and space levels.
 
 ### But surely _X_ has to be global
 
 It is easy to imagine scenarios for almost all entities in which one may want them to be global. Not only does this quickly lead to the current situation, it would actually be worse because everything could live at multiple levels.
 
-Our initial position is that everything lives within a space.  If we (or our customers) can produce a very compelling reason why something should be global, we'll reconsider.
+Our initial position is that everything above lives within a space.  If we (or our customers) can produce a very compelling reason why something should be global, we'll reconsider.
 
 ## Migration
 
@@ -58,4 +65,17 @@ There will be a Space-Switcher in the header:
 
 ## Permissions 
 
-???
+Introducing Spaces seems a logical time for a permissions refactor.
+
+There should be only a small number of permissions which exist at the global level.  And they will not be able to be scoped to Projects\Environments\Tenants. Examples include:
+
+- AdministerSystem 
+- AdministerSpace _(new)_ 
+- Edit Teams
+- Push to built-in package repository
+
+Most permissions will be pushed down to live within a space.
+We have two options:
+
+- Essentially maintain the current permissions model, just pushed down into a space
+- Take the chance to refactor 
