@@ -37,6 +37,14 @@ Since there is no "Create Release" step, any package steps need to have their ve
 
 Maintenance Processes are executed against specific environment(s) since they need to run "somewhere". For this reason providing the ability to add variables may be required to provide different config for the different deployment contexts. For example you may have a process which updates certificates. You may need to use a different HOST value for the different environments but the rest of the process of requesting and installing the certificate will likely be the same. You can then leverage the one maintenance process for both cases, potentially on different schedules. The same could also be said for roles or tenant tags.
 
+![Run Now](Run_Now.png)
+
+When  maintenance process is run on-demand the process in run within some context. This context is much the same as a project deployment. There must be an environment and can optionally be a tenant or tenant tags.
+
+Additionally Maintenance processes can have triggers very similar to Project Triggers. Some system events such as "new machine" or "project deployed" events may cause the process to execute, or they could be scheduled to run on a repeated basis. An execution context must still be provided however a templated environment can be seleccted as the target. In this case, the environment(s) are just determined _at the time of execution_.
+
+![Triggers](Triggers.png)
+
 
 _Mockups available in [Maintenance Process.bmpr](./Maintenance_Process.bmpr)_
 
