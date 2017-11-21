@@ -64,7 +64,7 @@ Environments would no longer have View permissions either - you'd see environmen
 Fifth, we'll introduce the concept of "owners" for these objects. This is the most powerful permission on an object.
 
 | Group            | View Project | Edit variables       | Edit deployment process | Create releases | Deploy releases      | Owner   |
-|------------------|--------------|----------------------|-------------------------|-----------------|----------------------|         |
+|------------------|--------------|----------------------|-------------------------|-----------------|----------------------|---------|
 | Testers          | Yes          | Yes (dev, test only) | Yes                     | No              | Yes (dev, test only) |         |
 | Release Managers | Yes          | Yes                  | Yes                     | Yes             | Yes                  |         |
 | Project Admins   |              |                      |                         |                 |                      | Yes     |
