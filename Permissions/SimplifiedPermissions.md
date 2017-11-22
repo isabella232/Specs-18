@@ -30,7 +30,7 @@ We'll introduce "groups", which are collections of users or map to external secu
 If you have permission to view a Space then you have permission to view _everything_ within that Space. This includes Projects, Environments, Variables (of course not sensitive ones), Releases, Deployments. There will no longer be individual View permissions
 
 
-## 4. Per-resource Permissions
+## 4. Per-Object Permissions
 Instead of a global set of teams, we allow certain classes of objects to have permissions granted directly on them. It's similiar to how Windows allows you to set permissions on individual files/directories rather than some big global permission system. 
 
 - Octopus server as a whole
@@ -77,7 +77,15 @@ We'll introduce the concept of "owners" for these objects. This is the most powe
 | Project Admins   |                      |                         |                 |                      | Yes     |
 | Guests           |                      |                         |                 |                      |         |
 
-The "Owner" permission lets gives you the ability to change permissions on an object. There must be at least one group that has "owner" permissions (even if no one is in that group), and by default it will be the Octopus Administrators groups. 
+The "Owner" permission lets gives you the ability to change permissions on an object. There must be at least one group that has "owner" permissions (even if no one is in that group). The initial owner group\s will be selected when the object is created.
+
+## 7. Administrators cannot do everything by default
+
+Currently members of the Administrators group can do everything, and this cannot be restricted.
+
+This is sometimes not desirable.  In large organisations, often the person\s responsible for adminstering the Octopus server do not want to have permissions to, for example, deploy projects. 
+
+In the new model, Administrators will have permissions to the "Octopus Server" object. They will have permissions to create Spaces.  When creating a Space, they will be able to select the Owner group, which may be a group that they are not a member of; at that point they will not have any edit permissions to the Space. 
 
 # Implementation thoughts
 
