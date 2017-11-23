@@ -5,9 +5,9 @@ We want to simplify permissions in Octopus. Goals:
  
 Right now Octopus uses the following:
 
- - Permission - an enum of things that can be done ("ProjectView", "DeploymentCreate")
- - Role - a group of common permissions ("Project viewer: has ProjectView, EnvironmentView")
- - Team - assign a role to people, and scopes it to a project/environment
+ - Permission - an enum of things that can be done (`ProjectView`, `DeploymentCreate`)
+ - Role - a group of common permissions ("Project viewer: has `ProjectView` and `EnvironmentView` permissions")
+ - Team - assigns roles to people, and optionally scope the permissions of that role to a project group/project/environment/tenant (whoa!)
 
 The last part gets messy because people need multiple teams to represent different roles. For example, if your rules were:
 
