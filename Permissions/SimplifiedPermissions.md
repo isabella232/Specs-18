@@ -37,8 +37,6 @@ Instead of a global set of teams, we allow certain classes of objects to have pe
 - Space 
 - Project
 - Environment
-- Library variable set
-- Tenants
  
 In the UI, this will appear as a button to edit permissions on each of these objects - e.g., under Settings for a project, you'll find a button or something to edit the permissions for that project. 
 
@@ -54,7 +52,43 @@ From a code point of view, I imagine these will be strongly typed objects (e.g.,
 
 You can see that the grants on these permissions can be conditionally scoped. You can scope them by environment, or by tenant - nothing else. 
 
-## 5. Simplify
+### Child objects
+
+Permission for objects which belong to one of the objects listed above will have their permissions defined on the parent object.
+
+These are objects which are much more likely to be treated as a class, rather than individual objects.  Examples are:
+
+- Tenants (Space)
+- Library Variable Sets (Space)
+- Accounts (Space)
+- Certificates (Space)
+- Release (Project)
+- Deployment Process (Project)
+- Target (Environment)
+
+For example, the permissions for a Space may appear as:
+
+| Group            | Edit Tenants       | Edit Library Variable Sets | Edit Accounts        | Edit Certificates    |
+|------------------|--------------------|----------------------------|----------------------|----------------------|
+| Testers          | Yes                | Yes                        | Yes (dev, test only) | Yes (dev, test only) |
+| Release Managers | Yes                | Yes                        | Yes                  | Yes                  |
+| Guests           |                    |                            |                      |                      |
+
+
+
+## 5. Owners
+We'll introduce the concept of "owners" for these objects. This is the most powerful permission on an object.
+
+| Group            | Edit variables       | Edit deployment process | Create releases | Deploy releases      | Owner   |
+|------------------|----------------------|-------------------------|-----------------|----------------------|---------|
+| Testers          | Yes (dev, test only) | Yes                     | No              | Yes (dev, test only) |         |
+| Release Managers | Yes                  | Yes                     | Yes             | Yes                  |         |
+| Project Admins   |                      |                         |                 |                      | Yes     |
+| Guests           |                      |                         |                 |                      |         |
+
+The "Owner" permission lets gives you the ability to change permissions on an object. There must be at least one group that has "owner" permissions (even if no one is in that group). The initial owner group\s will be selected when the object is created.
+
+## 6. Simplify
 We'll simplify the number of available permissions down to something more sensible, and that better maps to the model. We'll no longer simply have XView, XEdit, XCreate, XDelete permissions. 
 
 For example:
@@ -67,17 +101,6 @@ For example:
    - Performing Tentacle upgrades
    
 
-## 6. Owners
-We'll introduce the concept of "owners" for these objects. This is the most powerful permission on an object.
-
-| Group            | Edit variables       | Edit deployment process | Create releases | Deploy releases      | Owner   |
-|------------------|----------------------|-------------------------|-----------------|----------------------|---------|
-| Testers          | Yes (dev, test only) | Yes                     | No              | Yes (dev, test only) |         |
-| Release Managers | Yes                  | Yes                     | Yes             | Yes                  |         |
-| Project Admins   |                      |                         |                 |                      | Yes     |
-| Guests           |                      |                         |                 |                      |         |
-
-The "Owner" permission lets gives you the ability to change permissions on an object. There must be at least one group that has "owner" permissions (even if no one is in that group). The initial owner group\s will be selected when the object is created.
 
 ## 7. Administrators cannot do everything by default
 
