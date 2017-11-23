@@ -65,17 +65,17 @@ There will be a Space-Switcher in the header:
 
 ## Permissions 
 
-Introducing Spaces seems a logical time for a permissions refactor.
+There are two options:
 
-There should be only a small number of permissions which exist at the global level.  And they will not be able to be scoped to Projects\Environments\Tenants. Examples include:
+- We use the introductions of Spaces as the time for a significant [permissions renovation](../Permissions/SimplifiedPermissions.md).
+- We build Spaces on the existing permissions model.
 
-- AdministerSystem 
-- AdministerSpace _(new)_ 
-- Edit Teams
-- Push to built-in package repository
+If we were to build on the existing model, everything would work as today, except when scoping permissions to Environments\Projects\Tenants these would have to include the containing Space in the display name.
 
-Most permissions will be pushed down to live within a space.
-We have two options:
+This is because you may have duplicate named objects in different spaces. 
 
-- Essentially maintain the current permissions model, just pushed down into a space
-- Take the chance to refactor 
+For example, if you had `Space A` and `Space B` which both contained a `Dev` environment, permissions could be scoped to:
+
+- `Space A \ Dev`
+- `Space B \ Dev`
+
