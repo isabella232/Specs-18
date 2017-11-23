@@ -56,11 +56,12 @@ You can see that the grants on these permissions can be conditionally scoped. Yo
 
 Permission for objects which belong to one of the objects listed above will have their permissions defined on the parent object.
 
-These are objects which are much more likely to be treated as a class, rather than individual objects.  Examples are:
+These are objects which are much more likely to be treated as a class, rather than individual objects.  Examples (including owners) are:
 
 - Tenants (Space)
 - Library Variable Sets (Space)
 - Accounts (Space)
+- Lifecycles (Space)
 - Certificates (Space)
 - Release (Project)
 - Deployment Process (Project)
@@ -113,3 +114,62 @@ In the new model, Administrators will have permissions to the "Octopus Server" o
 # Implementation thoughts
 
 I think it might be possible to use this approach as the way we model permissions (teams, etc.) but keep the existing code for how we assert permissions. When you authenticate with Octopus we build a PermissionSet with all the things you can do - I believe that same structure might still apply. 
+
+# Walk-through
+
+Let's see how a few scenarios might play out. 
+
+## New Octopus Server
+
+Alice Administrator creates a new Octopus Server. She is a member of the `Octopus Administrators` group.
+
+**Octopus Server permissions:**
+
+| Group                 |  Owner               |  Administer System         |     Edit Space           | 
+|--------------------   |----------------------|----------------------------|--------------------------|
+| Octopus Administrators| Yes                  | Yes                        | Yes                      |
+| Everyone              |                      |                            |                          |
+
+
+Bob ProjectManager is the project manager for the Acme Online Store project.  He requests a number of new groups be created:
+
+- Acme Managers 
+- Acme Testers 
+- Acme Developers
+- Acme Operations
+
+And a new `Acme` space is created with `Acme Managers` as the owner. Bob then assigns some permissions on the Space:  
+
+**Acme Space permissions:**
+
+| Group            |  Owner  | Create Environments | Create Projects   | Edit Certificates  | Edit Library Variable Sets  | Edit Accounts |
+|---------------   |---------|---------------------|-------------------|--------------------|-----------------------------|---------------|
+| Acme Managers    | Yes     |   Yes               | Yes               |  Yes               | Yes                         | Yes           |
+| Acme Testers     |         |                     |                   |                    |                             |               |
+| Acme Developers  |         |                     | Yes               |                    | Yes                         |               |
+| Acme Operations  |         |  Yes                |                   |  Yes               |                             | Yes           |
+
+Charlie Operations (a member of `Acme Operations`) then creates the Environments: `Dev`, `Test`, `Prod`.
+
+`Acme Developers` are granted some permissions for the lower environments:
+
+**Acme Space permissions:**
+
+| Group            |  Owner  | Create Environments | Create Projects   | Edit Certificates  | Edit Library Variable Sets  | Edit Accounts       |
+|---------------   |---------|---------------------|-------------------|--------------------|-----------------------------|---------------------|
+| Acme Managers    | Yes     |   Yes               | Yes               |  Yes               | Yes                         | Yes                 |
+| Acme Testers     |         |                     |                   |                    |                             |                     |
+| Acme Developers  |         |                     | Yes               |  Yes (dev and test)| Yes                         | Yes (dev and test)  |
+| Acme Operations  |         |  Yes                |                   |  Yes               |                             | Yes                 |
+
+
+Bob ProjectManager creates a new Project: `Acme Online` with `Acme Managers` as the owner.  He grants some Project level permissions:
+
+**Acme Online Project permissions:**
+
+| Group            |  Owner  | Edit Deployment Process | Edit Variables | Manage Releases | Deploy Releases | Manage Triggers |
+|---------------   |---------|-------------------------|----------------|-----------------|-----------------|-----------------|
+| Acme Managers    | Yes     | Yes                     | Yes            | Yes             | Yes             | Yes             |
+| Acme Testers     |         |                         |                |                 | Yes (test)      |                 |
+| Acme Developers  |         | Yes                     | Yes (dev,test) | Yes             | Yes (dev)       |                 |
+| Acme Operations  |         |                         | Yes            |                 |                 | Yes             |
