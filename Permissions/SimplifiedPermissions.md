@@ -173,3 +173,47 @@ Bob ProjectManager creates a new Project: `Acme Online` with `Acme Managers` as 
 | Acme Testers     |         |                         |                |                 | Yes (test)      |                 |
 | Acme Developers  |         | Yes                     | Yes (dev,test) | Yes             | Yes (dev)       |                 |
 | Acme Operations  |         |                         | Yes            |                 |                 | Yes             |
+
+# Permissions List
+
+This will be undoubtedly be incomplete, but will hopefully give a representative set. 
+
+| Name                   | Object           | Supports Restriction     |
+|------------------------|------------------|--------------------------|
+| Owner                  | Octopus Server   |                          |
+| AdministerSystem       | Octopus Server   |                          |
+| EditGroup              | Octopus Server   |                          |
+| BuiltInFeedPush        | Octopus Server   |                          |
+| CreateSpace            | Octopus Server   |                          |
+| TaskView               | Octopus Server   |                          |
+| TaskEdit               | Octopus Server   |                          |
+| Owner                  | Space            |                          |
+| ViewSpace              | Space            |                          |
+| EnvironmentCreate      | Space            |                          |
+| ProjectCreate          | Space            |                          |
+| LibraryVariableSetEdit | Space            |                          |
+| ProjectGroupEdit       | Space            |                          |
+| TaskEdit               | Space            |                          |
+| StepTemplateEdit       | Space            |                          |
+| LifecycleEdit          | Space            |                          |
+| TenantEdit             | Space            |                          |
+| TagSetEdit             | Space            |                          |
+| MachinePolicyEdit      | Space            |                          |
+| ProxyEdit              | Space            |                          |
+| SubscriptionEdit       | Space            |                          |
+| TriggerEdit            | Space            |                          |
+| CertificateEdit        | Space            | Environment, Tenant      |
+| CertificateExportPK    | Space            | Environment, Tenant      |
+| Owner                  | Project          |                          |
+| ProjectEdit            | Project          |                          |
+| ProcessEdit            | Project          |                          |
+| VariableEdit           | Project          | Environment, Tenant      |
+| Release                | Project          |                          |
+| DefectReport           | Project          |                          |
+| DefectResolve          | Project          |                          |
+| Deploy                 | Project          | Environment, Tenant      |
+| ArtifactEdit           | Project          | Environment, Tenant      |
+| InterruptionEdit       | Project          | Environment, Tenant      |
+| Owner                  | Environment      |                          |
+| EnvironmentEdit        | Environment      |                          |
+| MachineEdit            | Environment      | Tenant                   |
