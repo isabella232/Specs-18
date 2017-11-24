@@ -51,6 +51,8 @@ Ideally, all API endpoints would work as they do today, against the default spac
 
 For example, `/api/projects/all` would retrieve all projects in the default space (which would be everything initially).
 
+After this, people would start making other spaces and moving things into those other spaces. We will provide some tooling to take a Project and all the things it needs into another space.
+
 ## HTTP API
 
 Space would become a component in our HTTP API paths for list operations. e.g.
@@ -60,6 +62,10 @@ Space would become a component in our HTTP API paths for list operations. e.g.
 Referencing individual entities would not require a space, as the ID would be unique. e.g. 
 
 `/api/environment/{environment-id}`
+
+For backwards compatibility we would infer the default space if one isn't specified in the path. e.g.
+
+`/api/projects/all` would retrieve all projects in the default space.
 
 ## UI
 
