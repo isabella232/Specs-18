@@ -125,7 +125,7 @@ Alice Administrator creates a new Octopus Server. She is a member of the `Octopu
 
 **Octopus Server permissions:**
 
-| Group                 |  Owner               |  Administer System         |     Edit Space           | 
+| Group                 |  Owner               |  Administer System         |     Create Space         | 
 |--------------------   |----------------------|----------------------------|--------------------------|
 | Octopus Administrators| Yes                  | Yes                        | Yes                      |
 | Everyone              |                      |                            |                          |
@@ -217,3 +217,7 @@ This will be undoubtedly be incomplete, but will hopefully give a representative
 | Owner                  | Environment      |                          |
 | EnvironmentEdit        | Environment      |                          |
 | MachineEdit            | Environment      | Tenant                   |
+
+# Migration
+
+_deep breath_ 
