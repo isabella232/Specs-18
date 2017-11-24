@@ -4,8 +4,12 @@
 
 Octopus was original designed with small teams in mind. Everything is at the global level: Projects, Environments, Lifecycles, Variable-Sets, etc.
 
-In large organizations, as more teams onboard, this doesn't scale well.
+In large organizations, as more teams onboard, this doesn't scale well:
 
+- People end up "namespacing" things to avoid conflicts and confusion: "This is our `Production` environment"
+- People struggle to provide any segregation using our permission system. We introduced the ability to "scope" a Team to a certain Environment or Project, and later had to introduce Tenants and Project Groups into the mix.
+  - Not only is this hard for customers to understand, the implementation is complex and fraught with corner cases and bugs
+- People struggle to define "sensible action-based permissions": "These people can deploy releases of Project-X to Production" requires a whole handful of seemingly unrelated `*View` permissions, rather than Octopus providing a simple `CanDeploy`-style permission.
 
 ## Spaces to the Rescue 
 
