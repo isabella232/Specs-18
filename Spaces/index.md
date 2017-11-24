@@ -18,7 +18,6 @@ We will push almost everything down a level, into Spaces. Spaces serve to segreg
 The only things that will remain global are:
 
 - Octopus Server Configuration (License, Maintenance Mode, HTTPS Certificate, etc)
-- Infrastructure: Machines (not Environments) would be added globally 
 - Users
 - Teams and Roles (see below)
 
@@ -78,7 +77,7 @@ There will be a Space-Switcher in the header:
 There are two options:
 
 - We use the introductions of Spaces as the time for a significant [permissions renovation](../Permissions/SimplifiedPermissions.md).
-- We build Spaces on the existing permissions model.
+- We build Spaces on the existing permissions model assuming it doesn't require wide spread changes to the existing mode. E.g. existing permission checks don't have to be modfiied.
 
 If we were to build on the existing model, everything would work as today, except when scoping permissions to Environments\Projects\Tenants these would have to include the containing Space in the display name.
 
