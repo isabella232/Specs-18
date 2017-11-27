@@ -42,6 +42,10 @@ It is easy to imagine scenarios for almost all entities in which one may want th
 
 Our initial position is that everything above lives within a space.  If we (or our customers) can produce a very compelling reason why something should be global, we'll reconsider.
 
+## Tasks 
+
+Can be viewed at the server level or within a Space. The Space-view just provides a filtered-view.
+
 ## Migration
 
 Everything existing would be moved into a default space.
