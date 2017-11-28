@@ -29,6 +29,7 @@ We'll introduce "groups", which are collections of users or map to external secu
 ## 3. View everything
 If you have permission to view a Space then you have permission to view _everything_ within that Space. This includes Projects, Environments, Variables (of course not sensitive ones), Releases, Deployments. There will no longer be individual View permissions
 
+The exceptions are certificate private-keys and artifacts.  These will require individual view permissions. Their _existence_ will be visible to everyone, but not their contents.
 
 ## 4. Per-Object Permissions
 Instead of a global set of teams, we allow certain classes of objects to have permissions granted directly on them. It's similiar to how Windows allows you to set permissions on individual files/directories rather than some big global permission system. 
@@ -218,6 +219,7 @@ This will be undoubtedly be incomplete, but will hopefully give a representative
 | Deploy                 | Project          | Environment, Tenant      |
 | ArtifactEdit           | Project          | Environment, Tenant      |
 | InterruptionEdit       | Project          | Environment, Tenant      |
+| ArtifactView           | Project          | Environment, Tenant      |
 | Owner                  | Environment      |                          |
 | EnvironmentEdit        | Environment      |                          |
 | MachineEdit            | Environment      | Tenant                   |
