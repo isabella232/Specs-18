@@ -89,6 +89,10 @@ We'll introduce the concept of "owners" for these objects. This is the most powe
 
 The "Owner" permission lets gives you the ability to change permissions on an object. There must be at least one group that has "owner" permissions (even if no one is in that group). The initial owner group\s will be selected when the object is created.
 
+### Group Owners
+
+Groups themselves will have owners.  This allows for delegation.  
+
 ## 6. Simplify
 We'll simplify the number of available permissions down to something more sensible, and that better maps to the model. We'll no longer simply have XView, XEdit, XCreate, XDelete permissions. 
 
