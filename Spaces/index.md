@@ -92,3 +92,12 @@ For example, if you had `Space A` and `Space B` which both contained a `Dev` env
 - `Space A \ Dev`
 - `Space B \ Dev`
 
+## Targets
+In the old (i.e current) world, when a machine is added to Octopus, it must be assigned to at least one environment. This makes sense when environments are global however the relationship breaks down when environments move down into the space level. 
+
+The two possible outcomes are:
+
+- We "move machines" down to the space level and users add the machine multiple times across spaces if the same infrastructure is shared. This is "already possible" today in the ability to add the same tentacle multiple times to Octopus however this has some obvious drawbacks in terms of maintenance and duplication of configuration. 
+- We leave machines at the global level and users can assign them to space-environments as needed. This obviously has additional ramifications with regards to requiring the space to potentialy manage tags against "specific" targets.
+
+The second outcome feels like the most natural, given that ultimately targets seem to be something that should be configured and connected to Octopus outside the bounds of any one specific space. In this approach a seperate "Infrastructure" view of the machines would exist at the global level, similar to how you would see EC2 instances in AWS. Users with the appropriate permissions could then add these machines to the relevant environments down at the space level. Since there are some proposed changes around resources that may have repercussions on how a target is nominated as a participant in a deployment, it _might_ be simpler to leave tags at the global level for the time being. 
