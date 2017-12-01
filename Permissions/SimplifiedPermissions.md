@@ -28,6 +28,7 @@ These are the main groups of permission related bugs that we've introduced in th
 - Partial data access. E.g. User can only view and edit some of the project variables.
 - UI permission checks out of sync with Server permission checks.
 - Permission checks when returned data bypasses our domain model. E.g. Raw SQL queries that aggregate data.
+- Duplicated permission logic, for Variables there's separately maintained code that can easily get out of sync, that applies to the variables on the way out and way in, `InaccessibleVariablesWillBeRemovedRule.cs` and `VariableSetUpdateAction.cs`
 
 # New model
 
