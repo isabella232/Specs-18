@@ -1,4 +1,4 @@
-# Resources #
+# [Resources](index.md) #
 ## Holistic App View ##
 Since all actions describe an action on a resource(s), we can therefor provide a simple view of all the resources for a given project.
 

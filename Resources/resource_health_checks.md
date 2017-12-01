@@ -1,4 +1,4 @@
-# Resources #
+# [Resources](index.md) #
 ## Resource Health Checks ##
 Currently in octopus, the health checks are very hardware focused. The health of a target is more about connectivity and availability for deployment. Looking at a target through the eyes of the infrastructure team this makes sense. On the target view there is no concept of project or resource since the global view lacks the context. Additionally, when a machine is shared across projects, what constitutes a health alert for one project, might not be relevant for another (e.g. an IIS website no longer responding to HTTP requests but the installed windows service is still running fine). For this reason even asking the user to leverage custom health checks isn't really the right fit. What the user really is after is a health check _of the resource_ not the machine.
 

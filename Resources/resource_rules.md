@@ -1,4 +1,4 @@
-# Resources #
+# [Resources](index.md) #
 ## Resource Rules ##
 #### Defining Rules #####
 A resource is conceptually just an abstract representation of some target, or thing in the world where a deployment will take place. At the moment I dont see things like Accounts or Certificates as being resources but merely typed variables, of which resources are to some extent however resources play a slightly bigger role in a deployment.

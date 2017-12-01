@@ -1,4 +1,4 @@
-# Resources #
+# [Resources](index.md) #
 ## Resource Definitions ##
 Some actions require resources that match a specific interface\shape. e.g. Azure steps require resources that include accounts but an "Deploy a package" step just requires somewhere that packages can be extracted to. So each step defines what resource is required. 
 
