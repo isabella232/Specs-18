@@ -3,7 +3,7 @@ We want to simplify permissions in Octopus. Goals:
  - For customers, it should be easy to reason about what permissions someone has when using Octopus
  - For developers, it should be easy to perform permission checks correctly
  - It should be possible to delegate some level of ownership for permissions
- 
+
 Right now Octopus uses the following:
 
  - Permission - an enum of things that can be done (`ProjectView`, `DeploymentCreate`)
@@ -14,10 +14,10 @@ The last part gets messy because people need multiple teams to represent differe
 
  - Testers can deploy any project to the Test environment
  - Testers can view production deployments
- 
-You would need two "Teams" in Octopus to model this currently, which doesn't align with how people would expect it to work. 
 
-Our current C# API for checking permissions is very generic which makes it very flexible but at the same it's relatively easy to use it incorrectly. 
+You would need two "Teams" in Octopus to model this currently, which doesn't align with how people would expect it to work.
+
+Our current C# API for checking permissions is very generic which makes it very flexible but at the same it's relatively easy to use it incorrectly.
 
 These are the main groups of permission related bugs that we've introduced in the past:
 
@@ -34,10 +34,10 @@ These are the main groups of permission related bugs that we've introduced in th
 *Note*: This is assuming [Spaces](../Spaces/index.md) have been implemented.
 
 ## 1. Nothing by default
-We assume that nobody has permission to do anything (like now) unless granted that permission explicitly. 
+We assume that nobody has permission to do anything (like now) unless granted that permission explicitly.
 
 ## 2. Groups
-We'll introduce "groups", which are collections of users or map to external security groups (AD groups). "Octopus Administrators" and "Everyone" become built in groups. Unlike "teams", a group is just a collection of people - it defines nothing about what those people can do. 
+We'll introduce "groups", which are collections of users or map to external security groups (AD groups). "Octopus Administrators" and "Everyone" become built in groups. Unlike "teams", a group is just a collection of people - it defines nothing about what those people can do.
 
 ## 3. View everything
 If you have permission to view a Space then you have permission to view _everything_ within that Space. This includes Projects, Environments, Variables (of course not sensitive ones), Releases, Deployments. There will no longer be individual View permissions
@@ -45,16 +45,16 @@ If you have permission to view a Space then you have permission to view _everyth
 The exceptions are certificate private-keys and artifacts.  These will require individual view permissions. Their _existence_ will be visible to everyone, but not their contents.
 
 ## 4. Per-Object Permissions
-Instead of a global set of teams, we allow certain classes of objects to have permissions granted directly on them. It's similiar to how Windows allows you to set permissions on individual files/directories rather than some big global permission system. 
+Instead of a global set of teams, we allow certain classes of objects to have permissions granted directly on them. It's similiar to how Windows allows you to set permissions on individual files/directories rather than some big global permission system.
 
 - Octopus server as a whole
-- Space 
+- Space
 - Project
 - Environment
- 
-In the UI, this will appear as a button to edit permissions on each of these objects - e.g., under Settings for a project, you'll find a button or something to edit the permissions for that project. 
 
-Users will see permissions presented as a table - the X axis is groups of users, the Y axis is the things that can be granted for that object type. 
+In the UI, this will appear as a button to edit permissions on each of these objects - e.g., under Settings for a project, you'll find a button or something to edit the permissions for that project.
+
+Users will see permissions presented as a table - the X axis is groups of users, the Y axis is the things that can be granted for that object type.
 
 | Group            | Edit variables       | Edit deployment process | Create releases | Deploy releases      |
 |------------------|----------------------|-------------------------|-----------------|----------------------|
@@ -62,9 +62,9 @@ Users will see permissions presented as a table - the X axis is groups of users,
 | Release Managers | Yes                  | Yes                     | Yes             | Yes                  |
 | Guests           |                      |                         |                 |                      |
 
-From a code point of view, I imagine these will be strongly typed objects (e.g., a ProjectPermissionSet, EnvironmentPermissionSet). The REST API can then make it easy to assert that a set of permissions is "valid", and can enforce logical invariants (e.g., if you can edit the process, you must be able to view a project). 
+From a code point of view, I imagine these will be strongly typed objects (e.g., a ProjectPermissionSet, EnvironmentPermissionSet). The REST API can then make it easy to assert that a set of permissions is "valid", and can enforce logical invariants (e.g., if you can edit the process, you must be able to view a project).
 
-You can see that the grants on these permissions can be conditionally scoped. You can scope them by environment, or by tenant - nothing else. 
+You can see that the grants on these permissions can be conditionally scoped. You can scope them by environment, or by tenant - nothing else.
 
 ### Child objects
 
@@ -105,10 +105,10 @@ The "Owner" permission lets gives you the ability to change permissions on an ob
 
 ### Group Owners
 
-Groups themselves will have owners.  This allows for delegation.  
+Groups themselves will have owners.  This allows for delegation.
 
 ## 6. Simplify
-We'll simplify the number of available permissions down to something more sensible, and that better maps to the model. We'll no longer simply have XView, XEdit, XCreate, XDelete permissions. 
+We'll simplify the number of available permissions down to something more sensible, and that better maps to the model. We'll no longer simply have XView, XEdit, XCreate, XDelete permissions.
 
 For example:
 
@@ -118,28 +118,30 @@ For example:
  - An environment would have:
    - Editing the machines in the environment
    - Performing Tentacle upgrades
-   
+
 
 ## 7. Administrators cannot do everything by default
 
 Currently members of the Administrators group can do everything, and this cannot be restricted.
 
-This is sometimes not desirable.  In large organisations, often the person\s responsible for administering the Octopus server do not want to have permissions to, for example, deploy projects. 
+This is sometimes not desirable.  In large organisations, often the person\s responsible for administering the Octopus server do not want to have permissions to, for example, deploy projects.
 
-In the new model, Administrators will have permissions to the "Octopus Server" object. They will have permissions to create Spaces.  When creating a Space, they will be able to select the Owner group, which may be a group that they are not a member of; at that point they will not have any edit permissions to the Space. 
+In the new model, Administrators will have permissions to the "Octopus Server" object. They will have permissions to create Spaces.  When creating a Space, they will be able to select the Owner group, which may be a group that they are not a member of; at that point they will not have any edit permissions to the Space.
 
 # Implementation thoughts
 
-I think it might be possible to use this approach as the way we model permissions (teams, etc.) but keep the existing code for how we assert permissions. When you authenticate with Octopus we build a PermissionSet with all the things you can do - I believe that same structure might still apply. 
+I think it might be possible to use this approach as the way we model permissions (teams, etc.) but keep the existing code for how we assert permissions. When you authenticate with Octopus we build a PermissionSet with all the things you can do - I believe that same structure might still apply.
 
-The current API can serve as a starting point but we might need completely new API that is strongly typed and document specific. Examples: 
+The current API can serve as a starting point but we might need completely new API that is strongly typed and document specific. Examples:
 
 - `ProjectAuthorization` should enforce that the user who includes a new variable set in a project has `IncludeInProject` permission at the variable set level and `ProjectEdit` permission at the project level.
 - `DeploymentAuthorization` should enforce that the user has `DeployTo` permission for all environments/tenants referenced by the deployment document.
 
+
+
 # Walk-through
 
-Let's see how a few scenarios might play out. 
+Let's see how a few scenarios might play out.
 
 ## New Octopus Server
 
@@ -147,7 +149,7 @@ Alice Administrator creates a new Octopus Server. She is a member of the `Octopu
 
 **Octopus Server permissions:**
 
-| Group                 |  Owner               |  Administer System         |     Create Space         | 
+| Group                 |  Owner               |  Administer System         |     Create Space         |
 |--------------------   |----------------------|----------------------------|--------------------------|
 | Octopus Administrators| Yes                  | Yes                        | Yes                      |
 | Everyone              |                      |                            |                          |
@@ -155,12 +157,12 @@ Alice Administrator creates a new Octopus Server. She is a member of the `Octopu
 
 Bob ProjectManager is the project manager for the Acme Online Store project.  He requests a number of new groups be created:
 
-- Acme Managers 
-- Acme Testers 
+- Acme Managers
+- Acme Testers
 - Acme Developers
 - Acme Operations
 
-And a new `Acme` space is created with `Acme Managers` as the owner. Bob then assigns some permissions on the Space:  
+And a new `Acme` space is created with `Acme Managers` as the owner. Bob then assigns some permissions on the Space:
 
 **Acme Space permissions:**
 
@@ -198,7 +200,7 @@ Bob ProjectManager creates a new Project: `Acme Online` with `Acme Managers` as 
 
 # Permissions List
 
-This will be undoubtedly be incomplete, but will hopefully give a representative set. 
+This will be undoubtedly be incomplete, but will hopefully give a representative set.
 
 | Name                   | Object           | Supports Restriction     |
 |------------------------|------------------|--------------------------|
@@ -243,4 +245,8 @@ This will be undoubtedly be incomplete, but will hopefully give a representative
 
 # Migration
 
-_deep breath_ 
+_deep breath_
+
+A clear view of what permissions look like in the new system when comparing users/teams will be key for the migration. If we can show customers a clear and understandable view of what permissions look like in the new world if we didn't get their highly tuned permissions migrated how they intended they will be able to tweak it as part of this significant upgrade.
+
+We could capture the exported old permissions as data, and then show the improved permission review capability and allow them to sign off or further correct permissions as they migrate. With the complexity of the permissions as they are, even for customers who have fine tuned it, they may not be aware of gaps/limitations currently present.
