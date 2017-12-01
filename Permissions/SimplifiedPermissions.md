@@ -1,6 +1,7 @@
 We want to simplify permissions in Octopus. Goals:
 
  - For customers, it should be easy to reason about what permissions someone has when using Octopus
+ - For developers, it should be easy to perform permission checks correctly
  - It should be possible to delegate some level of ownership for permissions
  
 Right now Octopus uses the following:
@@ -15,6 +16,18 @@ The last part gets messy because people need multiple teams to represent differe
  - Testers can view production deployments
  
 You would need two "Teams" in Octopus to model this currently, which doesn't align with how people would expect it to work. 
+
+Our current C# API for checking permissions is very generic which makes it very flexible but at the same it's relatively easy to use it incorrectly. 
+
+These are the main groups of permission related bugs that we've introduced in the past:
+
+- Permission checks that don't take into account restrictions. E.g. Environments, Tenants.
+- Permission checks for permissions that overlap and thus are confusing. E.g. `VariableXXXUnscoped` and `VariableXXXX`.
+- Permission checks for documents that reference other documents that the user doesn't have Read access to.
+- Invalid permission combinations. E.g. `XXXXEdit` without `XXXXXView`.
+- Partial data access. E.g. User can only view and edit some of the project variables.
+- UI permission checks out of sync with Server permission checks.
+- Permission checks when returned data by passes our domain model. E.g. Raw SQL queries that aggregate data.
 
 # New model
 
@@ -107,18 +120,22 @@ For example:
    - Performing Tentacle upgrades
    
 
-
 ## 7. Administrators cannot do everything by default
 
 Currently members of the Administrators group can do everything, and this cannot be restricted.
 
-This is sometimes not desirable.  In large organisations, often the person\s responsible for adminstering the Octopus server do not want to have permissions to, for example, deploy projects. 
+This is sometimes not desirable.  In large organisations, often the person\s responsible for administering the Octopus server do not want to have permissions to, for example, deploy projects. 
 
 In the new model, Administrators will have permissions to the "Octopus Server" object. They will have permissions to create Spaces.  When creating a Space, they will be able to select the Owner group, which may be a group that they are not a member of; at that point they will not have any edit permissions to the Space. 
 
 # Implementation thoughts
 
 I think it might be possible to use this approach as the way we model permissions (teams, etc.) but keep the existing code for how we assert permissions. When you authenticate with Octopus we build a PermissionSet with all the things you can do - I believe that same structure might still apply. 
+
+The current API can serve as a starting point but we would new API that is strongly typed and document specific. Examples: 
+
+- `ProjectAuthorization` should enforce that the user who includes a new variable set in a project needs to have `IncludeInProject` permission at the variable set level and `ProjectEdit` permission at the project level.
+- `DeploymentAuthorization` should enforce that  the user has `DeployTo` permission for all environments/tenants referenced by the deployment document.
 
 # Walk-through
 
