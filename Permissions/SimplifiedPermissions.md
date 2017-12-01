@@ -27,7 +27,7 @@ These are the main groups of permission related bugs that we've introduced in th
 - Invalid permission combinations. E.g. `XXXXEdit` without `XXXXXView`.
 - Partial data access. E.g. User can only view and edit some of the project variables.
 - UI permission checks out of sync with Server permission checks.
-- Permission checks when returned data by passes our domain model. E.g. Raw SQL queries that aggregate data.
+- Permission checks when returned data bypasses our domain model. E.g. Raw SQL queries that aggregate data.
 
 # New model
 
@@ -132,10 +132,10 @@ In the new model, Administrators will have permissions to the "Octopus Server" o
 
 I think it might be possible to use this approach as the way we model permissions (teams, etc.) but keep the existing code for how we assert permissions. When you authenticate with Octopus we build a PermissionSet with all the things you can do - I believe that same structure might still apply. 
 
-The current API can serve as a starting point but we would new API that is strongly typed and document specific. Examples: 
+The current API can serve as a starting point but we might need completely new API that is strongly typed and document specific. Examples: 
 
-- `ProjectAuthorization` should enforce that the user who includes a new variable set in a project needs to have `IncludeInProject` permission at the variable set level and `ProjectEdit` permission at the project level.
-- `DeploymentAuthorization` should enforce that  the user has `DeployTo` permission for all environments/tenants referenced by the deployment document.
+- `ProjectAuthorization` should enforce that the user who includes a new variable set in a project has `IncludeInProject` permission at the variable set level and `ProjectEdit` permission at the project level.
+- `DeploymentAuthorization` should enforce that the user has `DeployTo` permission for all environments/tenants referenced by the deployment document.
 
 # Walk-through
 
