@@ -138,7 +138,7 @@ The current API can serve as a starting point but we might need completely new A
 - `ProjectAuthorization` should enforce that the user who includes a new variable set in a project has `IncludeInProject` permission at the variable set level and `ProjectEdit` permission at the project level.
 - `DeploymentAuthorization` should enforce that the user has `DeployTo` permission for all environments/tenants referenced by the deployment document.
 
-
+We should consider driving navigation/save actions on the UI via what comes back from the API. Right now we repeat checks in client side code to drive decisions on what UI to show (mentioned else were in this document). If we knew for a fact based on the Hypermedia Links that delete is not there, that means this user cannot do this action be it permission (or other) reasons and there's no need to guard against rendering a delete overflow action. This would improve the API for other use cases e.g. the iOS application which would not need to re-implement it's own client side permission UI rendering logic.
 
 # Walk-through
 
