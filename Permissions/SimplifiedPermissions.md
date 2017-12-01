@@ -129,6 +129,13 @@ This is sometimes not desirable.  In large organisations, often the person\s res
 
 In the new model, Administrators will have permissions to the "Octopus Server" object. They will have permissions to create Spaces.  When creating a Space, they will be able to select the Owner group, which may be a group that they are not a member of; at that point they will not have any edit permissions to the Space.
 
+## 8. Testing
+
+The current permission system is slow to test changes. The feedback cycle on a permission change is long as it uses the E2E Api test mechanism, to spin up a complete instance. This also relies on the developer to think of enough suitable permutations to test against, with simplified permissions and an ability to leverage the output.
+
+We would benefit from a larger more real world set of of environments/teams/user combinations with some assistance from existing customers to create, and be able to run a larger set of permission test code against these so as this new system evolves we don't regress, a good balance between granular unit test size checking and larger integration checking to mirror what happens when it all comes together to render a complex dashboard for a variety of users.
+
+
 # Implementation thoughts
 
 I think it might be possible to use this approach as the way we model permissions (teams, etc.) but keep the existing code for how we assert permissions. When you authenticate with Octopus we build a PermissionSet with all the things you can do - I believe that same structure might still apply.
