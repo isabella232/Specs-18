@@ -16,4 +16,5 @@ So if a resource is considered an abstract representation of _Where_, an specifi
 ### [Resource Definitions](resource_definitions.md) ###
 ### [Resource Health Checks](resource_health_checks.md) ###
 ### [Permissions/Auth](permissions.md) ###
+### [Keeping Pets Pets](pets.md) ###
 ### [Migration](migration.md) ###
