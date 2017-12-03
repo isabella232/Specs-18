@@ -1,7 +1,13 @@
 # [Resources](index.md) #
 ## Permissions/Auth ##
 
-#### What security are we talking about? ###
+There are two competing concerns when it comes to permissions and resources.
+- Allowing anyone who needs to configure a project deployment process to have access to add/edit resources with minimal-to-no additional specific roles.
+- Provide some level of security to allow configuration of resource with (for example) sensitive environment rules that can only be modified by users with sufficient permissions.
+
+### Configuring Resources ###
+
+### Maintaining Infrastructure Security ##
 In current (4.0) Octopus Deploy, there is some layer of protection preventing deployments intended for production (where there may be a secure environment) from "accidentally" being deployed on to a development-intended machine where security may be more lax. This may be important when secure passwords, etc only intended for use in a production environment, suddenly has the ability of leaking into an insecure environment. 
 
 #### Current approach ###
