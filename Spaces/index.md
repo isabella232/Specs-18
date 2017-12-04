@@ -62,13 +62,12 @@ Space would become a component in our HTTP API paths for list operations. e.g.
 
 `/api/{space}/projects/all`
 
-Referencing individual entities would not require a space, as the ID would be unique. e.g. 
-
-`/api/environment/{environment-id}`
-
 For backwards compatibility we would infer the default space if one isn't specified in the path. e.g.
 
 `/api/projects/all` would retrieve all projects in the default space.
+
+
+Referencing individual entities should still require a space (unless it's the default space) since some resources (like projects) can be reference by name, which _may only be unique within a space?_
 
 ## UI
 
