@@ -10,6 +10,34 @@
 [UserVoice #6512944 - Blue/Green Deployments (6 votes)](https://octopusdeploy.uservoice.com/forums/170787-general/suggestions/6512944-what-happened-to-blue-green-deployment)
 
 ## Design ##
+#### Set Up ####
+A user should be able to create a composite step template in a similar manner to existing "single" step templates with the difference that rather than adding a single script, a set of other steps are added creating its own process.
+
+![Add from Step Templates](add_from_steptemplates.png)
+
+![Add Multiple Steps](add_multiplesteps.png)
+
+A composite step template would still be able to provide parameters just like any other standard step template. These parameters will be made available to all of its constituent steps.
+
+![Add Parameters](add_parameters.png)
+
+#### Usage ####
+When a composite step template is added to a project, the template parameter values can be supplied in a way similar to existing templates. The steps can be targeted to specific roles (where appropriate) and the same sort of execution conditions can be applied.
+
+![Details](compositestep_details.png)
+
+There are a couple different ways that inner actions could be managed within a project. 
+
+We could consider a composite step added into a project as a single indivisible unit. The inner actions would be un-editable (unless done through the original template in the library which would be reflected through all usages), non-rearrangable and no additional custom actions would be able to be interspersed between them. This has the benefit of being easy for to flow down updates if the original template is changed however come at the cost of flexibility.
+
+![indivisible](compositestep_indivisible.png)
+
+Alternatively we could allow adding additional actions which would require ensuring that the "template actions" are non-editable so that when changes are made to the template we can accurately determine where changes need to be made.
+
+Finally we could also take the approach that once a composite step template is added to a project, the constituent steps are just dumped into the project deployment process, disconnected from the original template and treated from there like any other step.
+
+The first approach is probably the simplest approach for a first phase and should meet most of the goals of the user requirements. 
+
 
 ### Deployment Patterns ###
 Common deployment patterns could be interpreted as built-in composite step templates with a bit of a wizard to fill in some of the key step types.
