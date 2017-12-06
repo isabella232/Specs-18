@@ -11,10 +11,27 @@ By looking at deployments in this way we can see that a deployment, as described
 So if a resource is considered an abstract representation of _Where_, an specific Tentacle or Server that meets the required rules can be considered concrete instance of that resource.
 
 ## Further Reading ##
+Read these pages for details
 ### [Resource Rules](resource_rules.md) ###
 ### [Holistic App View](holistic_view.md) ###
 ### [Resource Definitions](resource_definitions.md) ###
 ### [Resource Health Checks](resource_health_checks.md) ###
 ### [Permissions/Auth](permissions.md) ###
+### [Extensibility](extensibility.md) ###
 ### [Keeping Pets Pets](pets.md) ###
 ### [Migration](migration.md) ###
+
+## Task Breakdown ##
+The bulk of the resources task can probably be broken up into a few chunks to allow parallel development.
+
+#### Target Providers ####
+Taking a set of resource rules and determining the actual instances that these resolve to. This includes providing the appropriate abstraction to support the cloud providers and future extensibility. 
+
+#### UI Resource Relationships ###
+Building the screens that expose the resources to the user in an easy to digest manner. This includes both the abstract resources, the instances that these resolve to for each deployment context as well as the graph display format. 
+
+#### Resource Designer ####
+Building a set of rules to define a resource. This includes handling required rules, explicit pet links and resource "inheritance". Existing steps all need to be updated to describe/require the relevant resources.
+
+#### Resource Health Checks ####
+Updating the service message parser to support resource health checks and manage the state on the instance itself.

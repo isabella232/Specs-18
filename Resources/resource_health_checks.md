@@ -14,7 +14,7 @@ One of the simplest ways that this might be approached is by parsing a new servi
 ```
 and interpret that as a signal to flag the resource as unhealthy. As noted previously this tagging would likely involve talking through the target provider since for cloud resources that would involve setting a tag directly onto the [Azure](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags) or [AWS](https://aws.amazon.com/answers/account-management/aws-tagging-strategies/) resources themselves. We always want to rely on the real world _where possible_ to determine the state of the world.
 
-This service message could come through at any time and may be used in a maintenance task (since these are treated just like any "run a script" type task) or even during a deployment itself.
+This service message could come through at any time and may be used in a [maintenance task](../MaintenanceProcess/index.md) (since these are treated just like any "run a script" type task) or even during a deployment itself.
 ![Health Check](health_check_task.png)
 If it makes sense then it may even be valid to leverage these service messages for target-level health checks instead of just parsing exit codes as is done currently.
 
