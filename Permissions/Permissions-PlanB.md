@@ -15,10 +15,16 @@ The only permissions that will remain at the Server level are those related to a
 For example all permissions relating to Projects, Environments, Tenants, etc, will be pushed down into the Spaces.
 
 ## 3. Space Owners 
-
 Spaces will have owners.  The owners of a Space can assign permissions for the Space.  Octopus Administrators will be able to delegate the management of a Space.   
 
 Octopus Administrators do not have permissions within a Space by default.
+
+## 4. Permission Templates
+Without Roles, it would be difficult to determine the set of permissions required for common scenarios.  We could solve this with templates.
+
+When adding a Group to a Space, the user would have the option of applying one or more Permission Templates.  These would probably be configured similarly to Roles (Project Viewer, etc), but they would only preset the permissions applied for the Group. They are purely an aid to assist in configuring permissions. Once applied, there would be no link to the Template\s that were used.  
+
+User's could also configure custom templates, to be used when adding new Groups to the Space.   
 
 # Migration
 
