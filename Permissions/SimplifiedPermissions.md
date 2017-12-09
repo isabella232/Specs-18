@@ -17,7 +17,7 @@ The last part gets messy because people need multiple teams to represent differe
 
 You would need two "Teams" in Octopus to model this currently, which doesn't align with how people would expect it to work.
 
-Our current C# API for checking permissions is very generic which makes it very flexible but at the same it's relatively easy to use it incorrectly.
+We want to make it easier for developers to correctly implement permissions. Our current C# API for checking permissions is very generic which makes it very flexible but at the same it's relatively easy to use it incorrectly.
 
 These are the main groups of permission related bugs that we've introduced in the past:
 
@@ -129,12 +129,6 @@ This is sometimes not desirable.  In large organisations, often the person\s res
 
 In the new model, Administrators will have permissions to the "Octopus Server" object. They will have permissions to create Spaces.  When creating a Space, they will be able to select the Owner group, which may be a group that they are not a member of; at that point they will not have any edit permissions to the Space.
 
-## 8. Testing
-
-The current permission system is slow to test changes. The feedback cycle on a permission change is long as it uses the E2E Api test mechanism, to spin up a complete instance. This also relies on the developer to think of enough suitable permutations to test against, with simplified permissions and an ability to leverage the output.
-
-We would benefit from a larger more real world set of of environments/teams/user combinations with some assistance from existing customers to create, and be able to run a larger set of permission test code against these so as this new system evolves we don't regress, a good balance between granular unit test size checking and larger integration checking to mirror what happens when it all comes together to render a complex dashboard for a variety of users.
-
 
 # Implementation thoughts
 
@@ -146,6 +140,12 @@ The current API can serve as a starting point but we might need completely new A
 - `DeploymentAuthorization` should enforce that the user has `DeployTo` permission for all environments/tenants referenced by the deployment document.
 
 We should consider driving navigation/save actions on the UI via what comes back from the API. Right now we repeat checks in client side code to drive decisions on what UI to show (mentioned else were in this document). If we knew for a fact based on the Hypermedia Links that delete is not there, that means this user cannot do this action be it permission (or other) reasons and there's no need to guard against rendering a delete overflow action. This would improve the API for other use cases e.g. the iOS application which would not need to re-implement it's own client side permission UI rendering logic.
+
+## Testing
+
+The current permission system is slow to test changes. The feedback cycle on a permission change is long as it uses the E2E Api test mechanism, to spin up a complete instance. This also relies on the developer to think of enough suitable permutations to test against, with simplified permissions and an ability to leverage the output.
+
+We would benefit from a larger more real world set of of environments/teams/user combinations with some assistance from existing customers to create, and be able to run a larger set of permission test code against these so as this new system evolves we don't regress, a good balance between granular unit test size checking and larger integration checking to mirror what happens when it all comes together to render a complex dashboard for a variety of users.
 
 # Walk-through
 
