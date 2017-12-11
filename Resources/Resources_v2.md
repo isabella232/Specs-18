@@ -26,8 +26,9 @@ To Summarize:
     * User can optionally use rules or static configuration.
 
 _Custom Target_
-![Configuring a Custom Target](CustomTarget_Configure.png)
 ![Adding Custom Target](CustomTarget_Edit.png)
+![Configuring a Custom Target](CustomTarget_Configure.png)
+
 
 _Dynamic Target_
 ![Dynamic Target - Dynamic](DynamicTarget_Dynamic.png)
