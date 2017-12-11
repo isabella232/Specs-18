@@ -5,7 +5,7 @@
 It's `3.0` version of Azure Targets but made to behave more like cattle by adding a dash of Cloud Regions.
 
 #### Expanded Summary
-Disclaimer: Externally to users there are now just `Targets` (no resources). The terminology of the different types described here are just for internal purposes to differentiate how they work.
+_Disclaimer: Externally to users there are **now just `Targets`** (no resources). The terminology of the different types described here are just for internal discussion purposes to differentiate how they work. Don't get too caught up in terminology just yet._
 
 `Custom Targets` can be defined, which specify properties (potentially `Typed Variables`) and icons and are used during deployments, typically for steps which require those properties for execution (e.g. a `Xero Target` may require a HTTP endpoint and some credentials and it used specifically by a `Xero Report` step). Think `Cloud Regions` but less generic and able to be user defined. Similar to a `Cloud Region`, a custom target by definition runs on the server (or worker) and can be iterated over if multiple exist in that environment.
 
