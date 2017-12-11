@@ -5,32 +5,42 @@ The greatest benefit (from a development perspective) of the previous proposed m
 # Plan B 
 
 ## 1. Groups
-We'll introduce "groups", which are collections of users or map to external security groups (AD groups). "Octopus Administrators" and "Everyone" become built in groups. Unlike "teams", a group is just a collection of people - it defines nothing about what those people can do. Groups will replace Teams.
+We'll introduce "groups", which are collections of users or map to external security groups (AD groups). "Octopus Administrators" and "Everyone" become built in groups. Unlike "teams", a group is just a collection of people - it defines nothing about what those people can do. Groups will replace Teams, and will live at the Server level.
 
-## 2. Most Permissions Lowered into Spaces
-Whereas today all Roles are at the Server level, in this model most permissions will be assigned to Groups at the Space level.  
+## 2. Most Roles Assigned within Spaces 
 
-The only permissions that will remain at the Server level are those related to administering the Octopus Server, and permissions to View\Create\Modify\Delete Spaces. 
+**Roles will exist at both the Server and Space levels**.
 
-For example all permissions relating to Projects, Environments, Tenants, etc, will be pushed down into the Spaces.
+Whereas today all Roles are at the Server level, in this model most Roles will be assigned to Groups at the Space level.  
+
+The only Roles that will remain at the Server level are those related to administering the Octopus Server, manage Spaces, and publish packages to the built-in feed. 
+
+All Roles relating to Projects, Environments, Tenants, etc, will be pushed down into the Spaces. e.g.
+
+- Project XXX
+- Environment XXX
+- Tenant Manager
+
+The big difference is that Roles are assigned to Groups, and scoped if required.
+The same Role may be assigned multiple Scopes. 
+
+For example, the `Acme Developers` group may be assigned the following Roles within a Space:
+
+| Role                | Scope                             | 
+|---------------------|-----------------------------------|
+| Project Contributor |                                   | 
+| Project Deployer    | Project:Acme; Environment:Dev     |
+| Environment Manager | Environment:Dev                   |
 
 ## 3. Space Owners 
 Spaces will have owners.  The owners of a Space can assign permissions for the Space.  Octopus Administrators will be able to delegate the management of a Space.   
 
 Octopus Administrators do not have permissions within a Space by default.
 
-## 4. Permission Templates
-Without Roles, it would be difficult to determine the set of permissions required for common scenarios.  We could solve this with templates.
-
-When adding a Group to a Space, the user would have the option of applying one or more Permission Templates.  These would probably be configured similarly to Roles (Project Viewer, etc), but they would only preset the permissions applied for the Group. They are purely an aid to assist in configuring permissions. Once applied, there would be no link to the Template\s that were used.  
-
-User's could also configure custom templates, to be used when adding new Groups to the Space.   
-
 # Migration
 
-Migration to this model is fairly trivial.  If this is implemented at the same time as [Spaces](../Spaces/index.md), then everything will be initially placed in a default Space, and all existing permissions will be applied to this Space.  
+Migration to this model is fairly trivial.  If this is implemented at the same time as [Spaces](../Spaces/index.md), then everything will be initially placed in a default Space, and all existing Roles will be allocated in this Space.  
 
-Teams will be directly translated into Groups, and the Groups' permissions will be calculated using the existing Roles.
+Teams will be directly translated into Groups.
 
 Existing Octopus Administrators will have the ability to Create\Modify\Delete Spaces.
-
