@@ -4,14 +4,17 @@ The greatest benefit (from a development perspective) of the previous proposed m
 
 # Plan B 
 
-## 1. Groups
-We'll introduce "groups", which are collections of users or map to external security groups (AD groups). "Octopus Administrators" and "Everyone" become built in groups. Unlike "teams", a group is just a collection of people - it defines nothing about what those people can do. Groups will replace Teams, and will live at the Server level.
+## 1. Individually Scoped Role Assignments
+
+On Teams today you can scope Role assignments (to environments, projects, etc). But you are scoping _all_ Roles for that Team.
+
+We will change this to be scoped per Role. This will allow more fine-grained assingments and should result in the creation of fewer Teams which better map to real world teams.
 
 ## 2. Most Roles Assigned within Spaces 
 
 **Roles will exist at both the Server and Space levels**.
 
-Whereas today all Roles are at the Server level, in this model most Roles will be assigned to Groups at the Space level.  
+Whereas today all Roles are at the Server level, in this model most Roles will be assigned to Teams at the Space level.  
 
 The only Roles that will remain at the Server level are those related to administering the Octopus Server, manage Spaces, and publish packages to the built-in feed. 
 
@@ -21,10 +24,7 @@ All Roles relating to Projects, Environments, Tenants, etc, will be pushed down 
 - Environment XXX
 - Tenant Manager
 
-The big difference is that Roles are assigned to Groups, and scoped if required.
-The same Role may be assigned multiple Scopes. 
-
-For example, the `Acme Developers` group may be assigned the following Roles within a Space:
+For example, the `Acme Developers` Team may be assigned the following Roles within a Space:
 
 | Role                | Scope                             | 
 |---------------------|-----------------------------------|
@@ -41,6 +41,6 @@ Octopus Administrators do not have permissions within a Space by default.
 
 Migration to this model is fairly trivial.  If this is implemented at the same time as [Spaces](../Spaces/index.md), then everything will be initially placed in a default Space, and all existing Roles will be allocated in this Space.  
 
-Teams will be directly translated into Groups.
+All Teams will remain.
 
 Existing Octopus Administrators will have the ability to Create\Modify\Delete Spaces.
