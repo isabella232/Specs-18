@@ -11,6 +11,8 @@ It's common practice to include configuration files that are used by various ste
 
 [UserVoice #13796499 - Connecting a source control repository for automated version control of configurations (1 vote)](https://octopusdeploy.uservoice.com/forums/170787-general/suggestions/13796499-connecting-a-source-control-repository-for-automat)
 
+[UserVoice #32541541 - Deployment Pipeline as Code (3 votes)](https://octopusdeploy.uservoice.com/forums/170787-general/suggestions/32541541-deployment-pipeline-as-code)
+
 ## Design ##
 A `octopus.json` file is included in the root of a package. This file can contain the full deployment process of a project and optionally some of the variables that are combined with the project variables. The project itself is configured to "Load the configuration from package" which bears some similarity to how a package can be used to determine the release version. The deployment process would essentially be blank since its not until a package is selected that the process is known by octopus. Any additional packages that are required to be determined need to be done in a two stage process. First the core package version is determined, the package is downloaded and the `octopus.json` file is extracted. Any additional package steps are determined and the user is then asked for these package versions before the release is created. Once the release is created is can be snapshotted (or not?) like any other deployment.
 
