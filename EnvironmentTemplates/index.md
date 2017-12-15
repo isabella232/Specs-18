@@ -1,7 +1,13 @@
 
 _Environments as Cattle, not Pets_
 
-Rather than having a static set of Environments, it is sometimes desirable to have dynamic Environments which created and disposed frequently.  An example of this would be creating test environments for feature branches. 
+Rather than having a static set of Environments, it is sometimes desirable to have dynamic Environments which created and disposed frequently.  
+
+Example scenarios may be:
+
+- Feature Branches
+- Environment-per-tester
+- Immutable Infrastructure
 
 # Environment Templates
 
@@ -68,10 +74,5 @@ GET /api/environments
 
 would include any environments created via a template. 
 
-# Scenarios
-
-- Feature Branches
-- Environment-per-tester
-- Immutable Infrastructure
 
 
