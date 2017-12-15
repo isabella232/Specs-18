@@ -13,7 +13,11 @@ An Environment Template will allow optional provisioning and de-provisioning pro
 
 ## Triggers
 
-Automatic triggers for Creation\Deletion of instances of Environment Templates can be configured.
+Automatic triggers for deletion of instances of Environment Templates can be configured.
+
+- _X_ days after creation
+- If not deployed to for _X_ days
+- Release for Project _P_ was deployed to the environment and has been deployed a subsequent phase of the lifecycle. 
 
 ## Lifecycles 
 
