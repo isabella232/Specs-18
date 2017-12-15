@@ -38,7 +38,8 @@ When adding an Environment Template to a Lifecycle Phase, you can select whether
 
 ## Variables
 
-When creating an Environment instance from an Environment Template, variables will be able to be supplied.  These variables will be implicitly scoped to the created environment, but they can also have additional scopes. 
+Project Variables can be scoped to Environment Templates. These variables will apply to any instances of the Template.   
+The rank of these variables will be less than variables scoped directly to the Environment. 
 
 ## API
 
