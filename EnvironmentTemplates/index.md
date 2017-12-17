@@ -17,24 +17,23 @@ We will allow creation of Environment Templates.
 
 An Environment Template will allow optional provisioning and de-provisioning processes.
 
-## Triggers
-
-Automatic triggers for deletion of instances of Environment Templates can be configured.
-
-- _X_ days after creation
-- If not deployed to for _X_ days
-- Release for Project _P_ was deployed to the environment and has been deployed a subsequent phase of the lifecycle. 
-
 ## Lifecycles 
 
 Environment Templates can appear in Lifecycles Phases.  
 
+![Add Environment Template to Lifecycle Phase](ui-mocks/LifecyclePhase-AddEnvironmentTemplate.png "width=500")
+
+When adding an Environment Template to a Lifecycle Phase, it can be configured so that instances of the Template are either manually or automatically deployed, just as with regular Environments. 
+
+It may also be configured to automatically provision/de-provision an instance Environment from the Template when a release reaches the Lifecycle Phase.  
+
+![Configure Environment Template Lifecycle Phase](ui-mocks/LifecyclePhase-ConfigureEnvironmentTemplateDialog.png "width=500")
+
 ### Required to Progress
 
-When adding an Environment Template to a Lifecycle Phase, you can select whether for the purposes of progression instances of the template: 
+Environments created from Environments Template (whether automatically, manually, or from external to Octopus) will be considered in the Lifecycle Phase Progression rules just as any other Environment. 
 
-- Count as one environment once _any_ instance of the Template has been deployed
-- Count as one environment for _each_ deployed instance of the Template 
+For example, if an Environment Template has been added to a Phase which is configured as _All must complete_, then if there are any Environments which were created from the Template they must have all been deployed to. 
 
 ## Variables
 
