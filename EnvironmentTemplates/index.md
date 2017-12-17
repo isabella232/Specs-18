@@ -13,6 +13,8 @@ Example scenarios may be:
 
 We will allow creation of Environment Templates.
 
+![Configure Environment Template](ui-mocks/EnvironmentTemplate-Configure.png "width=500")
+
 ## Provisioning Processes 
 
 An Environment Template will allow optional provisioning and de-provisioning processes.
