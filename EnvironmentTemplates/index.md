@@ -19,6 +19,14 @@ We will allow creation of Environment Templates.
 
 An Environment Template will allow optional provisioning and de-provisioning processes.
 
+## Automatically Provison\De-Provision
+
+An Environment Template can be configured to automatically provision an Environment when a Lifecycle Phase is reached which contains the Template (see the _Triggers_ section in the image above).
+
+The name of the provisioned Environment should be a variable expression.  The expression will be evaluated against the Release which triggered the provisioning. 
+
+If a subsequent Release triggers provisioning and matches the name of an existing Environment, the Template can be configured to re-provision (de-provision the existing, and provision the new). Alternatively, the existing Environment will remain and provisioning will be skipped.
+
 ## Lifecycles 
 
 Environment Templates can appear in Lifecycles Phases.  
