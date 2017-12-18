@@ -27,6 +27,12 @@ The name of the provisioned Environment should be a variable expression.  The ex
 
 If a subsequent Release triggers provisioning and matches the name of an existing Environment, the Template can be configured to re-provision (de-provision the existing, and provision the new). Alternatively, the existing Environment will remain and provisioning will be skipped.
 
+De-provisioning can also be automatically triggered.  Triggering events for de-provisioning are:
+
+- A Release progresses to the next phase of a Lifecycle.   
+
+- Days since last deployed 
+
 ## Lifecycles 
 
 Environment Templates can appear in Lifecycles Phases.  
@@ -34,8 +40,6 @@ Environment Templates can appear in Lifecycles Phases.
 ![Add Environment Template to Lifecycle Phase](ui-mocks/LifecyclePhase-AddEnvironmentTemplate.png "width=500")
 
 When adding an Environment Template to a Lifecycle Phase, it can be configured so that instances of the Template are either manually or automatically deployed, just as with regular Environments. 
-
-It may also be configured to automatically provision/de-provision an instance Environment from the Template when a release reaches the Lifecycle Phase.  
 
 ![Configure Environment Template Lifecycle Phase](ui-mocks/LifecyclePhase-ConfigureEnvironmentTemplateDialog.png "width=500")
 
@@ -45,10 +49,25 @@ Environments created from Environments Template (whether automatically, manually
 
 For example, if an Environment Template has been added to a Phase which is configured as _All must complete_, then if there are any Environments which were created from the Template they must have all been deployed to. 
 
-## Variables
+## Scoping
+
+Environment Templates can be used as a Scope everywhere an Environment can. This includes:
+
+- Variables
+- Permissions
+- Accounts
+- Certificates
+
+The exception is Machines. It doesn't make sense to scope a machine to an Environment Template.
+
+### Variables
 
 Project Variables can be scoped to Environment Templates. These variables will apply to any instances of the Template.   
 The rank of these variables will be less than variables scoped directly to the Environment. 
+
+### Tenants
+
+Tenants can be linked to an Project\Environment-Template combination.
 
 ## API
 
