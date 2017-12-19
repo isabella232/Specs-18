@@ -104,4 +104,6 @@ GET /api/environments
 would include any environments created via a template. 
 
 
+# Scenarios
 
+- [Feature Branch Environments](scenario-feature-branch.md)
