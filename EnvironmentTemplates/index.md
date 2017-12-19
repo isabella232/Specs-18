@@ -7,7 +7,6 @@ Example scenarios may be:
 
 - Feature Branches
 - Environment-per-tester
-- Immutable Infrastructure
 
 # Environment Templates
 
@@ -32,6 +31,14 @@ De-provisioning can also be automatically triggered.  Triggering events for de-p
 - A Release progresses to the next phase of a Lifecycle.   
 
 - Days since last deployed 
+
+## Manually Provision/De-Provision
+
+Instance Environments can be manually created from a Template.
+
+![Manually Create Environment from Template](ui-mocks/EnvironmentTemplate-CreateInstance.png "width=500")
+
+Deleting an Environment which was provisioned from a Template will run the de-provisioning process (we may want to add a confirmation, to allow _not_ de-provisioning).
 
 ## Lifecycles 
 
