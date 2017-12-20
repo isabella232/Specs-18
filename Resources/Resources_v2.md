@@ -1,5 +1,6 @@
 # Resources #
 ## To be renamed just "Targets" (Dynamic and Custom)
+Replaces [Resources v1](./index.md)
 
 #### One Liner
 It's `3.0` version of Azure Targets but made to behave more like cattle by adding a dash of Cloud Regions.
@@ -34,3 +35,17 @@ _Dynamic Target_
 ![Dynamic Target - Dynamic](DynamicTarget_Dynamic.png)
 ![Dynamic Target - Static](DynamicTarget_Static.png)
 
+## Further Details ##
+#### Evaluation ####
+When a deployment is taking place and a step is about to run, Octopus needs to determine which targets are involved. To do this Octopus consults the target providers. Octopus provides the set of rules needed for the targets in question, and the providers evaluate, based on its current knowledge (which means consulting Cloud API endpoints) which targets are relevant and provides the additional information needed to perform the deployment, like IP addresses, names etc.
+
+![Rule Resolution Azure](rule_resolution_azure.png)
+_A rule with some credentials have been provided which match the requirements of the Azure Target Provider so it queries the Azure API, which due to the credentials happen to be the Production subscription._
+
+The resolvers themselves should be treated as pluggable components, so that we (or others) can provide additional resolvers for other providers.
+
+![Rule Resolution Extensible](rule_resolution_extensible.png)
+_An additional target prover for some new cloud provider can be built in the future and easily added to existing Octopus server instances without requiring a full upgrade_
+
+### Tags in the world ###
+A key point here is that the tag _values_ typically exist out in the world itself and not on some internal representation kept by Octopus. When dealing with cloud-based targets it is expected that the user will apply the relevant tags using the standard [Azure](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags) or [AWS](https://aws.amazon.com/answers/account-management/aws-tagging-strategies/) tagging mechanisms. These tags are what is read by the Target Provider. Additional properties about the target will also be retrieved automatically by the provider for use in the deployment as first class variables, e.g IP Addresses for the Azure Web App to be used in DNS reconfiguration. Service messages during a deployment process (or maintenance task) are able to be "put onto" the target by Octopus to allow for more complex scenarios.
