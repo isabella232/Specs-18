@@ -8,8 +8,6 @@ In large organizations, as more teams onboard, this doesn't scale well:
 
 - People end up "namespacing" things to avoid conflicts and confusion: "This is our `Production` environment"
 - People struggle to provide any segregation using our permission system. We introduced the ability to "scope" a Team to a certain Environment or Project, and later had to introduce Tenants and Project Groups into the mix.
-  - Not only is this hard for customers to understand, the implementation is complex and fraught with corner cases and bugs
-- People struggle to define "sensible action-based permissions": "These people can deploy releases of Project-X to Production" requires a whole handful of seemingly unrelated `*View` permissions, rather than Octopus providing a simple `CanDeploy`-style permission.
 
 ## Spaces to the Rescue 
 
@@ -34,7 +32,9 @@ This means that Spaces will contain:
 
 ### Teams and Roles
 
-Teams and Roles will exist at _both_ the global and space levels.
+Teams will remain global, but will be modified slightly from today. 
+
+Roles will exist at both the Server and Space levels, as appropriate.
 
 ### But surely _X_ has to be global
 
@@ -77,26 +77,11 @@ There will be a Space-Switcher in the header:
 
 ## Permissions 
 
-There are two options:
-
-- We use the introductions of Spaces as the time for a significant [permissions renovation](../Permissions/SimplifiedPermissions.md).
-- We build Spaces on the existing permissions model assuming it doesn't require wide spread changes to the existing mode. E.g. existing permission checks don't have to be modfiied.
-
-If we were to build on the existing model, everything would work as today, except when scoping permissions to Environments\Projects\Tenants these would have to include the containing Space in the display name.
-
-This is because you may have duplicate named objects in different spaces. 
-
-For example, if you had `Space A` and `Space B` which both contained a `Dev` environment, permissions could be scoped to:
-
-- `Space A \ Dev`
-- `Space B \ Dev`
+Some changes to the Permissions model are required to support Spaces. 
+[Two options](../Permissions/index.md) were considered. 
 
 ## Targets
-In the old (i.e current) world, when a machine is added to Octopus, it must be assigned to at least one environment. This makes sense when environments are global however the relationship breaks down when environments move down into the space level. 
 
-The two possible outcomes are:
+We considered allowing Targets to live at the Server level, and having them included in Environments within a Space. 
 
-- We "move machines" down to the space level and users add the machine multiple times across spaces if the same infrastructure is shared. This is "already possible" today in the ability to add the same tentacle multiple times to Octopus however this has some obvious drawbacks in terms of maintenance and duplication of configuration. 
-- We leave machines at the global level and users can assign them to space-environments as needed. This obviously has additional ramifications with regards to requiring the space to potentialy manage tags against "specific" targets.
-
-The second outcome feels like the most natural, given that ultimately targets seem to be something that should be configured and connected to Octopus outside the bounds of any one specific space. In this approach a seperate "Infrastructure" view of the machines would exist at the global level, similar to how you would see EC2 instances in AWS. Users with the appropriate permissions could then add these machines to the relevant environments down at the space level. Since there are some proposed changes around resources that may have repercussions on how a target is nominated as a participant in a deployment, it _might_ be simpler to leave tags at the global level for the time being. 
+We decided that targets would be added to and belong to a Space. If the same physical target is used in multiple Spaces, then it will be represented by multiple targets in Octopus. 

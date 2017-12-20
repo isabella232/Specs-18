@@ -10,6 +10,8 @@ On Teams today you can scope Role assignments (to environments, projects, etc). 
 
 We will change this to be scoped per Role. This will allow more fine-grained assingments and should result in the creation of fewer Teams which better map to real world teams.
 
+![](ui-mocks/per-role-scopes.png)
+
 ## 2. Most Roles Assigned within Spaces 
 
 **Roles will exist at both the Server and Space levels**.
@@ -44,3 +46,16 @@ Migration to this model is fairly trivial.  If this is implemented at the same t
 All Teams will remain.
 
 Existing Octopus Administrators will have the ability to Create\Modify\Delete Spaces.
+
+# Development
+
+One of the motivations for re-considering the permissions model was that the Octopus engineering team finds the current model difficult to implement correctly and also to test.
+
+Given that we will need to extensively test permissions as part of implementing Spaces and these proposed permissions changes, there is no reason this can't still be an opportunity to refactor the permissions code and improve the development experience.
+
+We should:
+
+- Document the current permissions behaviour
+- Refactor the code to make it as easy as possible to implement this model
+- Improve our permissions automated-test coverage
+- Create better development tooling for testing with various permission configurations 
