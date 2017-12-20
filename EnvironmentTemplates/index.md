@@ -12,6 +12,17 @@ Example scenarios may be:
 
 We will allow creation of Environment Templates.
 
+## Elevator Pitch
+
+Today users may do something like the following to create on-demand environments:
+
+1. Create an Environment.  e.g. `POST /api/environments` 
+2. Deploy an 'Infrastructure Provisioning' project which, for example, executes a Cloud Formation template to provision infrastructure. 
+3. Create any necessary environment-scoped variables, accounts, certificates, etc for the new environment.
+
+Environment Templates will combine steps 1 and 2 (also avoiding the need for a separate infrastructure project) and allow step 3 to be performed _once for the entire class of environments_ rather than once per environment created.
+
+
 ![Configure Environment Template](ui-mocks/EnvironmentTemplate-Configure.png "width=500")
 
 ## Provisioning Processes 
