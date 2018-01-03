@@ -16,10 +16,10 @@ It's common practice to include configuration files that are used by various ste
 ## Design ##
 A `octopus.json` file is included in the root of a package. This file can contain the full deployment process of a project and optionally some of the variables that are combined with the project variables.
  The project itself is configured to "Load the configuration from package" which bears some similarity to how a package can be used to determine the release version. The deployment process would essentially be blank since its not until a package is selected that the process is known by octopus. Any additional packages that are required to be determined need to be done in a two stage process. First the core package version is determined, the package is downloaded and the `octopus.json` file is extracted. Any additional package steps are determined and the user is then asked for these package versions before the release is created. Once the release is created is can be snapshotted (or not?) like any other deployment.
+
+### This process would supplant using channels to reconfigure special deployment steps needed when a new version of the process is required while the old one is still in use due to an existing release still being under development.
+
 ![Creating a Release - Process Flow](create_release_process.png "width=500")
-
-This process would supplant using channels to reconfigure special deployment steps needed when a new version of the process is required while the old one is still in use due to an existing release still being under development.
-
 
 ### Setup ###
 _User opts to import the deployment process from a package_
@@ -41,4 +41,7 @@ _The deployment screen now shows the master package details as well as allows fo
 
 ## Limitations ##
 Due to the dynamic nature of the deployment process, channel rules would likely be unable to be constructed since there is no way to tell what steps will be involved. Perhaps the configuration itself could provide similar rules for it's package steps directly?
+
+## Further Steps ##
+While this approach does not integrate the process directly into source control, this gap should be further bridged with the addition of GitHub as a package feed. In this scenario it would be plausable that users might have a repository purely for configuration, which is linked to the project in the manner described above, such that when a release is created the configuration is extracted from source control.
 
