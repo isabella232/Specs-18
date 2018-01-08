@@ -39,9 +39,11 @@ _The deployment screen now shows the master package details as well as allows fo
 ![Edit](create_release_2.png "width=300")
 ![Edit](create_release_3.png "width=300")
 
+If creating a release through `octo.exe` the current approach of `octo.exe create-release --package=Acme:1.0.0` will still be used. The user needs to have some knowledge about which packages are relevant just as they are already expected to know. The Octopus Server internally will use the package that maps to the "process package" to download the process then any provided package details to populate the appropriate steps. This means this API should remain fairly unchanged.
+
 ## Limitations ##
 Due to the dynamic nature of the deployment process, channel rules would likely be unable to be constructed since there is no way to tell what steps will be involved. Perhaps the configuration itself could provide similar rules for it's package steps directly?
 
 ## Further Steps ##
-While this approach does not integrate the process directly into source control, this gap should be further bridged with the addition of GitHub as a package feed. In this scenario it would be plausable that users might have a repository purely for configuration, which is linked to the project in the manner described above, such that when a release is created the configuration is extracted from source control.
+While this approach does not integrate the process directly into source control, this gap should be further bridged with the addition of GitHub as a package feed. In this scenario it would be plausible that users might have a repository purely for configuration, which is linked to the project in the manner described above, such that when a release is created the configuration is extracted from source control.
 
