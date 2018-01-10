@@ -47,6 +47,8 @@ All Teams will remain.
 
 Existing Octopus Administrators will have the ability to Create\Modify\Delete Spaces.
 
+Existing Octopus Administrators will be the owners of the default Space.
+
 # Development
 
 One of the motivations for re-considering the permissions model was that the Octopus engineering team finds the current model difficult to implement correctly and also to test.
