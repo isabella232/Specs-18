@@ -46,6 +46,10 @@ Our initial position is that everything above lives within a space.  If we (or o
 
 Can be viewed at the server level or within a Space. The Space-view just provides a filtered-view.
 
+## Audit Log
+
+Similar to Tasks, audit logs can be viewed globally or within a Space.  The Space provides a filtered view.
+
 ## Migration
 
 Everything existing would be moved into a default space.
