@@ -18,6 +18,7 @@ The only things that will remain global are:
 - Octopus Server Configuration (License, Maintenance Mode, HTTPS Certificate, etc)
 - Users
 - Teams and Roles (see below)
+- Built-in Package Repository
 
 This means that Spaces will contain:
 
@@ -27,7 +28,7 @@ This means that Spaces will contain:
 - Accounts
 - Certificates
 - Variable Sets
-- Tenants
+- Tenants (Tenant feature-toggle will be pushed down into Spaces)
 - Step Templates
 
 ### Teams and Roles
