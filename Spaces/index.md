@@ -82,7 +82,7 @@ There will be a Space-Switcher in the header:
 ## Permissions 
 
 Some changes to the Permissions model are required to support Spaces. 
-[Two options](../Permissions/index.md) were considered. 
+[Two options](../Permissions/index.md) were considered. [Plan B](../permissions/Permissions-PlanB.md) was decided on. 
 
 ## Targets
 
