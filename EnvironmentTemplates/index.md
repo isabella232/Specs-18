@@ -33,7 +33,7 @@ An Environment Template will allow optional provisioning and de-provisioning pro
 
 Any [output variables](https://octopus.com/docs/deployment-process/variables/output-variables) created during the provisioning process will be captured and made available as environment-scoped variables to any deployment process executing against the created environment.
 
-## Parameters
+### Parameters
 
 If the provisioning process requires input parameters, these can be added to the Environment template.  This are essentially the same as parameters to Step Templates.
 
@@ -41,7 +41,80 @@ The parameters will be available as variables to the provisioning process.
 
 Note: If [automatic provisioning](@automatically-provision-de-provision) is configured, then all parameters will require a default value.
 
-## Automatically Provison\De-Provision
+### Capturing Results of Provisioning
+
+Results from the provisioning process need to be captured and reflected in the newly created Octopus Environment. 
+
+These may include:
+
+- Variables 
+- Targets
+- Accounts
+- Certificates
+
+_Note:_ Captured variables will be persisted with the Environment, and then made available to any deployments to that Environment.
+
+For example, the provisioning process may execute a CloudFormation template which creates a Linux server in EC2.  We need to create an SSH account and an SSH target in the Octopus Environment. 
+
+We will provide a number of ways to achieve this (possibly not all initially):
+
+#### Functions
+
+Similar to the way [output variables](https://octopus.com/docs/deployment-process/variables/output-variables) are captured today, we will provide functions to capture the results of the provisioning process. 
+
+Capturing an SSH KeyPair would look something like:
+
+```
+New-OctopusAccount -Name "Roger Ramjet SSH" -Type SshKeyPair -PrivateKeyFile "#{Octopus.Action[Provision AWS].Output.PrivateKeyFile}" -Password "#{Octopus.Action[Provision AWS].Output.SshPassword}"
+
+New-OctopusTarget -Name "Roger Ramjet Ubuntu" -Type Ssh -Host "#{Octopus.Action[Provision AWS].Output.SshHost}" -Port 22 -Account "Roger Ramjet SSH" -Fingerprint "#{Octopus.Action[Provision AWS].Output.SshFingerprint}" 
+```
+
+#### Octopus Environment Templates
+
+The functions approach above is flexible, but perhaps not the most natural way to capture results if you are provisioning your environment using, for example, a CloudFormation or ARM template.
+
+For these scenarios will create an Octopus Environment Template DSL, allowing declarative modelling of how the newly provisioned environment should look.
+
+Capturing the SSK KeyPair account and target from the Functions approach above might look something like:
+
+```
+{
+    "accounts": [
+        {
+            "type": "SSHKeyPair",
+            "name": "Roger Ramjet SSH",
+            "privateKeyFile": "#{Octopus.Action[Provision AWS].Output.PrivateKeyFile}",
+            "password": "#{Octopus.Action[Provision AWS].Output.SshPassword}" 
+        }
+    ],
+
+    "targets": [
+        {
+            "type": "SSH",
+            "name": "Roger Ramjet Ubuntu",
+            "roles": ["web-server"],
+            "host": "#{Octopus.Action[Provision AWS].Output.SshHost}",
+            "port": 22,
+            "account": "Roger Ramjet SSH",
+            "fingerprint": "#{Octopus.Action[Provision AWS].Output.SshFingerprint}"
+        }
+    ],
+
+    "variables": [
+        {
+            "name": "Foo",
+            "value": "#{Octopus.Action[Provision AWS].Output.Foo}"
+        }
+    ]
+}
+```
+
+#### Octopus Environment Process Step 
+
+As a final option, we could provide a new step type which would provide a UI representation of the template above. 
+
+## Automatically Provision\De-Provision
 
 An Environment Template can be configured to automatically provision an Environment when a Lifecycle Phase is reached which contains the Template (see the _Triggers_ section in the image above).
 
