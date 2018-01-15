@@ -29,10 +29,6 @@ Environment Templates will combine steps 1 and 2 (also avoiding the need for a s
 
 An Environment Template will allow optional provisioning and de-provisioning processes.
 
-### Output Variables
-
-Any [output variables](https://octopus.com/docs/deployment-process/variables/output-variables) created during the provisioning process will be captured and made available as environment-scoped variables to any deployment process executing against the created environment.
-
 ### Parameters
 
 If the provisioning process requires input parameters, these can be added to the Environment template.  This are essentially the same as parameters to Step Templates.
@@ -52,11 +48,13 @@ These may include:
 - Accounts
 - Certificates
 
-_Note:_ Captured variables will be persisted with the Environment, and then made available to any deployments to that Environment.
-
 For example, the provisioning process may execute a CloudFormation template which creates a Linux server in EC2.  We need to create an SSH account and an SSH target in the Octopus Environment. 
 
 We will provide a number of ways to achieve this (possibly not all initially):
+
+#### Promoted Output Variables
+
+We will add some special-sauce to output variables to allow [promoting them to an explicit scope](promoted-output-variables.md). In this case the only scopes that would apply are `Environment` (and possibly `Target`).
 
 #### Functions
 
