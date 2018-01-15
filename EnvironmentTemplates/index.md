@@ -158,17 +158,27 @@ Environment Templates can be used as a Scope everywhere an Environment can. This
 - Permissions
 - Accounts
 - Certificates
+- Tenants (see [tenants](#Tenants) section below).
 
 The exception is Machines. It doesn't make sense to scope a machine to an Environment Template.
 
-### Variables
+## Project Variables
 
 Project Variables can be scoped to Environment Templates. These variables will apply to any instances of the Template.   
 The rank of these variables will be less than variables scoped directly to the Environment. 
 
-### Tenants
+## Tenants
 
-Tenants can be linked to an Project\Environment-Template combination.
+There are two options for linking tenants to templated environments.
+
+### Link to the Template
+
+Tenants can be linked to an Project\Environment-Template combination, and Tenant-variables can also be defined for the Environment Template. 
+The tenanted-project can then be deployed to any instance environment created from the template (assuming the Lifecycle allows it).
+
+### Link directly to the instantiated Environment
+
+If one wants to be more explicit, rather than linking Templates to the Environment Template you can create an instance environment of a Template and explicitly configure the linkages to it for all desired tenants and environments (either via the UI or the API).  
 
 ## API
 
