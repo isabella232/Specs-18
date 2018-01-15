@@ -35,9 +35,11 @@ For example, the `Acme Developers` Team may be assigned the following Roles with
 | Environment Manager | Environment:Dev                   |
 
 ## 3. Space Owners 
-Spaces will have owners.  The owners of a Space can assign permissions for the Space.  Octopus Administrators will be able to delegate the management of a Space.   
+Spaces will have owners. A space owner will act like an administrator within that space, in that they can do anything in that space. The owners of a Space can assign permissions for the Space.  Octopus Administrators will be able to delegate the management of a Space.   
 
-Octopus Administrators do not have permissions within a Space by default.
+Octopus Administrators do not have permissions within a Space by default. 
+
+It is important that it is easy to give users access to everything in Octopus, and that this is easy to do for new installations. This can still be done by combining the Octopus Administrator permissions with the space owner permissions.
 
 # Migration
 
@@ -61,3 +63,4 @@ We should:
 - Refactor the code to make it as easy as possible to implement this model
 - Improve our permissions automated-test coverage
 - Create better development tooling for testing with various permission configurations 
+
