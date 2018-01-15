@@ -120,7 +120,7 @@ We want to be consistent between the Tenants and Spaces features. Both of them a
 ## Permissions 
 
 Some changes to the Permissions model are required to support Spaces. 
-[Two options](../Permissions/index.md) were considered. [Plan B](../permissions/Permissions-PlanB.md) was decided on. 
+[Two options](../Permissions/index.md) were considered. [Plan B](../Permissions/Permissions-PlanB.md) was decided on. 
 
 ## Targets
 
