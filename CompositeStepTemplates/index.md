@@ -34,6 +34,8 @@ If however a user wants to customize the composite step and rearrange/edit/remov
 
 ![indivisible](compositestep_indivisible.png)
 
-A new role typed variable should also be created that can be defined as a parameter of the template. Steps within a template can bind this parameter to the role of the step itself allowing custom roles to be defined by the consumer.
+### Nested Steps - It's turtles all the way down
+Although a composite step template can contain a rolling step, it cannot be made of composite steps that themselves are rolling, nor be a member of a rolling step on the parent project. This is to ensure it does not result in strange configurations. What does it mean to loop on behalf of `Role-X` _and_ `Role-Y`?
 
-## Rolling steps cannot be defined on a composite step _except_ from  ??
+### Role Type
+To allow users to design flexible templates that can be used in projects where the role cannot be defined statically in the single template, a parameter of type `Role` should be available. When consuming that template the input field takes the shape of the standard role picker. Internally, the inner steps that need roles can then bind to that parameter. To prevent errors, it is imagined that rather than the standard "cleartext" binding that allows typing any value, it would probably be displayed as a drop down of the available role-parameter types.
