@@ -1,4 +1,4 @@
-# Compositte Step Templates #
+# Composite Step Templates #
 
 ## User Requests ##
 [UserVoice #12948603 - Composite Step Templates (686 votes)](https://octopusdeploy.uservoice.com/forums/170787-general/suggestions/12948603-composite-step-templates)
