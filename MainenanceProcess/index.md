@@ -54,7 +54,8 @@ In this scenario it sounds like the deployment process needs to be somehow tied 
 
 What we really want is the ability to access deployment-scoped variables. It doesn't make much sense to talk about purely project variables since they really only have meaning _during_ a deployment; Think about variables that use environment or output variables.
 
-Instead what might solve this is providing a new variable type called `Deployment`. This could be selected from 
+Instead what might solve this is providing a new variable type called `Deployment`. This could be defined in-place to use `latest` or `previous` or left empty to be provided later.
+When defining a schedule or running on demand and the field is empty, then
 
 ## Vision Fit ##
 ### Octopus as Enterprise ###
