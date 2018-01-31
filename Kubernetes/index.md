@@ -3,7 +3,7 @@
 Support for Kubernetes in Octopus Deploy will take the form of:
 
 - New Step (Kubernetes Apply) 
-- New Target (Kubernetes Master)
+- New Target (Kubernetes Cluster)
 
 ## Kubernetes Apply Step
 
@@ -62,7 +62,14 @@ The output format can be specified (see the `output` flag of the [kubectl apply 
 
 
 
-## Kubernetes Master Target
+## Kubernetes Cluster Target
 
-TODO
+We will create a new target type, _Kubernetes Cluster_, to represent the cluster the Kubernetes Apply step will execute against. 
 
+Conceptually this target is a URL and credentials for authentication.
+
+We will support the authentication methods:
+
+- Username + Password
+- Certificate
+- API Token
