@@ -38,15 +38,21 @@ spec:
         - containerPort: 80
 ```
 
-When creating a release of a project which contains Kubernetes Apply steps, we will perform a two-step process. First we fetch the package which contains the template. Second, we parse the template and find any container image references, and then attempt to to find the available versions of the specified image from all configured Octopus Docker feeds. 
+When creating a release of a project which contains Kubernetes Apply steps, we will potentially perform a two-step process:
 
-The versions discovered will be available to be selected as the versions associated with the release.   
+First we fetch the package which contains the template (assuming it is sourced from an external template)
+ 
+Second, we parse the retrieved template yaml file and locate any container image references. Since there is unlikely to be a simple way to determine _which_ feed contains the image listed in the configuration, Octopus will perform a lookup across all configured Octopus Docker feeds (unlikely to be more than a couple right?) for that image. The user will then be presented with the ability to select versions to override values specified in the config. Optionally if Octopus cannot locate the package then they will be presented with a message that no image could be found and so no Octopus overrides will take place.
+
+![Kubernetes Create Release](ui-mocks/kubernetes-create-release.png "width=500")
+
+It will not be necessary to supply versions for all container images specified in the template.  Any which do not have values supplied will simply not be replaced, and will use the version specified in the template.
 
 If the release is created via the API, then the versions of the container images will be passed just as regular package versions are supplied when creating a release.
 
-At deployment time, we will take any specified container image versions and substitute them into the template, before it is passed to the `kubectl apply` command. 
+At deployment time, we will take any specified container image versions and substitute them into the template, before it is passed to the `kubectl apply` command.
 
-It will not be necessary to supply versions for all container images specifed in the template.  Any which do not have values supplied will simply not be replaced, and will use the version specified in the template.
+One big side effect of this feature for Octopus deploy, will be the requirement to support multiple packages for a single step. At the moment any steps that require a package contain the information under `Octopus.Action.Package.PackageId`, with this change the suggested approach would be to index the package details under the name specified by the image in the configuration. In the example above, this might look like `Octopus.Action.Package[Nginx].PackageId`, `Octopus.Action.Package[Nginx].FeedId` etc. This will require changes to Octopus Server and Calamari.
 
 ### Variable Substitution
 
@@ -58,9 +64,7 @@ General Octopus variable-substitution will be applied to the template.
 
 The output from the `kubectl apply` command will be captured as an output variable.
 
-The output format can be specified (see the `output` flag of the [kubectl apply cmd](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#apply)). One of the options is JSON (which can be further customized using the `jsonpath` option). Using the JSON properties functionality which is available in Octostache, this should be useful.   
-
-
+The output format can be specified (see the `output` flag of the [kubectl apply cmd](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#apply)). One of the options is JSON (which can be further customized using the `jsonpath` option). Using the JSON properties functionality which is available in Octostache, this should be useful.
 
 ## Kubernetes Cluster Target
 
