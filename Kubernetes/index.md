@@ -73,3 +73,5 @@ We will support the authentication methods:
 - Username + Password
 - Certificate
 - API Token
+
+![Kubernetes Cluster Target](ui-mocks/kubernetes-cluster-target.png "width=500")
