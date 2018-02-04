@@ -52,7 +52,9 @@ If the release is created via the API, then the versions of the container images
 
 At deployment time, we will take any specified container image versions and substitute them into the template, before it is passed to the `kubectl apply` command.
 
-One big side effect of this feature for Octopus deploy, will be the requirement to support multiple packages for a single step. At the moment any steps that require a package contain the information under `Octopus.Action.Package.PackageId`, with this change the suggested approach would be to index the package details under the name specified by the image in the configuration. In the example above, this might look like `Octopus.Action.Package[Nginx].PackageId`, `Octopus.Action.Package[Nginx].FeedId` etc. This will require changes to Octopus Server and Calamari.
+### Impact on Octopus: multiple packages per action
+
+One big side effect of this feature for Octopus deploy, will be the requirement to support multiple packages for a single action. At the moment any steps that require a package contain the information under `Octopus.Action.Package.PackageId`, with this change the suggested approach would be to index the package details under the name specified by the image in the configuration. In the example above, this might look like `Octopus.Action.Package[Nginx].PackageId`, `Octopus.Action.Package[Nginx].FeedId` etc. This will require changes to Octopus Server and Calamari.
 
 ### Variable Substitution
 
