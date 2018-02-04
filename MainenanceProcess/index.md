@@ -54,8 +54,10 @@ In this scenario it sounds like the deployment process needs to be somehow tied 
 
 What we really want is the ability to access deployment-scoped variables. It doesn't make much sense to talk about purely project variables since they really only have meaning _during_ a deployment; Think about variables that use environment or output variables.
 
-Instead what might solve this is providing a new variable type called `Deployment`. This could be defined in-place to use `latest` or `previous` or left empty to be provided later.
-When defining a schedule or running on demand and the field is empty, then
+Instead what might solve this is providing a new variable type called `Deployment`. This could be defined in-place to use `latest` or `previous` or left empty to be provided later. The consuming process, in this case the Maintenance Task, could then use dot-notation to access values generated as part of that deployment. This feature would also be a great addition to standard projects as well.
+
+E.g.
+A user defines a variable in the Maintenance Task variables grid called `LastDeployAcmeWebApp`. When setting the variable they select it's type as `Deployment` and are prompted to select a project. They select the `AcmeWebApp` project and are then prompted with input to select a specific, previous specific deployment or the option for `latest` or `previous`. The user selects `latest`. When the maintenance task runs it retrieves the _latest_ deployment for that project in the same context as the currently executing maintenance task (environment/tenant). This may be the full variable manifest or it may just be the variables the user has explicitly opted to retrieve via the `set-OctopusVarible` cmdlet. The variables are now available via standard octostache dot-notation so that the task can access `#{LastDeploymentAcmeWebApp.DeployedUrl}` endpoint which tends to change between deployments.
 
 ## Vision Fit ##
 ### Octopus as Enterprise ###
