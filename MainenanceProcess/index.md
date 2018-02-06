@@ -10,36 +10,35 @@ There exists a need to run a set of steps, similar to a deployment process, but 
 [UserVoice #6905729 - Support Tasks on the tentacles (2 votes)](https://octopusdeploy.uservoice.com/forums/170787-general/suggestions/6905729-support-task-on-the-tentacles)
 
 ## Design ##
-##### No Snapshots #####
-Apart from having processes and variables, maintenance processes and projects are a different beast. Maintenance processes have no life cycle, so they can be executed to any environment at any time without regard for previous executions (assuming valid permissions). Since there is no specific release, it also makes sense that there need be no channels either. As a result of this, there is also no concept of snapshotting. The execution uses the current values available to that process at the time that it runs. This includes tasks that are scheduled to occur at a later date or on a schedule. Snapshotting makes sense in the project world, where your aim is repeated deployments of some artifacts (or scripts) that must incrementally complete a controlled progression through a defined life cycle. Maintenance processes exist and run as independent one-off tasks. If existing schedules need to continue untouched while at the same time running a newer process, the lightweight design of maintenance processes means you can just clone and edit a whole new process. If this is still not enough, it may be that what you really want is a project, you just don't know it :) .
+##### No Snapshots... Kinda #####
+Apart from having processes and variables, maintenance processes and projects are a different beast. Maintenance processes have no life cycle, so they can be executed to any environment at any time without regard for previous executions (assuming valid permissions). Since there is no specific release, it also makes sense that there need be no channels either. As a result of this, there is also no concept of locking a process to a specific version through snapshotting. The execution uses the current values available to that process at the time that it runs. This includes tasks that are scheduled to occur at a later date or on a schedule. Snapshotting makes sense in the project world, where your aim is repeated deployments of some artifacts (or scripts) that must incrementally complete a controlled progression through a defined life cycle. Maintenance processes exist and run as independent one-off tasks.
+
+ ...Having just said all that, some form of behaviour should be available for users to change and test their processes while still allowing them to "undo" changes. To achieve this, a copy of the process will be automatically stored when an execution takes place that differs from the last time it was run (so the history is always based on actually executed processes as opposed to interim edit-save-edit-save iterations). Although all execution still only ever occurs based on the _current_ process, the user has the ability to revert that process back to a previous version if so desired.
+
+ If existing schedules need to continue untouched while at the same time running a newer process, the lightweight design of maintenance processes means you can just clone and edit a whole new process. If this is still not enough, it may be that what you really want is a project, you just don't know it :).
 
 ##### Context #####
-A maintenance processes lives outside and at the same level as projects (eventually at the `Space` level). Although it was considered that they could live _additionally_ within a project (so a project can have its own maintenance tasks), this adds unnecessary complexity considering we would still want project-less maintenance processes that can be avoided by managing them all in one place. Since the end goal of `Spaces` should provide better organization of project ownership, this level should provide a good balance between ending up with a dumping ground of processes, and being actually relevant to the people who need them. See _further work_ below for some additional v2 features that would support better integration with project scenarios.
+A maintenance processes lives inside a project (eventually at the `Space` level). By storing maintenance tasks inside a project, the task execution context will get all the benefits of the project variables already defined. If a project is devoid of any deployment process, and only has maintenance tasks, then it's dashboard should be focused on maintenance tasks as opposed to deployment history.
 
 #### UX ####
+The maintenance tasks are accessable via the process section of the project.
+
+![Main Page](MainPage.png)
+
+The process screen looks very similar to a project `Deployment Process` screen. All the same steps available to a project are available to a maintenance process which could be package steps, library steps or even "rolling" steps. It is possible that some steps might be unavailable in maintenance tasks, such as `Deploy A Package` step which might just be replaced with something akin to `Extract A Package`. 
+
 ![Process Screen](Process_Screen.png)
 
-The process screen looks very similar to a project `Deployment Process` screen. All the same steps available to a project are available to a maintenance process which could be package steps, library steps or even "rolling" steps.
-
-![Packages Screen](Packages_Screen.png)
-
-Since there is no "Create Release" step, any package steps need to have their versions defined up-front. In the same way that the steps themselves aren't snapshotted or versioned, it makes sense that the packages used in the process are also pre-defined up front since they may be tied to the process being used. The version can be specific as they are today, or they can use some sort of "pattern" such as [node-semver](https://github.com/npm/node-semver) to get the latest (or they can select just plain old "latest")
-
-![Process Variables](Process_Variables.png)
-
-Maintenance Processes are executed against specific environment(s) since they need to run "somewhere". For this reason providing the ability to add variables may be required to provide different config for the different deployment contexts. For example you may have a process which updates certificates. You may need to use a different HOST value for the different environments but the rest of the process of requesting and installing the certificate will likely be the same. You can then leverage the one maintenance process for both cases, potentially on different schedules. The same could also be said for roles or tenant tags.
-
-![Run Now](Run_Now.png)
-
-When  maintenance process is run on-demand the process is run within some context. This context is much the same as a project deployment. There must be an environment and can optionally be a tenant or tenant tags.
-
-Additionally Maintenance processes can have triggers very similar to Project Triggers. Some system events such as "new machine" or "project deployed" events may cause the process to execute, or they could be scheduled to run on a repeated basis. An execution context must still be provided however a templated environment can be selected as the target. In this case, the environment(s) are just determined _at the time of execution_.
+Triggers can be applied to maintenance tasks similar existing Project Triggers for deployments. Some system events such as "new machine" or "project deployed" events may cause the process to execute, or they could be scheduled to run on a repeated basis. An execution context of environment and/or tenant can be provided (however a templated environment can be selected as the target. In this case, the environment(s) are just determined _at the time of execution_.) Any packages that are required also need to be defined, however the packages may be defined as `latest` rather than pinned to a specific version.
 
 ![Triggers](Triggers.png)
 
+When  maintenance process is run on-demand, the process is run within some context. This context is much the same as a project deployment. The environment and tenant contexts are optional, however the execution may encounter an issue at execution time of the step tries to run against a target and none exist. Any available pacakges need to be selected at this point as well.
+
+![Run Now](Run_Now.png)
+
 Once a process is kicked off it is effectively treated like any other server task. 
 
-![History](History.png)
 
 _Mockups available in [Maintenance Process.bmpr](./Maintenance_Process.bmpr)_
 
@@ -58,13 +57,3 @@ Instead what might solve this is providing a new variable type called `Deploymen
 
 E.g.
 A user defines a variable in the Maintenance Task variables grid called `LastDeployAcmeWebApp`. When setting the variable they select it's type as `Deployment` and are prompted to select a project. They select the `AcmeWebApp` project and are then prompted with input to select a specific, previous specific deployment or the option for `latest` or `previous`. The user selects `latest`. When the maintenance task runs it retrieves the _latest_ deployment for that project in the same context as the currently executing maintenance task (environment/tenant). This may be the full variable manifest or it may just be the variables the user has explicitly opted to retrieve via the `set-OctopusVarible` cmdlet. The variables are now available via standard octostache dot-notation so that the task can access `#{LastDeploymentAcmeWebApp.DeployedUrl}` endpoint which tends to change between deployments.
-
-## Vision Fit ##
-### Octopus as Enterprise ###
-n/a
-
-### Octopus as Cloud-First ###
-Maintenance processes are a piece that lays the groundwork for the development of `Transient Environments`. In order to provided the ability to provision/de-provision entire environments on-the-fly, it is through the invocation of maintenance processes that might involve steps like an `AWS CloudFormation` step type to set up the new infrastructure.
-
-### Octopus as Hosted ###
-n/a
