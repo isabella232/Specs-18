@@ -11,21 +11,21 @@ There exists a need to run a set of steps, similar to a deployment process, but 
 
 ## Design ##
 ##### No Snapshots... Kinda #####
-Apart from having processes and variables, maintenance processes and projects are a different beast. Maintenance processes have no life cycle, so they can be executed to any environment at any time without regard for previous executions (assuming valid permissions). Since there is no specific release, it also makes sense that there need be no channels either. As a result of this, there is also no concept of locking a process to a specific version through snapshotting. The execution uses the current values available to that process at the time that it runs. This includes tasks that are scheduled to occur at a later date or on a schedule. Snapshotting makes sense in the project world, where your aim is repeated deployments of some artifacts (or scripts) that must incrementally complete a controlled progression through a defined life cycle. Maintenance processes exist and run as independent one-off tasks.
+Apart from having processes and variables, maintenance processes and projects are a different beast. Maintenance processes have no life cycle, so they can be executed to any environment at any time without regard for previous executions (assuming valid permissions). Since there is no specific release, it also makes sense that there need be no channels either. As a result of this, there is also no concept of locking a process to a specific version through snapshotting. The execution uses the current values available to that process at the time that it runs. This includes tasks that are configured to occur at a later date or on a schedule. Snapshotting makes sense in the project world, where your aim is repeated deployments of some artifacts (or scripts) that must incrementally complete a controlled progression through a defined life cycle. Maintenance processes exist and run as independent one-off tasks.
 
  ...Having just said all that, some form of behaviour should be available for users to change and test their processes while still allowing them to "undo" changes. To achieve this, a copy of the process will be automatically stored when an execution takes place that differs from the last time it was run (so the history is always based on actually executed processes as opposed to interim edit-save-edit-save iterations). Although all execution still only ever occurs based on the _current_ process, the user has the ability to revert that process back to a previous version if so desired.
 
  If existing schedules need to continue untouched while at the same time running a newer process, the lightweight design of maintenance processes means you can just clone and edit a whole new process. If this is still not enough, it may be that what you really want is a project, you just don't know it :).
 
 ##### Context #####
-A maintenance processes lives inside a project (eventually at the `Space` level). By storing maintenance tasks inside a project, the task execution context will get all the benefits of the project variables already defined. If a project is devoid of any deployment process, and only has maintenance tasks, then it's dashboard should be focused on maintenance tasks as opposed to deployment history.
+A maintenance processes lives inside a project. By storing maintenance tasks inside a project, the task execution context will get all the benefits of the project variables already defined. If a project is devoid of any deployment process, and only has maintenance tasks, then it's dashboard should be focused on maintenance tasks as opposed to deployment history.
 
 #### UX ####
 The maintenance tasks are accessable via the process section of the project.
 
 ![Main Page](MainPage.png)
 
-The process screen looks very similar to a project `Deployment Process` screen. All the same steps available to a project are available to a maintenance process which could be package steps, library steps or even "rolling" steps. It is possible that some steps might be unavailable in maintenance tasks, such as `Deploy A Package` step which might just be replaced with something akin to `Extract A Package`. 
+The process screen looks very similar to a project `Deployment Process` screen. Most of the same steps available to a project are available to a maintenance process as well as the feature of "rolling" steps. It is possible that some steps might be unavailable in maintenance tasks, such as `Deploy A Package` step which might just be replaced with something akin to `Extract A Package`.
 
 ![Process Screen](Process_Screen.png)
 
@@ -33,12 +33,11 @@ Triggers can be applied to maintenance tasks similar existing Project Triggers f
 
 ![Triggers](Triggers.png)
 
-When  maintenance process is run on-demand, the process is run within some context. This context is much the same as a project deployment. The environment and tenant contexts are optional, however the execution may encounter an issue at execution time of the step tries to run against a target and none exist. Any available pacakges need to be selected at this point as well.
+When  maintenance process is run on-demand, the process is run within some context. This context is much the same as a project deployment. The environment and tenant contexts are optional, however the execution may encounter an issue at execution time of the step tries to run against a target and none exist. Any available packages need to be selected at this point as well.
 
 ![Run Now](Run_Now.png)
 
 Once a process is kicked off it is effectively treated like any other server task. 
-
 
 _Mockups available in [Maintenance Process.bmpr](./Maintenance_Process.bmpr)_
 
