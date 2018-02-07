@@ -2,7 +2,7 @@
 
 Support for Kubernetes in Octopus Deploy will take the form of:
 
-- New Step (Kubernetes Apply) 
+- New Steps (Kubernetes Apply) 
 - New Target (Kubernetes Cluster)
 
 ## Kubernetes Apply Step
@@ -10,6 +10,8 @@ Support for Kubernetes in Octopus Deploy will take the form of:
 Kubernetes supports both [declarative and imperative modes of object management](https://kubernetes.io/docs/concepts/overview/object-management-kubectl/overview/#management-techniques).  
 
 For Octopus, it seems a natural fit to support the declarative approach. This is implemented via the [kubectl apply command](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#apply). We will expose this via a dedicated step. 
+
+![Kubernetes Apply Step](ui-mocks/kubernetes-apply-step.png "width=500")
 
 The imperative approaches make less sense to implement via Octopus. We can always roll these out in subsequent phases if there is demand. For any of the imperative commands which do not specify container images (e.g. `kubectl delete`), these are relatively simply to implement in Octopus as custom script steps.
 
@@ -60,7 +62,10 @@ One big side effect of this feature for Octopus deploy, will be the requirement 
 
 General Octopus variable-substitution will be applied to the template.
 
-![Kubernetes Apply Step](ui-mocks/kubernetes-apply-step.png "width=500")
+Unfortunately Kubernetes doesn't support parameters files, as AWS and Azure do with CloudFormation and ResourceManager templates. This means that inserting Octopus variables into the template will make it invalid as a standalone template.
+
+In future phases it may be nice to add support for additional configuration-replacement options.  One option is to support JSON transforms, similar to the way Octopus supports web.config transforms. Another option is to add support in the Apply step for setting environment variables on the container elements in the template.  This would be a key-value pair configuration, binding an Octopus variable to an environment variable.  
+
 
 ### Output
 
@@ -71,6 +76,8 @@ The output format can be specified (see the `output` flag of the [kubectl apply 
 ## Kubernetes Cluster Target
 
 We will create a new target type, _Kubernetes Cluster_, to represent the cluster the Kubernetes Apply step will execute against. 
+
+![Kubernetes Cluster Target](ui-mocks/kubernetes-cluster-target-option.png "width=500")
 
 Conceptually this target is a URL and credentials for authentication.
 
