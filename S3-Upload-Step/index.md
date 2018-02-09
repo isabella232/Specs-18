@@ -12,14 +12,25 @@ There are a couple of options for this today, each with downsides:
 
 They are 3 ways you may wish to use this step:
 
-## Upload the entire package to S3
+- Option 1: Upload the entire package to S3
+- Option 2: Upload a single file from a package
+- Option 3: Upload multiple files from a package 
+
+## Option 1: Upload the entire package to S3
 
 ![](ui-mocks/upload-to-s3-entire-package.png "width=500")
 
-## Upload a single file from a package
+## Option 2: Upload a single file from a package
 
 ![](ui-mocks/upload-to-s3-single-file.png "width=500")
 
-## Upload multiple files from a package 
+## Option 3: Upload multiple files from a package 
 
 ![](ui-mocks/upload-to-s3-multiple-files.png "width=500")
+
+
+## Variable Substitution
+
+When uploading single or multiple files from within a package, we will provide the ability to perform variable-substitution. For a single file upload, this will simply be a checkbox.  For multiple files, multiple globs can be supplied to select the files to perform substitution on.
+
+We _could_ also provide the ability to extract, substitute, and repack the package when uploading an entire package. I'm not inclined to do this though.  Transforming config files doesn't seem to be best-practice when deploying to AWS. For example, when deploying an ElasticBeanstalk app, a better option seems to be to set [environment properties](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environments-cfg-softwaresettings.html).  These are then exposed as environment variables on some platforms, or via the `ConfigurationManager.AppSettings` class in [.NET apps](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create_deploy_NET.container.console.html).  
