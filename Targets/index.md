@@ -45,15 +45,17 @@ Which targets will we have?
 
 Natural fits from the Paas world would seem to be:
 
-- Azure WebApps (rise my zombie)
+- Azure WebApps (_rise my zombie_)
 - AWS ElasticBeanstalk
 - Azure Functions
 - AWS Lambdas
 - Kubernetes Cluster
 
-### Current (VM-based) Targets
+### Current (VM-based) Targets 
 
-As mentioned above, our current targets are really communication channels, rather than targets. We are inferring the target (i.e. Windows, Linux) from the channle (i.e. Tentacle, SSH).
+_&lt;ThoughtBubble&gt;_ 
+
+As mentioned above, our current targets are really communication channels, rather than targets. We are inferring the target (i.e. Windows, Linux) from the channel (i.e. Tentacle, SSH).
 
 If (when) we release a Tentacle for Linux, or Windows supports SSH, this model suddenly makes less sense. 
 
@@ -71,7 +73,24 @@ One of the properties of those targets would be _Communication Channel_. You cou
 - SSH
 - Offline Drop
 
+_&lt;/ThoughtBubble&gt;_ 
 
 
-### Custom Targets
+### Cloud Regions
+
+The remaining current target is the _Cloud Region_.  A little history...
+
+In Octopus 2.x, there were Azure Cloud Service steps. They ran on Tentacle targets. For some people this was fine, for some it grated that it was required to install a Tentacle to be able to deploy to Azure. 
+
+In Octopus 3.0, targets were introduced for Azure Cloud Services and Azure WebApps. To deploy to Azure you would create a regular _Deploy a Package_ step, and target the new Azure targets. Most people loved this, with the notable exception of those who had previously been dynamically creating their Cloud Services as part of the deployment process.  For these users, the new model didn't work, because there was no way to dynamically add targets to an environment during a deployment. 
+
+So the Azure WebApp and Cloud Service targets were deprecated, and new steps were added: _Deploy an Azure Web App_ and _Deploy an Azure Cloud Service_. These steps did not have targets. The web app/cloud service was configured as part of the step. 
+
+This was fine for most people (though annoying for those who had to change their approach). with the notable exception of people who had been deploying to _multiple_ Azure targets in an environment (e.g. Azure Web Apps in multiple regions). In the 3.0 model this was achieved elegantly by simply applying the same role to all the Azure targets, and then the step could target that role. These people now had to create multiple steps. Many (rightly) argued this was not desirable, especially when dealing with larger numbers of targets.   
+
+And so Cloud Region targets were introduced.  
+
+These served simply as _something_ to iterate over and scope variables to. A for-loop for steps. The difficulty we had naming them was (in hindsight) a bad sign.  They solved the problem, but in a way that was probably a result of the above history more than optimal design. 
+
+
 
