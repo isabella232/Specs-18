@@ -2,8 +2,24 @@
 
 Support for Kubernetes in Octopus Deploy will take the form of:
 
-- New Steps (Kubernetes Apply) 
+- New Steps (Kubernetes Apply and kubectl Script) 
 - New Target (Kubernetes Cluster)
+
+## Kubernetes Cluster Target
+
+We will create a new target type, _Kubernetes Cluster_, to represent the cluster the Kubernetes Apply step will execute against. 
+
+![Kubernetes Cluster Target](ui-mocks/kubernetes-cluster-target-option.png "width=500")
+
+Conceptually this target is a URL and credentials for authentication.
+
+We will support the authentication methods:
+
+- Username + Password
+- Certificate
+- API Token
+
+![Kubernetes Cluster Target](ui-mocks/kubernetes-cluster-target.png "width=500")
 
 ## Kubernetes Apply Step
 
@@ -73,18 +89,12 @@ The output from the `kubectl apply` command will be captured as an output variab
 
 The output format can be specified (see the `output` flag of the [kubectl apply cmd](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#apply)). One of the options is JSON (which can be further customized using the `jsonpath` option). Using the JSON properties functionality which is available in Octostache, this should be useful.
 
-## Kubernetes Cluster Target
+## kubectl Script Step
 
-We will create a new target type, _Kubernetes Cluster_, to represent the cluster the Kubernetes Apply step will execute against. 
+There are many other [Kubernetes commands](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands) you may wish to execute, other than `apply`.  For example: [deleting resources](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#delete), [scaling](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#scale), etc.
 
-![Kubernetes Cluster Target](ui-mocks/kubernetes-cluster-target-option.png "width=500")
+We will enable these by adding a new flavor of a Run a Script step: _Run a kubectl Script_. 
 
-Conceptually this target is a URL and credentials for authentication.
+This step will allow you to write your own scripts, and we ensure the `kubectl` command line is available and authenticated against the Kubernetes cluster the step is targetting.  This is conceptually similiar to our [Run an AWS CLI Script](https://octopus.com/docs/deploying-applications/custom-scripts/aws-cli-scripts) or the  [Run an Azure PowerShell Script](https://octopus.com/docs/deploying-applications/azure-deployments/running-azure-powershell) steps, which authenticate against and provide the SDK for AWS and Azure respectively. 
 
-We will support the authentication methods:
-
-- Username + Password
-- Certificate
-- API Token
-
-![Kubernetes Cluster Target](ui-mocks/kubernetes-cluster-target.png "width=500")
+![kubectl Script Step](ui-mocks/kubectl-script-step.png "width=500")
