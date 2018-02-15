@@ -27,7 +27,7 @@ API Gateway allows you to configure a set of resources (or endpoints) with diffe
 
 These stages can themselves be configured to support [Canary deployments](https://aws.amazon.com/blogs/compute/implementing-canary-deployments-of-aws-lambda-functions-with-alias-traffic-shifting/). With this feature enabled a deployment to a stage first goes into a canary phase of that stage. Traffic is then distributed between the previously deployed version of that resource and the just-deployed canary phase. A new deployment of the resource will the overwrite the Canary until the canary phase is "promoted" to being the primary version.
 
-![API Gateway and Canary](./screenshots/APIGateway_and_canary.png)
+![API Gateway and Canary](./screenshots/APIGateway_and_Canary.png)
 
 For the purposes of this spec, we will assume that the API Gateway is managed outside Octopus (or through custom AWS PS scripting steps) and we will focus on Lambda, ensuring that the above model still fits.
 
