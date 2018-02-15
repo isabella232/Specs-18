@@ -51,6 +51,27 @@ Natural fits from the Paas world would seem to be:
 - AWS Lambdas
 - Kubernetes Cluster
 
+### Current (VM-based) Targets
+
+As mentioned above, our current targets are really communication channels, rather than targets. We are inferring the target (i.e. Windows, Linux) from the channle (i.e. Tentacle, SSH).
+
+If (when) we release a Tentacle for Linux, or Windows supports SSH, this model suddenly makes less sense. 
+
+We should migrate our existing targets to better reflect the actual target, with the communication channel becoming a property of the target. 
+
+For example, we would have the following targets:
+
+- Windows Server
+- Linux Server 
+
+One of the properties of those targets would be _Communication Channel_. You could select:
+
+- Listening Tentacle
+- Polling Tentacle
+- SSH
+- Offline Drop
+
+
 
 ### Custom Targets
 
