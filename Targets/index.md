@@ -76,6 +76,31 @@ One of the properties of those targets would be _Communication Channel_. You cou
 _&lt;/ThoughtBubble&gt;_ 
 
 
+_&lt;ThoughtBubble #2&gt;_ 
+
+In the future when Linux can run powershell and Windows can run bash, and either of them can host a Tentacle or SSH, our current approach of `Tentacle => Windows+Powershell` and `SSH => Linux+Bash` starts to break down.
+
+In this world the we OS is much less relevant (apart from perhaps UI purposes) and these details can be retrieved via health checks (along with more detailed information like exactly _which_ OS version are the Tentacles on).
+
+As a user creating a new target they are intialy prompted with a screen allowing them to choose between
+
+- Server/Machine
+- AWS
+- Azure
+- etc
+
+Upon selecting the cloud offerings they are then provided the choice between the relevant target types, e.g. Lambda, S3 for AWS).
+
+Selecting the first option, would then prompt them to indicate the communication channel. Listening, Polling, SSH, or Offline Drop.
+
+From within the target they could potentially pick the shell type (powershell or bash) or **ideally** we feature detect which is available on first health check and use that.
+
+From the user's point of view they dont know or care how we run the tasks on these servers, just which ones that they are running on.
+
+From within the step execution point of view, it doesn't know or care what the communications layer is, just what needs to run.
+
+_&lt;/ThoughtBubble #2&gt;_ 
+
 ### Cloud Regions
 
 The remaining current target is the _Cloud Region_.  A little history...
