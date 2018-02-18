@@ -1,4 +1,4 @@
-Octopus is a _dedicated_ release\deployment tool.  Our domain model reflects this: Releases, Deployments, Environments, and _Targets_ (aka machines).
+Octopus is a dedicated release\deployment tool.  Our domain model reflects this: Releases, Deployments, Environments, and _Targets_ (aka machines).
 
 Originally, Tentacle (i.e. a Windows machine running the Tentacle agent) was the only target type. Over time targets have been added and removed (e.g. FTP, Azure CloudServices).  
 
@@ -10,7 +10,7 @@ The current (as of 02/2018) target list is:
 - Offline Drop
 - Cloud Region
 
-An interesting observation is that the current list is more about the _communication channel_ than it is about the destination. But we currently make some implicit assumptions, i.e. that Tentacles == Windows, SSH == Linux.  It seems likely that these assumptions will not always hold. 
+With the exception of Cloud Region, these targets all represent connections to Windows or Linux machines (indirectly in the case of Offline Drop).
 
 ## PaaS 
 
@@ -30,13 +30,36 @@ Alternatively, we can model these as targets, which live in one or more environm
 
 We are opting for _Option B: Targets_.  
 
-_Why?_  
+## Why Targets and not Variables?
 
-Because this plays to Octopus's strengths. We model environments as first-class entities which contain targets (this is a surprisingly rare approach among our competitors).  We believe this matches how users think about environments and targets. It provides a natural way for a step to target different instances for different environments, and multiple instances (via roles).  The user explicitly modelling in Octopus their environment\target relationships also opens many possible feature-directions, for example: 
+One of the key abilities that targets in Octopus provide is allowing a step to specify a role, and it will then be executed once for each target matching that role.  
+The thing is, that ability is generally not required when deploying to PaaS endpoints. There is often only one instance of a PaaS endpoint in each environment (e.g. one Azure Web App, one ElasticBeanstalk, etc).  This could be just as easily achieved by the step deploying to a configured variable.
+
+_So why do we have targets?  Why not make everything a variable?_
+
+Because this plays to Octopus's strengths. We model environments as first-class entities which contain targets (this is a surprisingly rare approach among our competitors).  We believe this matches how users think about environments and targets.  And it still nicely handles those scnearios where you _do_ want to target multiple instances (via roles).  
+
+### Putting the Ops in DevOps
+
+By allowing users to explicitly model their targets as self-contained objects which live in environments, Octopus has valuable information and concepts that wouldn't exist if targets existed only as configuration values dispersed throughout deployment processes.  This opens many possible feature-directions, for example: 
 
 - operations processes which execute against an environment (running custom health-check processes, or a database backup task) 
 - custom status\diagnostic pages for targets (which pods are running on my Kubernetes cluster?)
 - Dynamic environments!!  
+
+### The Almight $$$
+
+The Octopus licensing model is machine-based: the more machines you deploy to, the more you pay.
+
+Currently, only Tentacle and SSH targets are counted for licensing.  Obviously as the adoption of PaaS offerings increases, this would result in Octopus collecting less in licensing.
+
+By introducing dedicated PaaS targets, this provides the opportunity to include them in the licensing model.  The move from machines to PaaS targets will have some snakes and some ladders (in some ways it will reduce the licensing-count, in others it may increase it):  
+
+- Snake: A customer who today deploys to a web application to a cluster of machines pays per machine.  In a PaaS world, they may deploy to only a single ElasticBeanstalk or Azure Web App instance (because they scale 'internally').
+
+- Ladder: A customer who today deploys multiple web applications and services to a single machine may deploy them to multiple PaaS targets in the future. The PaaS model encourages a more fine-grained hosting approach.
+
+How these opposing forces will balance is the question.
 
 
 ## Target Zoology
@@ -53,57 +76,17 @@ Natural fits from the Paas world would seem to be:
 
 ### Current (VM-based) Targets 
 
-_&lt;ThoughtBubble&gt;_ 
+An interesting observation is that the current targets (with the exception of Cloud Regions) are more about the _communication channel_ than about the destination. We currently make some implicit assumptions, i.e. that Tentacles == Windows, SSH == Linux.  It seems almost certain that these assumptions will not always hold. 
 
-As mentioned above, our current targets are really communication channels, rather than targets. We are inferring the target (i.e. Windows, Linux) from the channel (i.e. Tentacle, SSH).
+If (when) we release a Tentacle for Linux, or Windows supports SSH, this relationship breaks down. We will need to consider how best to model this in the future.
 
-If (when) we release a Tentacle for Linux, or Windows supports SSH, this model suddenly makes less sense. 
-
-We should migrate our existing targets to better reflect the actual target, with the communication channel becoming a property of the target. 
-
-For example, we would have the following targets:
-
-- Windows Server
-- Linux Server 
-
-One of the properties of those targets would be _Communication Channel_. You could select:
-
-- Listening Tentacle
-- Polling Tentacle
-- SSH
-- Offline Drop
-
-_&lt;/ThoughtBubble&gt;_ 
-
-
-_&lt;ThoughtBubble #2&gt;_ 
-
-In the future when Linux can run powershell and Windows can run bash, and either of them can host a Tentacle or SSH, our current approach of `Tentacle => Windows+Powershell` and `SSH => Linux+Bash` starts to break down.
-
-In this world the we OS is much less relevant (apart from perhaps UI purposes) and these details can be retrieved via health checks (along with more detailed information like exactly _which_ OS version are the Tentacles on).
-
-As a user creating a new target they are intialy prompted with a screen allowing them to choose between
-
-- Server/Machine
-- AWS
-- Azure
-- etc
-
-Upon selecting the cloud offerings they are then provided the choice between the relevant target types, e.g. Lambda, S3 for AWS).
-
-Selecting the first option, would then prompt them to indicate the communication channel. Listening, Polling, SSH, or Offline Drop.
-
-From within the target they could potentially pick the shell type (powershell or bash) or **ideally** we feature detect which is available on first health check and use that.
-
-From the user's point of view they dont know or care how we run the tasks on these servers, just which ones that they are running on.
-
-From within the step execution point of view, it doesn't know or care what the communications layer is, just what needs to run.
-
-_&lt;/ThoughtBubble #2&gt;_ 
+But for the moment at least, the existing targets will remain as is. Well, with the possible exception of Cloud Regions.
 
 ### Cloud Regions
 
 The remaining current target is the _Cloud Region_.  A little history...
+
+_Feel free to skip the following, but it sometimes helps to know how we got to where we are._
 
 In Octopus 2.x, there were Azure Cloud Service steps. They ran on Tentacle targets. For some people this was fine, for some it grated that it was required to install a Tentacle to be able to deploy to Azure. 
 
@@ -111,11 +94,25 @@ In Octopus 3.0, targets were introduced for Azure Cloud Services and Azure WebAp
 
 So the Azure WebApp and Cloud Service targets were deprecated, and new steps were added: _Deploy an Azure Web App_ and _Deploy an Azure Cloud Service_. These steps did not have targets. The web app/cloud service was configured as part of the step. 
 
-This was fine for most people (though annoying for those who had to change their approach). with the notable exception of people who had been deploying to _multiple_ Azure targets in an environment (e.g. Azure Web Apps in multiple regions). In the 3.0 model this was achieved elegantly by simply applying the same role to all the Azure targets, and then the step could target that role. These people now had to create multiple steps. Many (rightly) argued this was not desirable, especially when dealing with larger numbers of targets.   
+This was also fine for most people (though annoying for those who had to change their approach). with the notable exception of people who had been deploying to _multiple_ Azure targets in an environment (e.g. Azure Web Apps in multiple regions). In the 3.0 model this was achieved elegantly by simply applying the same role to all the Azure targets, and then the step could target that role. These people now had to create multiple steps. Many (rightly) argued this was not desirable, especially when dealing with larger numbers of targets.   
 
 And so Cloud Region targets were introduced.  
 
-These served simply as _something_ to iterate over and scope variables to. A for-loop for steps. The difficulty we had naming them was (in hindsight) a bad sign.  They solved the problem, but in a way that was probably a result of the above history more than optimal design. 
+These served simply as _something_ to iterate over and scope variables to. A for-loop for steps. The difficulty we had naming them was, in hindsight, a bad sign.  They solved the problem, but in a way that was perhaps a result of the above history more than optimal design. 
+
+Reintroducing Azure targets probably removes the need for Cloud Regions for the majority of the current usage scenarios. But we can't guarantee that customers aren't using them in a way which couldn't be replaced by the new PaaS targets.  
+
+Which leaves us with three options:
+
+1. Leave Cloud Regions as is.
+2. Gracefully deprecate them.  e.g. Make creating new Cloud Regions non-obvious, then eventually impossible, and see if anyone complains.
+3. Replace Cloud Regions with the more generic custom targets.
 
 
+### Custom Targets
 
+The idea behind Custom Targets is that they would allow the user to create a custom target type.  These will be able to define property templates and a custom icon. 
+
+These would perform a similar role to Cloud Regions, but hopefully with a better user-experience.
+
+The question is, is there a need?
