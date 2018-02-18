@@ -61,6 +61,16 @@ By introducing dedicated PaaS targets, this provides the opportunity to include 
 
 How these opposing forces will balance is the question.
 
+### So where is the line between a target and a variable? 
+
+Unless you are dealing with multiple targets in the same role, the line between targets and variables is somewhat arbitrary.  When adding new features, how do we decide?
+
+I think this is a situation where your first instinct is probably correct. If it feels like a target, it probably is. But as a rule of thumb, if the following sentence makes sense:
+
+_Target X has version Y of a project in environment Z_ 
+
+then it is likely a target.  As an example, should Azure Resource Groups be targets?  The sentence above does not make sense for a resource group.  And a resource group doesn't _feel_ like a target.  So they should be implemented as variables.
+
 
 ## Target Zoology
 
