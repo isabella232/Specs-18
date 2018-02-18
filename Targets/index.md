@@ -116,3 +116,14 @@ The idea behind Custom Targets is that they would allow the user to create a cus
 These would perform a similar role to Cloud Regions, but hopefully with a better user-experience.
 
 The question is, is there a need?
+
+
+## Targets and Accounts
+
+A common feature of every PaaS target is they require account details for authentication (i.e. AWS or Azure subscription). When deploying to the targets, it doesn't make sense to configure the account again in the steps.  Steps which deploy to these targets will use the account configured on the target. 
+
+### Script Steps
+
+For AWS and Azure Script Steps, there will be the an option to use the account from a variable, or to use the account from targets (when running on behalf of roles).
+
+
