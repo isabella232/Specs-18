@@ -118,6 +118,8 @@ Which leaves us with three options:
 2. Gracefully deprecate them.  e.g. Make creating new Cloud Regions non-obvious, then eventually impossible, and see if anyone complains.
 3. Replace Cloud Regions with the more generic custom targets.
 
+For now, we are taking option 2.  We will obviously keep them working, but de-prioritize them in the UI wherever possible. 
+
 
 ### Custom Targets
 
@@ -126,6 +128,7 @@ The idea behind Custom Targets is that they would allow the user to create a cus
 These would perform a similar role to Cloud Regions, but hopefully with a better user-experience.
 
 The question is, is there a need?
+
 
 
 ## Targets and Accounts
