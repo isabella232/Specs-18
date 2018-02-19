@@ -16,13 +16,13 @@ With the exception of Cloud Region, these targets all represent connections to W
 
 _[The Cloud enters stage left]_
 
-The world is changing.  More and more, a deployment is not targetting a group of machines, but rather a platform-as-a-service endpoint such as an Azure WebApp or an AWS ElasticBeanstalk. 
+The world is changing.  More and more, a deployment is not targeting a group of machines, but rather a platform-as-a-service endpoint such as an Azure WebApp or an AWS ElasticBeanstalk. 
 
 This brings us to a cross-roads. 
 
 ### Option A: Variables
 
-For a deployment step targetting a PaaS endpoint, we could consider the target to be simply a configuration value of the step (possibly bound to a variable). This is the way we currently implement Azure WebApp and CloudService steps, and is the way, for example, VSTS implements this. 
+For a deployment step targeting a PaaS endpoint, we could consider the target to be simply a configuration value of the step (possibly bound to a variable). This is the way we currently implement Azure WebApp and CloudService steps, and is the way, for example, VSTS implements this. 
 
 ### Option B: Targets
 
@@ -47,7 +47,7 @@ By allowing users to explicitly model their targets as self-contained objects wh
 - custom status\diagnostic pages for targets (which pods are running on my Kubernetes cluster?)
 - Dynamic environments!!  
 
-### The Almight $$$
+### The Almighty $$$
 
 The Octopus licensing model is machine-based: the more machines you deploy to, the more you pay.
 
