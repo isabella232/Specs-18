@@ -71,6 +71,14 @@ _Target X has version Y of a project in environment Z_
 
 then it is likely a target.  As an example, should Azure Resource Groups be targets?  The sentence above does not make sense for a resource group.  And a resource group doesn't _feel_ like a target.  So they should be implemented as variables.
 
+Another rule thumb is that if the result of a deployment is your application running "on" it, then it is probably a target.
+
+As another example, for Kubernetes, we could certainly make this work by having the Kubernetes cluster be a variable that any Kubernetes steps would reference.  But Kubernetes passes the above rules of thumb:
+
+- "The Kubernetes cluster is running version 1.0.0 of Acme in the dev environment" makes sense.
+- The result of a deployment is the deployed application running on the k8s cluster.
+- Having the Kubernetes cluster live as an entity in Octopus beyond the life of a deployment opens some enticing operations scenarios.
+
 
 ## Target Zoology
 
