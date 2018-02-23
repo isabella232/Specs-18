@@ -21,6 +21,15 @@ We will support the authentication methods:
 
 ![Kubernetes Cluster Target](ui-mocks/kubernetes-cluster-target.png "width=500")
 
+### Namespace 
+
+The Kubernetes Cluster target will allow specifying a [namespace](https://kubernetes.io/docs/tasks/administer-cluster/namespaces/) (see mock-ui above). 
+
+This will support dividing a single Kubernetes cluster into multiple logical environments (this model will still require multiple targets to be created in Octopus). 
+
+The namespace configured will be written into the Kubernetes context established when connecting to the cluster.  
+
+
 ## Kubernetes Apply Step
 
 Kubernetes supports both [declarative and imperative modes of object management](https://kubernetes.io/docs/concepts/overview/object-management-kubectl/overview/#management-techniques).  
