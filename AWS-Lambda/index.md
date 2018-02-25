@@ -51,8 +51,6 @@ For the package source we can allow the user to couple it with a previous S3 ste
 
 Alternatively the user could opt to include it from a package within this step, where it will be acquired and uploaded as part of the step itself. If this option is taken, then it might be possible to crack open the package, perform variable replacement and bundle it back up before pushing.
 
-![Push Step](./screenshots/lambda_push_step.png)
-
 #### Variables
 Although AWS encrypts variables in at-rest, they are available in cleartext through the API or portal if not encrypted in transit.
 
@@ -89,6 +87,13 @@ const data = {
 ```
 
 _NOTE: It appears a _better_ solution is to instead to use the `New-KMSDataKey` cmdlet to retrieve a key that can be used to encrypt all variables locally rather than performing requests for each variable. This requires _also_ passing the generated encrypted data key into their function which is used in the lambda to decrypt the variables (with itself being decrypted by the KMS key available to the execution role!)_
+
+To support supplying environment variables safely, variables can be explicitly set as environment variables and _optionally_ flagged to be encrypted with a user-define AWS KMI key. Making this opt-in would ensure that users are aware of which values are and which are not-encrypted because the users need to manually _decrypt_ the values inside their code themselves.
+
+#### Alias
+A common scenario might be to automatically update the alias used when the new package is pushed. To support this, the alias name and weighting can be supplied.
+
+![Push Step](./screenshots/lambda_push_step.png)
 
 ### Update Alias and Weightings
 When using Lambdas a common pattern is to reference a static `Alias` which in turn points to a changing version, similar to how a `tag` in git could be changed to point to any particular commit. These Aliases also provide a mechanism to perform canary upgrades, allowing a distribution of traffic across two different versions. A typical scenario through Octopus might therefore be
