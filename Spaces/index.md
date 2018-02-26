@@ -43,6 +43,8 @@ The following is better understood if separate the concepts of a team from it's 
 Team: A collection of users (possibly via AD groups).
 Role-mappings: A team can be assigned roles at various scopes (more below).
 
+Scopes (Environment, Project, Tenant, etc) are being removed from the team, and defined per role-mapping instead (See [permissions spec](../Permissions/Permissions-PlanB.md)).
+
 Teams will exist at the global level.  This reflects two facts:
 - There are global permissions that still need to be allocated 
 - Some organizations may prefer to manage their teams at the global level 
@@ -51,13 +53,12 @@ But some organizations may also prefer to allow teams to be managed _within_ spa
 
 To cater for this, teams may be created at the global level or within a space.  Teams created within a space will be "scoped" to the space.  They will still be visible from the global level (though we may manage their visibility with a filter, for example), but will _not_ be visible from within other spaces. 
 
-Roles will be able to be assigned to teams at both the global and space level.  Different roles will be available to be assigned at each level. 
+Similarly for roles, they will exist at the global level. When a user defines custom roles, they map optionally scope them to a space.
 
-Roles able to be assigned at the global level will include those relating to administering the Octopus Server, manage Spaces, etc.
+The scopes available for selection when applying a role-mapping for a team will be determined by the permissions within the role. For example, if the role contained `EnvironmentView` and `ProjectView` permissions, then environment and project (and project-group) scopes would be available for selection.
 
-All Roles relating to Projects, Environments, Tenants, etc, will be only be available to be assigned within a space. 
-
-To be clear, a global team (one not scoped to a space) can be assigned different roles in different spaces. 
+The space is effectively an additional scope.  When mapping roles which contain permissions eligible for scoping, a space scope may also be applied.
+We will allow users to manage role-mappings within a space in the UI, and when doing so the space mapping will be implicit. 
 
 If we do this right, this will allow users to choose whether to model teams at the global or space levels. The challenge will be making it clear in the UI whether which level a team is being created at, and expressing the relationship between role-mappings and teams.
 
@@ -65,11 +66,9 @@ Key Points:
 
 - Teams conceptually are global, but can be created at either the global or space level.
 - Teams created at the space level are scoped to that space.
-- Conceptually (at possibly in our data-model), role-mappings should be considered separate to teams. Teams define the group of users, and they can be assigned roles at the global level and\or within one or more spaces.
-- Different roles are available to be assigned at the global and space level.
-- A (non space-scoped) team can be assigned different roles in different spaces.
-- A team scoped to a space can only be assigned roles at the global level and within the space the team is scoped to.
-- A team scoped to a space can still be assigned roles at the global level.
+- Conceptually (and possibly in our data-model), role-mappings should be considered separate to teams. Teams define the group of users, and they can be assigned roles at the global level and\or within one or more spaces.
+- Roles conceptually are global, but can be scoped to a space, similar to teams.
+- Space effectively functions as an additional scope on role-mappings.
 
 
 ### Built-in Package Repository
