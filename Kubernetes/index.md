@@ -107,3 +107,8 @@ We will enable these by adding a new flavor of a Run a Script step: _Run a kubec
 This step will allow you to write your own scripts, and we ensure the `kubectl` command line is available and authenticated against the Kubernetes cluster the step is targetting.  This is conceptually similiar to our [Run an AWS CLI Script](https://octopus.com/docs/deploying-applications/custom-scripts/aws-cli-scripts) or the  [Run an Azure PowerShell Script](https://octopus.com/docs/deploying-applications/azure-deployments/running-azure-powershell) steps, which authenticate against and provide the SDK for AWS and Azure respectively. 
 
 ![kubectl Script Step](ui-mocks/kubectl-script-step.png "width=500")
+
+
+### Container image references
+
+We will allow adding image references to a _kubectl Script Step_ (see UI-mock above).  This will allow referencing them as variables in the script.  The image tag (package version in regular Octopus parlance) will be selected at release-creation time.
