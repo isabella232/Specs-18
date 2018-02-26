@@ -38,6 +38,11 @@ Still to be decided:
 
 ### Teams and Roles
 
+The following is better understood if separate the concepts of a team from it's role-mappings.  So,
+
+Team: A collection of users (possibly via AD groups).
+Role-mappings: A team can be assigned roles at various scopes (more below).
+
 Teams will exist at the global level.  This reflects two facts:
 - There are global permissions that still need to be allocated 
 - Some organizations may prefer to manage their teams at the global level 
