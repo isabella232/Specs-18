@@ -38,10 +38,10 @@ Still to be decided:
 
 ### Teams and Roles
 
-The following is better understood if we separate the concepts of a team from it's role-mappings.  So,
+The following is better understood if we separate the concept of a team from it's role-mappings.  So,
 
-Team: A collection of users (possibly via AD groups).
-Role-mappings: A team can be assigned roles at various scopes (more below).
+**Team**: A collection of users (possibly via AD groups).   
+**Role-Mappings**: A team can be assigned roles at various scopes (more below).
 
 Scopes (Environment, Project, Tenant, etc) are being removed from the team, and defined per role-mapping instead (See [permissions spec](../Permissions/Permissions-PlanB.md)).
 
