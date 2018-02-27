@@ -38,7 +38,7 @@ Still to be decided:
 
 ### Teams and Roles
 
-The following is better understood if separate the concepts of a team from it's role-mappings.  So,
+The following is better understood if we separate the concepts of a team from it's role-mappings.  So,
 
 Team: A collection of users (possibly via AD groups).
 Role-mappings: A team can be assigned roles at various scopes (more below).
