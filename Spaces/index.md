@@ -58,7 +58,7 @@ Similarly for roles, they will exist at the global level. When a user defines cu
 The scopes available for selection when applying a role-mapping for a team will be determined by the permissions within the role. For example, if the role contained `EnvironmentView` and `ProjectView` permissions, then environment and project (and project-group) scopes would be available for selection.
 
 The space is effectively an additional scope.  When mapping roles which contain permissions eligible for scoping, a space scope may also be applied.
-We will allow users to manage role-mappings within a space in the UI, and when doing so the space mapping will be implicit. 
+The UI should make it easy to edit role-mappings in the context of a space, so that rather than having to explicitly specify the space on each mapping, it would be implicit by the fact that you are "in" the space. 
 
 If we do this right, this will allow users to choose whether to model teams at the global or space levels. The challenge will be making it clear in the UI whether which level a team is being created at, and expressing the relationship between role-mappings and teams.
 
