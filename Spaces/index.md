@@ -17,7 +17,6 @@ The only things that will remain global are:
 
 - Octopus Server Configuration (License, Maintenance Mode, HTTPS Certificate, etc)
 - Users
-- Teams and Roles (see below)
 
 This means that Spaces will contain:
 
@@ -30,14 +29,47 @@ This means that Spaces will contain:
 - Tenants (Tenant feature-toggle will be pushed down into Spaces)
 - Step Templates
 
+A couple of things will span between:
+- Teams
+- Roles   
+
 Still to be decided:
 - Built-in Package Repository (see below)
 
 ### Teams and Roles
 
-Teams will remain global, but will be modified slightly from today. 
+The following is better understood if separate the concepts of a team from it's role-mappings.  So,
 
-Roles will exist at both the Server and Space levels, as appropriate.
+Team: A collection of users (possibly via AD groups).
+Role-mappings: A team can be assigned roles at various scopes (more below).
+
+Scopes (Environment, Project, Tenant, etc) are being removed from the team, and defined per role-mapping instead (See [permissions spec](../Permissions/Permissions-PlanB.md)).
+
+Teams will exist at the global level.  This reflects two facts:
+- There are global permissions that still need to be allocated 
+- Some organizations may prefer to manage their teams at the global level 
+
+But some organizations may also prefer to allow teams to be managed _within_ spaces (or a combination of global and per-space).
+
+To cater for this, teams may be created at the global level or within a space.  Teams created within a space will be "scoped" to the space.  They will still be visible from the global level (though we may manage their visibility with a filter, for example), but will _not_ be visible from within other spaces. 
+
+Similarly for roles, they will exist at the global level. When a user defines custom roles, they map optionally scope them to a space.
+
+The scopes available for selection when applying a role-mapping for a team will be determined by the permissions within the role. For example, if the role contained `EnvironmentView` and `ProjectView` permissions, then environment and project (and project-group) scopes would be available for selection.
+
+The space is effectively an additional scope.  When mapping roles which contain permissions eligible for scoping, a space scope may also be applied.
+The UI should make it easy to edit role-mappings in the context of a space, so that rather than having to explicitly specify the space on each mapping, it would be implicit by the fact that you are "in" the space. 
+
+If we do this right, this will allow users to choose whether to model teams at the global or space levels. The challenge will be making it clear in the UI whether which level a team is being created at, and expressing the relationship between role-mappings and teams.
+
+Key Points:
+
+- Teams conceptually are global, but can be created at either the global or space level.
+- Teams created at the space level are scoped to that space.
+- Conceptually (and possibly in our data-model), role-mappings should be considered separate to teams. Teams define the group of users, and they can be assigned roles at the global level and\or within one or more spaces.
+- Roles conceptually are global, but can be scoped to a space, similar to teams.
+- Space effectively functions as an additional scope on role-mappings.
+
 
 ### Built-in Package Repository
 
@@ -95,6 +127,12 @@ For backwards compatibility we would infer the default space if one isn't specif
 Referencing individual entities should still require a space (unless it's the default space) since some resources (like projects) can be reference by name, which _may only be unique within a space?_
 
 Once an instance has multiple spaces, it might be risky to continue using api routes that don't include a space, since you might inadvertently make changes to the wrong space. It may be safer to always explicitly specify the space. It might be useful to provide an option to users to disable the routes that infer the space if it is absent, which will cause those routes to return an error response if they are hit.
+
+### Teams and Roles via the API
+
+Although teams and roles span the bridge between global and space levels, they should be considered global for the purposes of the API. For example `/api/teams` should return all teams for the Octopus instance. These could possibly be filtered for a given space, e.g. `/api/teams?space={SpaceID}`, but this is different to the other routes described above.
+
+ 
 
 ## Database
 
