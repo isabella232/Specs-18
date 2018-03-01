@@ -112,3 +112,14 @@ This step will allow you to write your own scripts, and we ensure the `kubectl` 
 ### Container image references
 
 We will allow adding image references to a _kubectl Script Step_ (see UI-mock above).  This will allow referencing them as variables in the script.  The image tag (package version in regular Octopus parlance) will be selected at release-creation time.
+
+
+## Secrets and ConfigMaps 
+
+A significant part of the value in integrating Octopus and Kubernetes will be pushing variables from Octopus into a K8S cluster.
+
+Secrets and ConfigMaps can both be created using the Apply step (or the Kubectl Script Step).
+
+In the future (i.e. probably not part of v1), it may be valuable to create dedicated steps for creating these.  Something like:
+
+![Secrets Step](ui-mocks/kubernetes-secrets-step.png "width=500")
