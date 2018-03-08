@@ -2,8 +2,36 @@
 
 Support for Kubernetes in Octopus Deploy will take the form of:
 
-- New Steps (Kubernetes Apply and kubectl Script) 
-- New Target (Kubernetes Cluster)
+- [New Target (Kubernetes Cluster)](#kubernetes-cluster-target)
+- New Steps:
+   - [Deploy Containers to Kubernetes](#deploy-containers-to-kubernetes-step)
+   - [Apply a Kubernetes Template](#apply-a-kubernetes-template-step) 
+   - [Run a Kubernetes Script](#run-a-kubernetes-script-step)
+
+The steps progress along the User-Friendly <-> Flexible spectrum.  
+
+Starting with the most user-friendly is the Deploy Containers to Kubernetes step.  It can be thought of in a similar way to the _Deploy IIS_ or _Deploy Azure Web App_ steps.  It provides a (hopefully) friendly UI, but simply can't expose everything that can be configured in Kubernetes.   
+
+Next is the Apply a Kubernetes Template step.  This is conceptually similar to the CloudFormation or Azure ResourceManager template steps.  It allows the user to supply a declarative template to Kubernetes.  
+
+Finally, the Run a Kubernetes Script step allows the user to write their own scripts, and Octopus will ensure the `kubectl` command-line tool is available and authenticated against the appropriate cluster.  This provides full-power, but not a particularly nice user experience (unless you enjoy writing bash scripts, in which case good for you).
+
+## Development Priority
+
+The first priority phase is:
+
+- Kubernetes Cluster Target
+- Apply a Kubernetes Template Step 
+- Run a Kubernetes Script Step
+
+The seconds priority phase is:
+
+- Deploy Containers to Kubernetes step
+
+The reasoning for this is that the first phase enables all scenarios, and provides a path for anyone currently using Kubernetes to migrate their workflow into Octopus.   
+
+The second phase provides a more friendly path for getting started with Kubernetes.  There will however be scenarios that are not achievable using the Deploy Containers to Kubernetes step. 
+
 
 ## Kubernetes Cluster Target
 
@@ -29,8 +57,11 @@ This will support dividing a single Kubernetes cluster into multiple logical env
 
 The namespace configured will be written into the Kubernetes context established when connecting to the cluster.  
 
+## Deploy Containers to Kubernetes Step
 
-## Kubernetes Apply Step
+![Deploy Containers Step](ui-mocks/deploy-containers-step.png "width=500")
+
+## Apply a Kubernetes Template Step
 
 Kubernetes supports both [declarative and imperative modes of object management](https://kubernetes.io/docs/concepts/overview/object-management-kubectl/overview/#management-techniques).  
 
@@ -98,11 +129,11 @@ The output from the `kubectl apply` command will be captured as an output variab
 
 The output format can be specified (see the `output` flag of the [kubectl apply cmd](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#apply)). One of the options is JSON (which can be further customized using the `jsonpath` option). Using the JSON properties functionality which is available in Octostache, this should be useful.
 
-## kubectl Script Step
+### Run a Kubernetes Script Step 
 
 There are many other [Kubernetes commands](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands) you may wish to execute, other than `apply`.  For example: [deleting resources](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#delete), [scaling](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#scale), etc.
 
-We will enable these by adding a new flavor of a Run a Script step: _Run a kubectl Script_. 
+We will enable these by adding a new flavor of a Run a Script step: _Run a Kubernetes Script_. 
 
 This step will allow you to write your own scripts, and we ensure the `kubectl` command line is available and authenticated against the Kubernetes cluster the step is targetting.  This is conceptually similiar to our [Run an AWS CLI Script](https://octopus.com/docs/deploying-applications/custom-scripts/aws-cli-scripts) or the  [Run an Azure PowerShell Script](https://octopus.com/docs/deploying-applications/azure-deployments/running-azure-powershell) steps, which authenticate against and provide the SDK for AWS and Azure respectively. 
 
