@@ -8,7 +8,7 @@ Gather consent from users about the personal data and that will be stored. Along
 
 ## Proposed Changes
 
-### EULA acceptance for all users
+### Acceptance requirement for all users
 
 Gather consent via a UI modal dialog. If using the portal you have accept it, ALL USERS would be impacted after that installed version.
 
