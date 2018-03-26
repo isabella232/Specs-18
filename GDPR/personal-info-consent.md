@@ -1,12 +1,12 @@
 # PII Consent in Octopus
 
-Not exactly an EULA, as this is not the purchaser (that EULA) is part of the installation, this is for the user supplying (or already supplied) personal identifiable inforamtion
+Not exactly an EULA, as this is not the purchaser (that EULA) is part of the installation, this is for the user supplying (or already supplied) personal identifiable information
 
 ## Requirement
 
 Gather consent from users about the personal data and that will be stored. Along with making it clear, that actions they perform in the application are tracked. Their company (controller of Octopus) is the contact point for this.
 
-## Propoosed Changes
+## Proposed Changes
 
 ### EULA acceptance for all users
 
