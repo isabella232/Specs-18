@@ -67,3 +67,13 @@ The project overview now needs to take into consideration the
 #### Dashboard
 On first consideration, it seems unnecessary to make any changes to the site-wide dashboard. This dashboard acts as a window into the current state of the world for which project versions are in which environment. Since it is simply a list of Project X Environment it's not entirely clear how a lifecycle action would fit into this picture.
 A release approval not yet flagged for production might look a little unexpected in the UAT column next to that release. Similarly it wouldn't look right in the production column alongside the "current" release for production which may itself be several releases ago. Ultimately if a user is interesting in why a project hasn't progressed then this is information that will be available whe they click the project and drill into the project overview.
+
+### Snapshotting
+
+#### Delayed Snapshot
+A common pattern when making changes to a deployment process is the `edit process` -> `create release` -> `deploy` -> `fail` -> `repeat` cycle. While we want to encourage the snapshotting behavior for later phases, perhaps this makes less sense in the earlier (or first) phases where there are constant changes required. What if we allowed on the lifecycle the ability to create a snapshot point at some phase. Typically this might be right after the dev phase (or currently by default before the first phase). This would allow quicker iteration on packages and/or deployment processes.
+
+#### Reuse Old Snapshots
+In the other direction, it may sometimes be the case that a user wants to redeploy a release using an earlier "known-good" configuration (e.g for an urgent hotfix for `v1.x` while the deployment process is now set up for `v2.x`). There is currently no simple way to deploy a package with an earlier configuration.  So the user has made all sorts of changes to the project required for getting ready for `2.0.0`. But in the meantime a bug is found in `1.4`. How do you ensure tht your hotfix will use the right variables and deployment process?
+
+What if when creating a release we allowed the user to "select" a deployment process from a previous release. Instead when you go to the create release page by default it is showing from a drop down Process= `Latest`. Since we still have the deployment process snapshotted however they can then select from the drop down Process=`Release: 1.5.0`. The release is then created with the details available from this snapshot, and off the deployment goes. This would be particularly common when used in conjunction with hotfix branches.
