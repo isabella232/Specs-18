@@ -22,3 +22,5 @@ The Helm Deploy Release step would essentially wrap the `helm upgrade -i` comman
 This step would be executed against a [Kubernetes Cluster target](index.md#kubernetes-cluster-target).
 
 ![Helm Deploy Release Step](ui-mocks/helm-deploy-release-step.png) 
+
+Any files supplied as Value Files would have variable-substitution performed on them. 
