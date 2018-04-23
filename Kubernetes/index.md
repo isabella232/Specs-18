@@ -16,6 +16,10 @@ Next is the Apply a Kubernetes Template step.  This is conceptually similar to t
 
 Finally, the Run a Kubernetes Script step allows the user to write their own scripts, and Octopus will ensure the `kubectl` command-line tool is available and authenticated against the appropriate cluster.  This provides full-power, but not a particularly nice user experience (unless you enjoy writing bash scripts, in which case good for you).
 
+## Helm
+
+Given Helm's prevalence, we want a good story for deploying Helm charts. We have created a [spec for this](helm.md).
+
 ## Development Priority
 
 The first priority phase is:
@@ -27,6 +31,7 @@ The first priority phase is:
 The seconds priority phase is:
 
 - Deploy Containers to Kubernetes step
+- Helm support
 
 The reasoning for this is that the first phase enables all scenarios, and provides a path for anyone currently using Kubernetes to migrate their workflow into Octopus.   
 
