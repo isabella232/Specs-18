@@ -62,11 +62,22 @@ When a maintenance action is applied to a specific environment (as opposed to ph
 
 ### Dashboards
 #### Project Overview
-The project overview now needs to take into consideration the 
+Since the project overview would then need to take into consideration these intermediate steps in a lifecycle, it may need to be re-imagined somewhat. 
+
+Perhaps grouping together phase-environments horizontally
+![Channel Maintenance Task Action](project_overview_horizontal.png)
+
+or vertically
+
+![Channel Maintenance Task Action](project_overview_stacked.png)
+
+The key factor is that a task could take place after/before an environment (like a test) or before/after a phase (like approvals).
+
 
 #### Dashboard
 On first consideration, it seems unnecessary to make any changes to the site-wide dashboard. This dashboard acts as a window into the current state of the world for which project versions are in which environment. Since it is simply a list of Project X Environment it's not entirely clear how a lifecycle action would fit into this picture.
 A release approval not yet flagged for production might look a little unexpected in the UAT column next to that release. Similarly it wouldn't look right in the production column alongside the "current" release for production which may itself be several releases ago. Ultimately if a user is interesting in why a project hasn't progressed then this is information that will be available whe they click the project and drill into the project overview.
+
 
 ### Snapshotting
 
