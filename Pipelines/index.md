@@ -59,6 +59,7 @@ When a maintenance action is applied to a specific environment (as opposed to ph
 
 ![Channel Maintenance Task Action](channel_action_maintenance.png)
 
+With first class testing steps, we can then read and interpret test results to provide a overview of their automated testing that relies on a deployment. This is almost all automated testing that is post integration! 
 
 ### Dashboards
 #### Project Overview
