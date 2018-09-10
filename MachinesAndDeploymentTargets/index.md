@@ -1,4 +1,10 @@
-# Machines and Deployment Targets in the current world
+# Machines and Deployment Targets
+
+The purpose of this spec is to outline a change to the way Octopus models machines and deployment targets. In our current model these concepts are very much one-to-one and they are very tightly coupled together.
+
+Splitting the concepts into separate pieces would have a number of advantages, from both a customer and Octopus maintenance perspective. It will allow Octopus to have better insight into the real world of the environments it is deploying into and lead to greater value to customers through growth in operations capabilities.
+
+# Some of the backstory
 
 Octopus has historically modelled Machines and Deployment Targets as one "thing". Machines started out as a representation of a Tentacle machine that server is in communication with. That machine would be the target of a deployment or script, and we used the steps to conceptually represent multiple targets, if there were multiple. Let's consider an example.
 
@@ -112,5 +118,10 @@ The new client will understand the separation and support it as a first class co
 We've thought about representing load balancers/reverse proxies, e.g an F5, to make rolling deployments, blue green deployments etc easier to visualise. But they aren't a Deployment Target. They feel more like a Machine where we'd want to execute a script.
 
 Roles would be on the DeploymentTarget, not the machine. If we get to making Roles a first class thing, should they be able to say "I can be used on these target types!", e.g. so "DB installer" can only be used on a SQL target and not an IIS target. The next piece in this is for the steps to know which target types they support, and therefore which roles to display.
+Would this then even mean that roles could become optional? E.g. if the step didn't specify a role then it'd deploy to all targets of the correct type in the environment.
 
 How should scopes like Environment and Tenant work? It feels like they belong to DeploymentTargets for non-Tentacle/SSH things. But for Machines should we also be able to constrain to say "Only deployment targets for Production for TenantA can use this machine"? It doesn't sound unreasonable, but will the complexity/headaches it will add be worth it?
+
+Machines vs Workers. At the moment these are separate tables, but it feels like this is more as a result of the deployment targets currently being in the machine table. If the machine table records are about how to communicate with a machine, then deployment targets and worker pools may be able to simply reference these and do away with the separate worker table. DeploymentTargets would say either "I run on this machine" or "I run via this Worker Pool", and a Worker Pool would say "I contain these machines".
+
+If we already know about a machine, this would make the "add a machine to a worker pool" scenario much simpler than it is today.
