@@ -129,6 +129,22 @@ This has caused some issues and confusion in certain scenarios with workers, bec
 
 We'll separate these and have variables for *Octopus.Machine.Name* and *Octopus.DeploymentTarget.Name*, for example.
 
+## Referencing variables for other targets
+
+In scenarios like the IIS and SQL one we have been using, it is common to need to do things like build connection strings for the IIS web config based on the SQL server database variables for the environment. Now that we have a sense of what types of assets are in scope, we may be able to allow variable substitution based on target type. The idea might be that for the connection string you have a binding value that contains something like the following
+
+```Server=#{Targets["SQLServerDB"].ServerName};Database=#{Targets["SQLServerDB"].Name};Trusted_connection=true```
+
+In this notation, the `SQLServer` value is denoting a target type. This concept would only work when there was a single instance of the target type in the scope, if there a multiples we would have to fail the deployment because we couldn't uniquely identify the exact target.
+
+In the example above the assumption is that there would be only 1 SQLServer target in scope. We could support including Role in the scope (where scope would normally be Env and Tenant) to uniquely identify specific targets. Let's say your application has a transaction database and a reporting database, as an example. Maybe something like 
+
+```Server=#{Targets["SQLServerDB:TxnDB"].ServerName};Database=#{Targets["SQLServerDB:TxnDB"].Name};Trusted_connection=true```
+
+to denote "the SQL Server database with the role TxnDB".
+
+This would again improve the usability for the user, by moving more things away from the complexity of the project variables and towards relating things together in ways that more closely represent the physical world.
+
 # Migration
 
 Migrating the data for this change will revolve around creating a DeploymentTarget record matched to every existing Machine record, with the appropriate fields moved across.
