@@ -2,13 +2,13 @@
 
 The purpose of this spec is to outline a change to the way Octopus models machines and deployment targets. In our current model these concepts are very much one-to-one and they are very tightly coupled together.
 
-Splitting the concepts into separate pieces would have a number of advantages, from both a customer and Octopus maintenance perspective. It will allow Octopus to have better insight into the real world of the environments it is deploying into and lead to greater value to customers through growth in operations capabilities.
+Splitting the concepts into separate pieces would have a number of advantages, from both a customer and Octopus maintenance perspective. **It will allow Octopus to have better insight into the real world of the environments it is deploying into and lead to greater value to customers, through growth in operations capabilities.**
 
 # Some of the backstory
 
-Octopus has historically modelled Machines and Deployment Targets as one "thing". Machines started out as a representation of a Tentacle machine that server is in communication with. That machine would be the target of a deployment or script, and we used the steps to conceptually represent multiple targets, if there were multiple. Let's consider an example.
+Octopus has historically modelled Machines and Deployment Targets as one "thing". Machines started out as a representation of a Tentacle machine that Octopus server is in communication with. That machine would be the target of a deployment or script, and we used the steps to conceptually represent multiple targets, if there were multiple. Let's consider an example.
 
-Let's say we have an intranet web site hosted using IIS and we have a Tentacle installed on that server. Let's also assume we're in a world where the Tentacle can be running as a user who has local admin AND dbo permissions to a SQL database that backs the site. We'd probably then add this Tentacle to an environment in Octopus, assign it roles like "Web Server" and "DB Installer", and then have a process along the lines of 
+Let's say we have an intranet web site hosted using IIS and we have a Tentacle installed on that server. Let's also assume we're in a world where the Tentacle can be running as a user who has local admin AND dbo permissions to a SQL database that backs the site. We'd probably then add this Tentacle to an environment in Octopus, assign it roles like "Web Server" and "DB Installer", and have a deployment process along the lines of 
 
 1. Stop site
 2. Upgrade DB
@@ -31,7 +31,7 @@ While this has worked, it has created some interesting complexities in the code 
 
 The purpose of this spec is to outline some of the steps and considerations around addressing the machine's personality disorder.
 
-The main crux is for us to separate Machines and DeploymentTargets into two completely separate objects in our model. A Machine represents somewhere a deployment can execute and the communication style required to converse with it, with Workers remaining a derivative of Machine. So Listening/Polling Tentacles and SSH would be the resulting machine types.
+The main crux is for us to separate Machines and DeploymentTargets into two completely separate objects in our model. A Machine represents somewhere a deployment can execute and the communication style required to converse with it. So Listening/Polling Tentacles and SSH would be the resulting machine types. Workers won't remain a derivative of Machine, but will continue to hold a lot in common with them.
 
 A DeploymentTarget represents a thing we are deploying to and can specify a constraint around where it's deployments can execute (i.e. must be on a specific Machine OR can execute on any Worker from a given pool).
 
@@ -39,17 +39,41 @@ This separation lets us model a number of things in ways that more closely repre
 
 This all sounds like more work and complexity for the user though, why would we want that?
 
+## Non-targets
+
+As an extension to this, what if there are things in the real world that are important to the deployment process but they aren't things we're actually deploying to. To give a working name to this idea for the moment, let's call these things Assets.
+
+A common example of an asset that we've talked about in the past are load balancers and reverse proxies. These aren't things we're deploying directly to, but we have to know about them for doing things like rolling deployments and blue/green deployments.
+
+Modelling these as first class members of our world moves us a step closer to being able to visualise an environment in a much more detailed way for our customers.
+
+Assets probably wouldn't be things we'd need to health check, but maybe knowing they are healthy is of value? Once they are part of our model, and we know how to connect to them, it's a small step to be able to allow scripted health checks on them.
+
 ## Portal UI
 
 The suggestion here is a higher fidelity model to open some doors, we'll talk more about these doors below.
 
-At the same time we don't want to complicate things for those who don't need that fidelity. We don't have UI mockups as at the time of writing this spec, but here are some initial thoughts around the UI and workflow.
+At the same time we don't want to complicate things for those who don't need that fidelity. Here are some initial thoughts around the UI and workflow.
+
+![](infra-menu.png)
 
 Machines and Deployment Targets will have their own pages in the Infrastructure area. The current page called Deployment Targets actually shows entries from the machine table, it would change to showing entries from the DeploymentTargets table.
 
-When creating a Tentacle or SSH deployment target we could ask whether this is for a new machine or an existing machine. New would be the default and result in the much the same UI as today, and we'd create the records in both tables for you. Existing let's you take advantage of the new 1:many and would list machines with matching scope (env, tenants etc) to use for deployments.
+To represent what customers do in Octopus today, we will create a "Generic Target(s)" (exact name is up for consideration), which would be used by the Listening Tentacle, Polling Tentacle, and the SSH machines.
 
-For all other deployment target types the machines aren't relevant, you'll be specifying a worker pool just like today. The different under the hood here is that you end up with a record in the DeploymentTarget table, rather than the Machine table.
+When creating a generic target we could ask whether this is for a new machine or an existing machine. **New** would be the default and result in much the same UI as today, and we'd create the records in both tables for you. 
+
+![](target-new-machine.png)
+
+**Existing** let's you take advantage of the new 1:many and would list machines with matching scope (env, tenants etc) to use for deployments.
+
+![](target-existing-machine.png)
+
+For all other deployment target types the machines aren't relevant, you'll be specifying a worker pool just like today. The difference under the hood here is that you end up with a record in the DeploymentTarget table, rather than the Machine table.
+
+From the other end, we could do a similar thing when creating machines. We could ask the user if they want to create a new generic target as part of creating the machine, and if so they just need to enter the name and role(s) for the target.
+
+This would keep us close to the single page create experience we have today, without stopping the users from utilizing the new functionality. _Initial conversation with Jess indicates there may be reason to jump the user to a separate page or dialog or something to do the creates._
 
 ## New target types
 
@@ -71,17 +95,25 @@ What if there was a way to control which user the deployment executed as? We can
 
 ## Health checks
 
-The next doors that this separate opens is the ability to have health checks for machines as well as deployment targets. Why's exciting about that?
+The next door that this separation opens is the ability to have health checks for machines as well as deployment targets. What's exciting about that?
 
-Machine health checks are really about "can I connect to the machine to execute a deployment on it". This still holds for listening/polling Tentacles and SSH machines.
+Machine health checks are really about "can I connect to the machine to execute a deployment on it". This still holds for listening/polling Tentacles and SSH machines. What's exciting is that we could have separate, more detailed, health checks for targets because they are different things.
 
 What we've already been looking at with the Azure cloud targets we recently introduced is that health checks for a targets are actually more about what state the thing you're deploying to is in. For example, for an Azure Web App there can be states like "Doesn't exist yet", "Exists but has never been deployed to", "Has been deployed but a nominated IsAlive endpoint isn't responding", "Has been deployed and nominated IsAlive endpoint is responding".
 
 For SQL we could do things like, "database doesn't exist", "database exists but is blank", "database exists and has schema version X".
 
+The ability to have this level of detail in health checks will allow us to surface far richer information for our customers. Today they can 
+
 ## Events
 
 Given that health checks will be separate, it follows that events for machine and deployment targets will also be separate. We can support state change events like "when the database exists" to represent what's happening in each target type.
+
+We can also couple this with Maintenance processes, once they are done. An example of this could be using an event like "when the IsAlive endpoint doesn't respond" to trigger a process that removed the target from a load balancer. Conversely, when the IsAlive endpoint does respond add the target to a load balancer. I know, load balancers probably have this built in, it's an example :)
+
+Maybe a better example is "when the target doesn't exist" kick off a maintenance process to create it and auto-deploy to it. This would cover something like a web site being deleted via the Azure portal and Octopus could kick in a recreate it. This would suit what is essentially a DSC scenario, where Octopus is detecting and correcting drift.
+
+You could also make Octopus purely reflect what's in Azure, i.e. if the web site gets deleted in Azure then the maintenance process removes the target in Octopus.
 
 ## Project variables
 
@@ -109,19 +141,16 @@ The terminology around licenses relates to targets, so the counts currently base
 
 # Backwards compatibility
 
-This will be one of the trickiest parts of the implementation. To maintain compatibility with older version of Octopus.Client we could use a similar approach to the UI. In the current world things are 1:1 so we maintain that and create machine and deployment targets appropriately.
+This will possibly be one of the trickiest parts of the implementation. To maintain compatibility with older version of Octopus.Client we could use a similar approach to the UI. In the current world things are 1:1 so we maintain that and create machine and deployment targets appropriately.
 
 The new client will understand the separation and support it as a first class concern. Depending on the complexity we may be able to make it compatible with old scripts but this will require further investigation.
 
 # Remaining questions and futures
 
 We've thought about representing load balancers/reverse proxies, e.g an F5, to make rolling deployments, blue green deployments etc easier to visualise. But they aren't a Deployment Target. They feel more like a Machine where we'd want to execute a script.
+_Non-targets section above may address this now_
 
 Roles would be on the DeploymentTarget, not the machine. If we get to making Roles a first class thing, should they be able to say "I can be used on these target types!", e.g. so "DB installer" can only be used on a SQL target and not an IIS target. The next piece in this is for the steps to know which target types they support, and therefore which roles to display.
 Would this then even mean that roles could become optional? E.g. if the step didn't specify a role then it'd deploy to all targets of the correct type in the environment.
 
 How should scopes like Environment and Tenant work? It feels like they belong to DeploymentTargets for non-Tentacle/SSH things. But for Machines should we also be able to constrain to say "Only deployment targets for Production for TenantA can use this machine"? It doesn't sound unreasonable, but will the complexity/headaches it will add be worth it?
-
-Machines vs Workers. At the moment these are separate tables, but it feels like this is more as a result of the deployment targets currently being in the machine table. If the machine table records are about how to communicate with a machine, then deployment targets and worker pools may be able to simply reference these and do away with the separate worker table. DeploymentTargets would say either "I run on this machine" or "I run via this Worker Pool", and a Worker Pool would say "I contain these machines".
-
-If we already know about a machine, this would make the "add a machine to a worker pool" scenario much simpler than it is today.
