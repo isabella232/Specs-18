@@ -161,6 +161,12 @@ This will possibly be one of the trickiest parts of the implementation. To maint
 
 The new client will understand the separation and support it as a first class concern. Depending on the complexity we may be able to make it compatible with old scripts but this will require further investigation.
 
+# Modularity
+
+Looking into some architectural changes for Octopus server to support extension points more robustly has also driven some of the thinking behind this spec. The coupling between machine, communication styles, endpoints, and deployment targets causes pain in the engineering team every time a new deployment target is created. We could continue with the current model and add new target types, but we'll continue to bear the pain.
+
+A key objective with the updated model is to make the target types extensible, so adding new ones is much easier and far less error prone, which ultimately will benefit our customers because we can deliver more value more quickly.
+
 # Remaining questions and futures
 
 We've thought about representing load balancers/reverse proxies, e.g an F5, to make rolling deployments, blue green deployments etc easier to visualise. But they aren't a Deployment Target. They feel more like a Machine where we'd want to execute a script.
