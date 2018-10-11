@@ -37,18 +37,6 @@ A DeploymentTarget represents a thing we are deploying to and can specify a cons
 
 This separation lets us model a number of things in ways that more closely represent the real world. Let's revisit our example from earlier, imagine we have a test environment where IIS and SQL live on the same server. We install a Listening Tentacle machine and add it to the Test environment. We then create a Tentacle DeploymentTarget to represent the things we're deploying to and the process and variables stay the same as they were. In Production maybe IIS and SQL are separate, so we create two listening Tentacles with a machine entry each and a Tentacle target each.
 
-This all sounds like more work and complexity for the user though, why would we want that?
-
-## Non-targets
-
-As an extension to this, what if there are things in the real world that are important to the deployment process but they aren't things we're actually deploying to. To give a working name to this idea for the moment, let's call these things Assets.
-
-A common example of an asset that we've talked about in the past are load balancers and reverse proxies. These aren't things we're deploying directly to, but we have to know about them for doing things like rolling deployments and blue/green deployments.
-
-Modelling these as first class members of our world moves us a step closer to being able to visualise an environment in a much more detailed way for our customers.
-
-Assets probably wouldn't be things we'd need to health check, but maybe knowing they are healthy is of value? Once they are part of our model, and we know how to connect to them, it's a small step to be able to allow scripted health checks on them.
-
 ## Portal UI
 
 The suggestion here is a higher fidelity model to open some doors, we'll talk more about these doors below.
@@ -59,9 +47,9 @@ At the same time we don't want to complicate things for those who don't need tha
 
 Machines and Deployment Targets will have their own pages in the Infrastructure area. The current page called Deployment Targets actually shows entries from the machine table, it would change to showing entries from the DeploymentTargets table.
 
-To represent what customers do in Octopus today, we will create a "Generic Target(s)" (exact name is up for consideration), which would be used by the Listening Tentacle, Polling Tentacle, and the SSH machines.
+To represent what customers do in Octopus today, we will create a _Windows_ target and a _Linux_ target, which would be used by the Listening Tentacle, Polling Tentacle, and the SSH machines.
 
-When creating a generic target we could ask whether this is for a new machine or an existing machine. **New** would be the default and result in much the same UI as today, and we'd create the records in both tables for you. 
+When creating a Windows or Linux target we could ask whether this is for a new machine or an existing machine. **New** would be the default and result in much the same UI as today, and we'd create the records in both tables for you. 
 
 ![](target-new-machine.png)
 
@@ -71,7 +59,9 @@ When creating a generic target we could ask whether this is for a new machine or
 
 For all other deployment target types the machines aren't relevant, you'll be specifying a worker pool just like today. The difference under the hood here is that you end up with a record in the DeploymentTarget table, rather than the Machine table.
 
-From the other end, we could do a similar thing when creating machines. We could ask the user if they want to create a new generic target as part of creating the machine, and if so they just need to enter the name and role(s) for the target.
+![](target-pool.png)
+
+From the other end, we could do a similar thing when creating machines. We could ask the user if they want to create a new Windows or Linux target as part of creating the machine, and if so they just need to enter the name and role(s) for the target.
 
 This would keep us close to the single page create experience we have today, without stopping the users from utilizing the new functionality. _Initial conversation with Jess indicates there may be reason to jump the user to a separate page or dialog or something to do the creates._
 
@@ -147,7 +137,7 @@ This would again improve the usability for the user, by moving more things away 
 
 # Migration
 
-Migrating the data for this change will revolve around creating a DeploymentTarget record matched to every existing Machine record, with the appropriate fields moved across.
+Migrating the data for this change will revolve around creating a DeploymentTarget record matched to every existing Machine record, with the appropriate fields moved across. Tentacle machines will have a resulting Windows target and SSH machines will have a resulting Linux target.
 
 Machine records for all things that aren't Tentacles or SSH can then be removed.
 
@@ -169,10 +159,7 @@ A key objective with the updated model is to make the target types extensible, s
 
 # Remaining questions and futures
 
-We've thought about representing load balancers/reverse proxies, e.g an F5, to make rolling deployments, blue green deployments etc easier to visualise. But they aren't a Deployment Target. They feel more like a Machine where we'd want to execute a script.
-_Non-targets section above may address this now_
-
-Roles would be on the DeploymentTarget, not the machine. If we get to making Roles a first class thing, should they be able to say "I can be used on these target types!", e.g. so "DB installer" can only be used on a SQL target and not an IIS target. The next piece in this is for the steps to know which target types they support, and therefore which roles to display.
+Roles would be on the DeploymentTarget, not the machine. If we get to making Roles a first class thing, should they be able to say "I can be used on these target types!", e.g. so "DB" can only be used on a SQL target and not an IIS target. The next piece in this is for the steps to know which target types they support, and therefore which roles to display.
 Would this then even mean that roles could become optional? E.g. if the step didn't specify a role then it'd deploy to all targets of the correct type in the environment.
 
-How should scopes like Environment and Tenant work? It feels like they belong to DeploymentTargets for non-Tentacle/SSH things. But for Machines should we also be able to constrain to say "Only deployment targets for Production for TenantA can use this machine"? It doesn't sound unreasonable, but will the complexity/headaches it will add be worth it?
+How should scopes like Environment and Tenant work? It feels like they belong to DeploymentTargets for non-Tentacle/SSH things. But for Machines should we also be able to constrain to say "Only deployment targets for Production for TenantA can use this machine"? It sounds reasonable, but will the complexity/headaches it will add be worth it?
