@@ -108,8 +108,6 @@ process {
         package_id = "MyWebsite"
       }
       properties {
-        "Octopus.Action.CustomScripts.PostDeploy.ps1" = "Write-Host \"Hi\"\n\nif($a -eq 1) {\n \tWrite-Verbose \"Boom\"\n}"
-        "Octopus.Action.CustomScripts.PreDeploy.ps1" = "Write-Host \"Hi\"\n\nif($a -eq 1) {\n \tWrite-Verbose \"Boom\"\n}"
         "Octopus.Action.EnabledFeatures" = "Octopus.Features.IISWebSite,Octopus.Features.CustomDirectory,Octopus.Features.CustomScripts,Octopus.Features.ConfigurationVariables,Octopus.Features.ConfigurationTransforms"
         "Octopus.Action.IISWebSite.ApplicationPoolFrameworkVersion" = "v4.0"
         "Octopus.Action.IISWebSite.ApplicationPoolIdentityType" = "ApplicationPoolIdentity"
@@ -129,15 +127,29 @@ process {
         "Octopus.Action.IISWebSite.WebApplication.CreateOrUpdate" = "False"
         "Octopus.Action.IISWebSite.WebRootType" = "packageRoot"
         "Octopus.Action.IISWebSite.WebSiteName" = "MySite"
-        "Octopus.Action.Package.AdditionalXmlConfigurationTransforms" = "*.Foo.config =\u003e *.config\ncrossdomainpolicy.#{Octopus.Environment.Name}.xml =\u003e crossdomainpolicy.xml"
+        "Octopus.Action.Package.AdditionalXmlConfigurationTransforms" =  = <<BLOCK
+          *.Foo.config =\u003e *.config\ncrossdomainpolicy.#{Octopus.Environment.Name}.xml
+          crossdomainpolicy.xml
+        BLOCK
+         "Octopus.Action.CustomScripts.PostDeploy.ps1" = <<SCRIPT
+          Write-Host "Hi"
+
+          if($a -eq 1) {
+            Write-Verbose "Boom"
+            }
+        SCRIPT
+        "Octopus.Action.CustomScripts.PreDeploy.ps1" = <<SCRIPT
+          Write-Host "Hi"
+
+          if($a -eq 1) {
+            Write-Verbose "Boom"
+            }
+        SCRIPT
         "Octopus.Action.Package.AutomaticallyRunConfigurationTransformationFiles" = "True"
         "Octopus.Action.Package.AutomaticallyUpdateAppSettingsAndConnectionStrings" = "True"
         "Octopus.Action.Package.CustomInstallationDirectory" = "c:\\temp\\#{Octopus.Deployment.Id}"
         "Octopus.Action.Package.CustomInstallationDirectoryPurgeExclusions" = "appsettings.config"
         "Octopus.Action.Package.CustomInstallationDirectoryShouldBePurgedBeforeDeployment" = "True"
-        "Octopus.Action.Package.DownloadOnTentacle" = "False"
-        "Octopus.Action.Package.FeedId" = "Feeds-1261"
-        "Octopus.Action.Package.PackageId" = "MyWebsite"
       }
     }
   }

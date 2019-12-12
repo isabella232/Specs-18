@@ -116,6 +116,7 @@ process:
           Octopus.Action.IISWebSite.WebApplication.CreateOrUpdate: 'False'
           Octopus.Action.IISWebSite.ExistingBindings: Merge
           Octopus.Action.IISWebSite.ApplicationPoolName: "#{PoolName}"
+          Octopus.Action.IISWebSite.WebSiteName: MySite
           Octopus.Action.Package.AdditionalXmlConfigurationTransforms:
             - *.Foo.config => *.config
             - crossdomainpolicy.#{Octopus.Environment.Name}.xml => crossdomainpolicy.xml
@@ -134,7 +135,3 @@ process:
           Octopus.Action.Package.CustomInstallationDirectory: c:\temp\#{Octopus.Deployment.Id}
           Octopus.Action.Package.CustomInstallationDirectoryShouldBePurgedBeforeDeployment: 'True'
           Octopus.Action.Package.CustomInstallationDirectoryPurgeExclusions: appsettings.config
-          Octopus.Action.IISWebSite.WebSiteName: MySite
-          Octopus.Action.Package.PackageId: MyWebsite
-          Octopus.Action.Package.FeedId: Feeds-1261
-          Octopus.Action.Package.DownloadOnTentacle: 'False'
